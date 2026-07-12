@@ -6,10 +6,16 @@
 
   /* ---------- toast + confetti ---------- */
   function toast(html) {
+    const root = $('#toast-root');
+    // one toast at a time: the old one leaves as the new one arrives
+    [...root.children].forEach(old => {
+      old.classList.add('bye');
+      setTimeout(() => old.remove(), 250);
+    });
     const t = document.createElement('div');
     t.className = 'toast';
     t.innerHTML = html;
-    $('#toast-root').appendChild(t);
+    root.appendChild(t);
     setTimeout(() => { t.classList.add('bye'); setTimeout(() => t.remove(), 450); }, 4500);
   }
   function confetti(n = 90) {
@@ -30,108 +36,6 @@
   /* ---------- nepal time ---------- */
   const nptNow = () => new Date(Date.now() + (345 + new Date().getTimezoneOffset()) * 60000);
 
-  /* ---------- visitor passport ---------- */
-  const STAMPS = [
-    ['entry', 'ENTRY', 'arrived. bold.'],
-    ['poke', 'POKER', 'poked the host. five times.'],
-    ['konami', 'OLD CODES', '↑↑↓↓←→←→BA'],
-    ['star', 'DIZZY', 'spun the ✳ into another realm'],
-    ['sealed', 'NOSY', 'tried the girlfriend file. thrice.'],
-    ['bottom', 'DEEP END', 'met the head at the very bottom'],
-    ['haru', 'CAT PERSON', 'pet the head of security'],
-  ];
-  const stampCount = () => STAMPS.filter(s => pp.stamps[s[0]]).length;
-  let pp;
-  try { pp = JSON.parse(localStorage.getItem('passport') || 'null'); } catch {}
-  if (!pp) pp = { stamps: {} };
-  const savePP = () => { try { localStorage.setItem('passport', JSON.stringify(pp)); } catch {} };
-
-  function renderPassport() {
-    const grid = $('#pp-grid');
-    grid.innerHTML = '';
-    const total = STAMPS.length;
-    const got = stampCount();
-    for (const [id, name, desc] of STAMPS) {
-      const s = document.createElement('div');
-      const has = !!pp.stamps[id];
-      s.className = 'pp-slot' + (has ? ' got' : '') + (has && got === total ? ' gold' : '');
-      s.innerHTML = has
-        ? `<span class="nm">${name}</span><span class="ds">${desc}</span>`
-        : `<span class="q">?</span><span class="nm">UNFOUND</span>`;
-      grid.appendChild(s);
-    }
-    $('#pp-foot').textContent = got === total
-      ? 'all 7. citizen of the corner. HARU will hear of your dedication.'
-      : `${got}/7 stamped. there is no prize. there is honor.`;
-  }
-
-  function stamp(id) {
-    if (pp.stamps[id]) return;
-    pp.stamps[id] = Date.now();
-    savePP();
-    const meta = STAMPS.find(s => s[0] === id);
-    if (!meta) return;
-    const got = stampCount();
-    const tab = $('#passport-tab');
-    tab.classList.remove('wiggle'); void tab.offsetWidth; tab.classList.add('wiggle');
-    if (id !== 'entry') toast(`🛂 passport stamped: <b>${meta[1]}</b> (${got}/7)`);
-    if (got === STAMPS.length) {
-      setTimeout(() => {
-        confetti(150);
-        toast('🏅 <b>CITIZEN OF THE CORNER.</b> all 7 stamps. the momo discount is emotional, not financial.');
-      }, 900);
-    }
-    if (!$('#passport-ov').classList.contains('hidden')) renderPassport();
-  }
-
-  // entry ceremony: first visit gets the full passport-opening treatment,
-  // returning visitors keep their quiet visa in the hero corner
-  {
-    const visa = $('#visa');
-    const d = new Date(pp.stamps.entry || Date.now());
-    const dateStr = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
-    $('#visa-date').textContent = dateStr;
-
-    if (pp.stamps.entry || reduced) {
-      visa.classList.remove('hidden');
-      if (!pp.stamps.entry) stamp('entry');
-    } else {
-      const intro = $('#pp-intro'), book = $('#ppb');
-      $('#ppg-date').textContent = dateStr;
-      let step = 0;
-      const timers = [];
-      const finish = () => {
-        timers.forEach(clearTimeout);
-        intro.classList.add('bye');
-        setTimeout(() => intro.remove(), 400);
-        visa.classList.remove('hidden');
-        visa.classList.add('slam');
-        stamp('entry');
-        const tab = $('#passport-tab');
-        tab.classList.remove('wiggle'); void tab.offsetWidth; tab.classList.add('wiggle');
-        toast('🛂 <b>ENTRY GRANTED.</b> your passport lives on the left edge. 6 more stamps hide on this page.');
-      };
-      intro.addEventListener('click', finish);
-      timers.push(setTimeout(() => { intro.classList.remove('hidden'); }, 700));
-      timers.push(setTimeout(() => { book.classList.add('open'); }, 1900));
-      timers.push(setTimeout(() => {
-        const v = $('#ppb-visa');
-        v.classList.remove('hidden');
-        v.classList.add('slam');
-      }, 3200));
-      timers.push(setTimeout(() => { book.classList.add('fly'); }, 4300));
-      timers.push(setTimeout(finish, 5100));
-    }
-  }
-  $('#passport-tab').addEventListener('click', () => {
-    renderPassport();
-    $('#passport-ov').classList.remove('hidden');
-  });
-  $('#pp-close').addEventListener('click', () => $('#passport-ov').classList.add('hidden'));
-  $('#passport-ov').addEventListener('click', e => {
-    if (e.target === $('#passport-ov')) $('#passport-ov').classList.add('hidden');
-  });
-
   /* ---------- kathmandu, live ---------- */
   {
     const clock = $('#npt-clock');
@@ -142,19 +46,6 @@
     tick();
     setInterval(tick, 30000);
     $('#npt-live').classList.remove('hidden');
-
-    fetch('https://api.open-meteo.com/v1/forecast?latitude=27.71&longitude=85.32&current=weather_code')
-      .then(r => r.json())
-      .then(w => {
-        const code = w?.current?.weather_code ?? 0;
-        const raining = (code >= 51 && code <= 67) || (code >= 80 && code <= 82) || code >= 95;
-        if (!raining) return;
-        const polCap = document.querySelector('.p1 figcaption');
-        const extra = ' ☔ (update: it is raining in kathmandu as you read this. tradition continues.)';
-        polCap.insertAdjacentHTML('beforeend', `<span class="live-rain">${extra}</span>`);
-        document.querySelector('.p1').dataset.cap += extra;
-      })
-      .catch(() => {});
   }
 
   /* ---------- hero chip parallax ---------- */
@@ -185,7 +76,6 @@
       pokeDone = true;
       confetti(50);
       toast("<b>secret #1.</b> okay okay, you found me. please stop poking, I'm shy. (two more secrets hide on this page.)");
-      stamp('poke');
     }
   });
 
@@ -269,7 +159,6 @@
       gf.classList.add('deny');
       if (gfTaps === 1) $('#gf-veil').textContent = 'nice try 🔒';
       toast(gfLines[Math.min(gfTaps++, gfLines.length - 1)]);
-      if (gfTaps >= 3) stamp('sealed');
     };
     gf.addEventListener('click', gfDeny);
     gf.addEventListener('keydown', e => {
@@ -604,7 +493,6 @@
       if (!konamiDone) {
         konamiDone = true;
         toast('<b>secret #2.</b> the old codes still work. you absolute legend.');
-        stamp('konami');
       }
     }
   });
@@ -618,7 +506,6 @@
       starDone = true;
       confetti(60);
       toast('<b>secret #3.</b> you made the star dizzy. that’s all three. we should talk.');
-      stamp('star');
     }
   });
 
@@ -630,7 +517,6 @@
   peek.addEventListener('click', () => {
     confetti(30);
     toast('👀 you scrolled all the way down. respect.');
-    stamp('bottom');
   });
 
   /* ---------- HARU.exe: roams the page on nepal time ---------- */
@@ -688,7 +574,6 @@
 
     const meows = ['mrrp.', 'khoi?', 'feed me, kta.', 'busy. clearly.', 'ma HARU. yes, THE haru.', 'ok one pat. ONE.'];
     petSvg.addEventListener('click', () => {
-      stamp('haru');
       if (petMode() === 'sleep') {
         const t = nptNow();
         speak(`it is ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')} in kathmandu. why are YOU awake?`, 2600);

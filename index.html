@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=6" />
+  <link rel="stylesheet" href="styles.css?v=7" />
 </head>
 <body>
 
@@ -56,12 +56,6 @@
              alt="Martin, hoodie up, mid-smile" width="560" height="735" fetchpriority="high" />
         <span class="line line2">TIWARI</span>
       </h1>
-
-      <div class="visa hidden" id="visa" aria-hidden="true">
-        <span class="visa-top">ENTRY GRANTED</span>
-        <span class="visa-date" id="visa-date"></span>
-        <span class="visa-sub">martintiwari.com.np · stay: as long as HARU tolerates</span>
-      </div>
     </div>
     <p class="hero-foot hand">my corner of the internet. chappal off at the door, mind the cat hair <span class="down">↓</span></p>
   </section>
@@ -416,87 +410,8 @@
     </svg>
   </div>
 
-  <!-- first-visit passport ceremony -->
-  <div class="pp-intro hidden" id="pp-intro" aria-hidden="true">
-    <div class="ppb" id="ppb">
-      <!-- right page of the open book: the visa page -->
-      <div class="ppb-page">
-        <div class="ppg-visahead"><span>भिसा</span><b>VISAS</b></div>
-        <div class="ppg-visabox">
-          <div class="visa ppb-visa hidden" id="ppb-visa">
-            <span class="visa-top">ENTRY GRANTED</span>
-            <span class="visa-date" id="ppb-visa-date"></span>
-            <span class="visa-sub">martintiwari.com.np</span>
-          </div>
-        </div>
-        <p class="hand ppg-visanote">first of many. probably.</p>
-        <span class="ppg-pageno">3</span>
-      </div>
-      <!-- the cover: front is the book cover, back becomes the left page (details) -->
-      <div class="ppb-cover">
-        <div class="cov-front">
-          <span class="cov-np">कुनाको गणतन्त्र</span>
-          <b class="cov-en">REPUBLIC OF THE CORNER</b>
-          <svg class="cov-emblem" viewBox="0 0 100 100" aria-hidden="true">
-            <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2"/>
-            <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4"/>
-            <path d="M28 62 L42 40 L50 52 L60 34 L72 62 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-            <g fill="currentColor">
-              <ellipse cx="50" cy="72" rx="12" ry="5"/>
-              <circle cx="59" cy="64" r="4.5"/>
-              <path d="M56 61 l-1.6 -4 3 1.4 z"/>
-              <path d="M62 61 l1.6 -4 -3 1.4 z"/>
-              <path d="M38 71 q-5 -2 -4 -8 q3 3 6 5 z"/>
-            </g>
-          </svg>
-          <span class="cov-np2">राहदानी</span>
-          <b class="cov-en2">PASSPORT</b>
-          <span class="cov-chip" aria-hidden="true"></span>
-        </div>
-        <div class="cov-back">
-          <div class="ppg-head"><span>राहदानी / PASSPORT</span><b>REPUBLIC OF THE CORNER</b></div>
-          <div class="ppg-body">
-            <div class="ppg-photo">
-              <svg viewBox="0 0 60 72" aria-hidden="true">
-                <circle cx="30" cy="24" r="13" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5 5"/>
-                <path d="M8 68 C 8 46, 52 46, 52 68" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5 5"/>
-              </svg>
-            </div>
-            <div class="ppg-fields">
-              <div><i>surname</i><b>XXXXXXXX</b></div>
-              <div><i>given name</i><b>XXXX XXXXX</b></div>
-              <div><i>type</i><b>V (VISITOR)</b></div>
-              <div><i>nationality</i><b>THE INTERNET</b></div>
-              <div><i>date of issue</i><b id="ppg-date"></b></div>
-              <div><i>date of expiry</i><b>NEVER*</b></div>
-            </div>
-          </div>
-          <div class="ppg-note">*haru permitting</div>
-          <div class="ppg-mrz">P&lt;CRNR&lt;&lt;XXXXXXXX&lt;&lt;VISITOR&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>0000000&lt;&lt;7NPL&lt;&lt;MEOW&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;04</div>
-          <span class="ppg-pageno">2</span>
-        </div>
-      </div>
-    </div>
-    <p class="hand pp-skip">tap anywhere to skip</p>
-  </div>
-
-  <!-- visitor passport -->
-  <button class="passport-tab" id="passport-tab" aria-label="Open your visitor passport">🛂<span>PASSPORT</span></button>
-  <div class="lightbox hidden" id="passport-ov" role="dialog" aria-label="Your visitor passport">
-    <div class="passport-book">
-      <div class="pp-head">
-        <span class="pp-crest">✳</span>
-        <b>REPUBLIC OF THE CORNER</b>
-        <span class="pp-sub">visitor passport · issued by management (the cat)</span>
-      </div>
-      <div class="pp-grid" id="pp-grid"></div>
-      <p class="hand pp-foot" id="pp-foot">collect all 8 stamps. there is no prize. there is honor.</p>
-    </div>
-    <button class="lb-close" id="pp-close" aria-label="Close passport">✕</button>
-  </div>
-
   <div id="toast-root"></div>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=7" defer></script>
+  <script src="src/main.js?v=8" defer></script>
 </body>
 </html>

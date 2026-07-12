@@ -1,15 +1,5 @@
-# ship only the site: index.html, styles.css, src/, assets/
+# ship only the site: index.html, 404.html, styles.css, src/, assets/
+_originals/
 _game-version-backup/
 .claude/
 *.md
-my image.jpg
-My CAT.jpeg
-my anoother imagge.jpeg
-footer.jpg
-graduatioon.jpg
-big sis.jpeg
-small sis.jpeg
-DIET.jpeg
-/signature.png
-my domain and things.png
-WhatsApp Image*.jpeg
