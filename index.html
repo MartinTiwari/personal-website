@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Martin Tiwari, hi internet</title>
+  <meta name="description" content="Martin's corner of the internet. Not a CV. Me, my cat HARU, my family, my music, and a wall you can write on." />
+  <meta property="og:title" content="Martin Tiwari, hi internet" />
+  <meta property="og:description" content="My corner of the internet. Scroll, it's fun down there." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://martintiwari.com.np" />
+  <meta property="og:image" content="assets/martin.jpg" />
+  <meta name="theme-color" content="#FBF6EE" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>👋</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=6" />
+</head>
+<body>
+
+  <!-- letterhead -->
+  <header class="top">
+    <a class="brand" href="#top" aria-label="Martin Tiwari, back to top">
+      <img class="brand-sig" src="assets/signature.png?v=2" alt="" width="52" height="49" />
+      <span class="brand-text">
+        <span class="brand-name">martin<b>tiwari</b></span>
+        <span class="brand-domain">.com.np</span>
+      </span>
+    </a>
+    <span class="top-dot" id="dizzy-star" aria-hidden="true">✳</span>
+    <a class="top-link" href="#internet">find me ↓</a>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="top">
+    <div class="stage">
+      <span class="chip c1" data-speed="-.12">👨‍💻 cs student</span>
+      <span class="chip c2" data-speed=".18">🎧 chronically online</span>
+      <span class="chip c3" data-speed="-.22">🛠️ breaks things professionally</span>
+      <span class="chip c4" data-speed=".1">✌️ hi, you found me</span>
+
+      <div class="hero-note hand">
+        <svg class="note-arrow" viewBox="0 0 90 60" aria-hidden="true">
+          <path d="M6 8 C 30 14, 52 26, 74 46" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M74 46 l-13 -3 M74 46 l1 -13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        this photo goes <em>wayyy</em> back.<br>
+        current version has 20% more of me.<br>
+        rollback in progress: protein up, sugar gone.
+      </div>
+
+      <h1 aria-label="Martin Tiwari">
+        <span class="line line1">MARTIN</span>
+        <img class="hero-cutout" id="me" src="assets/martin-cutout.webp"
+             alt="Martin, hoodie up, mid-smile" width="560" height="735" fetchpriority="high" />
+        <span class="line line2">TIWARI</span>
+      </h1>
+
+      <div class="visa hidden" id="visa" aria-hidden="true">
+        <span class="visa-top">ENTRY GRANTED</span>
+        <span class="visa-date" id="visa-date"></span>
+        <span class="visa-sub">martintiwari.com.np · stay: as long as HARU tolerates</span>
+      </div>
+    </div>
+    <p class="hero-foot hand">my corner of the internet. chappal off at the door, mind the cat hair <span class="down">↓</span></p>
+  </section>
+
+  <!-- ================= HELLO ================= -->
+  <section class="sec">
+    <p class="label">hello hello</p>
+    <p class="big">Namaste. I'm Martin. I make things on the internet, break them,
+      <span class="hl">fix them at 2am</span>, and tell exactly one person about it.</p>
+    <p class="big">This is <em>not</em> a CV. No grades, no "passionate self-starter" nonsense.
+      Just me, <span class="hl hl-2">the places I actually live online</span>,
+      and a couple of secrets hidden in the page.</p>
+    <p class="hand aside">(three secrets. no, that counter was not generated. I counted them myself.)</p>
+  </section>
+
+  <!-- ================= PHOTO WALL ================= -->
+  <section class="sec sec-wide">
+    <p class="label">evidence that I exist</p>
+    <div class="wall">
+      <figure class="pol p1" data-cap="it was raining. went out anyway. ✌️">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/martin-rain.webp" alt="Martin in the rain, hood up, throwing a peace sign" width="640" height="640" loading="lazy" />
+        <figcaption class="hand">it was raining. went out anyway. ✌️</figcaption>
+      </figure>
+      <figure class="pol p2" data-cap="HARU. head of security. wears my birthday hat better than me.">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/haru.webp" alt="HARU the cat wearing a shiny birthday hat, deeply unimpressed" width="640" height="853" loading="lazy" />
+        <figcaption class="hand">HARU. head of security. wears my birthday hat better than me.</figcaption>
+      </figure>
+      <figure class="pol p3" data-cap="graduation day. mom blinked. we're framing it anyway.">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/graduation.webp" alt="Martin at graduation with his mom, who is blinking" width="640" height="880" loading="lazy" />
+        <figcaption class="hand">graduation day. mom blinked. we're framing it anyway.</figcaption>
+      </figure>
+      <figure class="pol p4" data-cap="the diet era. the salad is new. eating it in front of anime is not.">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/diet.webp" alt="A fruit salad next to a laptop playing anime at a rooftop café" width="640" height="861" loading="lazy" />
+        <figcaption class="hand">the diet era. the salad is new. eating it in front of anime is not.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= FAMILY ================= -->
+  <section class="sec sec-wide">
+    <p class="label">the family unit</p>
+    <h2 class="h2">shipped with the full cast.</h2>
+    <p class="big cat-line" id="cat-line">first, the cat. HARU is a
+      <span class="scratch-target" id="scratch-target">calm, polite, extremely well-behaved</span>
+      young lady.<span class="hand cat-edit hidden" id="cat-edit"> menace. she scratched out the lie herself, as you just saw.</span>
+    </p>
+    <div class="wall">
+      <figure class="pol f1" data-cap="big sister. we toast to surviving each other. annually.">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/sis-big.webp" alt="Martin and his big sister raising a toast at a night event" width="640" height="996" loading="lazy" />
+        <figcaption class="hand">big sister. we toast to surviving each other. annually.</figcaption>
+      </figure>
+      <figure class="pol f2" data-cap="little sister. the cans are props. she does NOT drink. the dramatic pose is genetic. (the arm is mine, I was cropped for legal reasons.)">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/sis-small.webp" alt="Martin's little sister striking a pose with two soda cans as props" width="560" height="1069" loading="lazy" />
+        <figcaption class="hand">little sister. the cans are props. she does NOT drink. the pose is genetic. (the arm is mine, I got cropped for legal reasons.)</figcaption>
+      </figure>
+      <figure class="pol f3 pol-empty" data-cap="dad. zero confirmed photos. too busy running the empire: chemicals, drinking water, and probably the plastic bag in your kitchen. bigfoot has better paparazzi coverage.">
+        <span class="tape" aria-hidden="true"></span>
+        <div class="ghost-frame" aria-hidden="true">
+          <svg viewBox="0 0 200 240">
+            <circle cx="100" cy="78" r="42" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="8 8"/>
+            <path d="M30 225 C 30 160, 170 160, 170 225" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="8 8"/>
+            <text x="100" y="94" text-anchor="middle" font-size="44" fill="currentColor" font-family="Caveat, cursive">?</text>
+          </svg>
+        </div>
+        <figcaption class="hand">dad. zero confirmed photos. too busy running the empire: chemicals, drinking water, and probably the plastic bag in your kitchen. bigfoot has better paparazzi coverage.</figcaption>
+      </figure>
+
+      <figure class="pol f4 pol-gf" id="gf-card" tabindex="0" role="button"
+              aria-label="A permanently blurred photo labelled: the girlfriend file. Tapping it is futile.">
+        <span class="tape" aria-hidden="true"></span>
+        <span class="gf-stamp" aria-hidden="true">SEALED</span>
+        <div class="gf-frame">
+          <svg class="gf-art" viewBox="0 0 200 240" aria-hidden="true">
+            <defs>
+              <linearGradient id="gfsky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffd9a8"/>
+                <stop offset=".55" stop-color="#ff9d7a"/>
+                <stop offset="1" stop-color="#c96f8e"/>
+              </linearGradient>
+            </defs>
+            <rect width="200" height="240" fill="url(#gfsky)"/>
+            <circle cx="100" cy="64" r="26" fill="#fff3c4" opacity=".9"/>
+            <rect y="198" width="200" height="42" fill="#8a4a63"/>
+            <g fill="#221E19">
+              <circle cx="68" cy="116" r="17"/>
+              <path d="M43 240 C43 166 93 166 93 240 Z"/>
+            </g>
+            <g fill="#2c2620">
+              <circle cx="130" cy="112" r="15"/>
+              <path d="M112 132 C104 118 118 96 130 97 C142 96 156 118 148 132 Z"/>
+              <path d="M107 240 C107 168 153 168 153 240 Z"/>
+            </g>
+            <path d="M93 178 C97 172 103 172 107 178" stroke="#221E19" stroke-width="4" fill="none" stroke-linecap="round"/>
+          </svg>
+          <span class="gf-veil hand" id="gf-veil">tap to unblur 👀</span>
+        </div>
+        <figcaption class="hand" id="gf-cap">the girlfriend file. above your clearance level.</figcaption>
+      </figure>
+    </div>
+    <p class="hand aside center">yes, mom's in the graduation one up there. blinking. she counts double.</p>
+  </section>
+
+  <!-- ================= THE LORE ================= -->
+  <section class="sec sec-wide">
+    <p class="label">the lore</p>
+    <h2 class="h2">a short story.</h2>
+    <div class="wall">
+      <figure class="pol l1 pol-empty">
+        <span class="tape" aria-hidden="true"></span>
+        <div class="lore-frame">
+          <img src="assets/kids-cutout.webp" alt="Young Martin in a flat cap looking unimpressed, next to his little sister in a pink hoodie giving side-eye" width="560" height="474" loading="lazy" />
+        </div>
+        <figcaption class="hand">ch. 1: protagonist spawns. flat cap era, already done with everything. sidekick shipped separately. (yes, the side-eye is the same little sister.)</figcaption>
+      </figure>
+      <figure class="pol l2" data-cap="ch. 2: discovers roadside chiya. permanent stat buff. cafés have been coping ever since.">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/chiya.webp" alt="Martin sipping tea at a roadside stall" width="640" height="853" loading="lazy" />
+        <figcaption class="hand">ch. 2: discovers roadside chiya. permanent stat buff. cafés have been coping ever since.</figcaption>
+      </figure>
+      <figure class="pol l3" data-cap="ch. 3: assembles the council. weekly summits above the city. agenda: nothing. attendance: mandatory.">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/rooftop.webp" alt="Martin and his friends toasting on a rooftop overlooking Kathmandu hills" width="640" height="672" loading="lazy" />
+        <figcaption class="hand">ch. 3: assembles the council. weekly summits above the city. agenda: nothing. attendance: mandatory.</figcaption>
+      </figure>
+      <div class="note lore-note" style="--r:-2deg">ch. 4: builds this website.<br>you're standing in it.<br>la, you're all caught up. 📍</div>
+    </div>
+  </section>
+
+  <!-- ================= SOCIALS ================= -->
+  <section class="sec sec-wide" id="internet">
+    <p class="label">find me on the internet</p>
+    <h2 class="h2">I basically live here ↓</h2>
+    <div class="social-grid">
+      <a class="social s-ig" href="https://www.instagram.com/martin_tiwari/" target="_blank" rel="noopener">
+        <span class="s-name">instagram</span><span class="s-handle">@martin_tiwari</span>
+        <span class="s-note">where I pretend to have a life</span><span class="s-arrow">↗</span>
+      </a>
+      <a class="social s-gh" href="https://github.com/MartinTiwari" target="_blank" rel="noopener">
+        <span class="s-name">github</span><span class="s-handle">@MartinTiwari</span>
+        <span class="s-note">where the 2am commits live</span><span class="s-arrow">↗</span>
+      </a>
+      <a class="social s-fb" href="https://www.facebook.com/tominarii" target="_blank" rel="noopener">
+        <span class="s-name">facebook</span><span class="s-handle">tominarii</span>
+        <span class="s-note">for the relatives, honestly</span><span class="s-arrow">↗</span>
+      </a>
+      <a class="social s-mail s-wide" href="mailto:martintiwari0@gmail.com">
+        <span class="s-name">email</span>
+        <span class="s-mid"><span class="s-handle">martintiwari0@gmail.com</span><span class="s-note">the fastest way in. replies guaranteed*&nbsp;&nbsp;<small>*terms apply</small></span></span>
+        <span class="s-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= CLASSIFIED + ID ================= -->
+  <section class="sec sec-wide">
+    <p class="label">the classified file</p>
+    <h2 class="h2">need-to-know basis.</h2>
+    <div class="classified-grid">
+      <div class="dossier-wrap">
+        <span class="stamp" aria-hidden="true">CLASSIFIED</span>
+        <span class="paperclip" aria-hidden="true"></span>
+        <div class="dossier">
+          <div class="row"><span class="k">full name</span><span class="v">Martin Tiwari. that one's free.</span></div>
+          <div class="row"><span class="k">annual event</span><span class="v">ships every december. the whole world puts up lights for the launch. you do the math.</span></div>
+          <div class="row"><span class="k">phone number</span><button class="v redacted" data-key="phone">██████████ <span class="tap-hint">(tap)</span></button></div>
+          <div class="row"><span class="k">home address</span><button class="v redacted" data-key="addr">████████████ <span class="tap-hint">(tap)</span></button></div>
+          <div class="row"><span class="k">boss</span><span class="v">HARU. complaints go through her. she ignores them.</span></div>
+          <div class="row"><span class="k">family business</span><span class="v">the water you drink, the bag you carry, the chemicals you can't pronounce. we're everywhere. you're welcome.</span></div>
+          <div class="row"><span class="k">location</span><span class="v">earth, probably. good momos within walking distance.</span></div>
+          <div class="row"><span class="k">timezone</span><span class="v">NPT, +5:45. round offsets are for other countries. <span class="npt-live hidden" id="npt-live">it is <b id="npt-clock"></b> in kathmandu right now.</span></span></div>
+        </div>
+      </div>
+
+      <div class="badge-scene" aria-label="Martin's ID card, hanging like a lanyard badge">
+        <div class="badge-swing" id="badge">
+          <div class="strap"></div>
+          <div class="badge-card">
+            <div class="badge-clip"></div>
+            <div class="badge-head">TIWARI CORP.<span>visitor? no. resident.</span></div>
+            <img class="badge-photo" src="assets/martin-rain.webp" alt="" width="640" height="640" />
+            <div class="badge-name">MARTIN TIWARI</div>
+            <div class="badge-role">director of ctrl+z</div>
+            <div class="badge-meta">
+              <span>ACCESS LEVEL: largely unsupervised</span>
+              <span>ISSUED: at birth · renews late dec</span>
+            </div>
+            <img class="badge-sig" src="assets/signature.png?v=2" alt="Martin's signature" width="120" height="113" />
+            <div class="badge-bar" aria-hidden="true"></div>
+          </div>
+        </div>
+        <p class="hand badge-hint">real id. definitely legal. tug it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RAPID FIRE ================= -->
+  <section class="sec sec-wide">
+    <p class="label">rapid fire, no context</p>
+    <div class="strip-wrap">
+      <div class="strip" id="strip">
+        <div class="card"><span class="card-k">reply speed</span><span class="card-v">instant, or 3 business days. no in-between 📬</span></div>
+        <div class="card"><span class="card-k">browser tabs</span><span class="card-v">47 open. all essential. 🌐</span></div>
+        <div class="card"><span class="card-k">currently building</span><span class="card-v">project #2. it's a secret 🤫</span></div><!-- EDIT ME -->
+        <div class="card"><span class="card-k">sleep schedule</span><span class="card-v">negotiable with the sun 🌙</span></div>
+        <div class="card"><span class="card-k">gpa</span><span class="card-v">not on this website 😌</span></div>
+        <div class="card"><span class="card-k">year, per hamro patro</span><span class="card-v">2083. I live in the future 🇳🇵</span></div>
+        <div class="card"><span class="card-k">wallet status</span><span class="card-v">eSewa says: insufficient balance 💸</span></div>
+        <div class="card"><span class="card-k">personal chef</span><span class="card-v">the foodmandu rider. my brother in arms 🛵</span></div>
+        <div class="card"><span class="card-k">childhood superpower</span><span class="card-v">homework by candlelight, load-shedding era 🔦</span></div>
+        <div class="card"><span class="card-k">keyboard volume</span><span class="card-v">louder than necessary ⌨️</span></div>
+        <div class="card"><span class="card-k">this website</span><span class="card-v">handmade. zero frameworks. 🛠️</span></div>
+      </div>
+      <p class="hand swipe-hint">swipe la, don't be shy →</p>
+    </div>
+  </section>
+
+  <!-- ================= MUSIC ================= -->
+  <section class="sec" id="music">
+    <p class="label">the soundtrack</p>
+    <h2 class="h2">on repeat. on principle.</h2>
+
+    <!-- track 00 lives outside the chart. national anthems don't compete. -->
+    <div class="anthem" id="anthem">
+      <button class="anthem-play" id="anthem-btn" aria-label="Play the national anthem of Nepal">▶</button>
+      <div class="anthem-info">
+        <span class="anthem-tag">TRACK 00 · NOT RANKED. ABOVE RANKING.</span>
+        <b>सयौं थुँगा फूलका</b>
+        <span class="anthem-sub hand">plays right here on my website, as it should 🇳🇵</span>
+      </div>
+      <div class="anthem-embed hidden" id="anthem-embed"></div>
+    </div>
+
+    <div class="player">
+      <div class="player-head">
+        <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <span class="player-title">martin's rotation</span>
+        <span class="player-src">YT MUSIC</span>
+      </div>
+      <div id="tracks">
+        <!-- fallback list, replaced automatically once the playlist sync is configured in src/main.js -->
+        <a class="track" href="https://music.youtube.com/search?q=EDIT+ME" target="_blank" rel="noopener">
+          <span class="t-num">01</span><span class="t-body"><b>song title goes here</b><span>artist name</span></span><span class="t-go">▶</span>
+        </a>
+        <a class="track" href="https://music.youtube.com/search?q=EDIT+ME" target="_blank" rel="noopener">
+          <span class="t-num">02</span><span class="t-body"><b>the 2am coding one</b><span>artist name</span></span><span class="t-go">▶</span>
+        </a>
+        <a class="track" href="https://music.youtube.com/search?q=EDIT+ME" target="_blank" rel="noopener">
+          <span class="t-num">03</span><span class="t-body"><b>the one that survived shuffle</b><span>artist name</span></span><span class="t-go">▶</span>
+        </a>
+        <a class="track" href="https://music.youtube.com/search?q=EDIT+ME" target="_blank" rel="noopener">
+          <span class="t-num">04</span><span class="t-body"><b>gym playlist opener</b><span>artist name</span></span><span class="t-go">▶</span>
+        </a>
+      </div>
+    </div>
+    <p class="hand aside">synced from my actual playlist. judging is allowed. changing it is not.</p>
+  </section>
+
+  <!-- ================= LEAVE YOUR MARK ================= -->
+  <section class="sec sec-wide" id="mark">
+    <p class="label">leave your mark</p>
+    <h2 class="h2">this wall is yours.</h2>
+    <div class="mark-grid">
+
+      <div class="board-box">
+        <div class="board-head">
+          <span class="board-title hand">draw something. I dare you.</span>
+          <div class="board-tools">
+            <button class="dot" data-color="#221E19" style="background:#221E19" aria-label="Ink pen"></button>
+            <button class="dot" data-color="#E8532F" style="background:#E8532F" aria-label="Tomato pen"></button>
+            <button class="dot" data-color="#2B5BE2" style="background:#2B5BE2" aria-label="Blue pen"></button>
+            <button class="dot" data-color="#1a9e55" style="background:#1a9e55" aria-label="Green pen"></button>
+            <button class="tool-btn" id="board-clear">wipe</button>
+            <button class="tool-btn" id="board-save">keep it</button>
+          </div>
+        </div>
+        <canvas id="board" aria-label="Drawing whiteboard"></canvas>
+      </div>
+
+      <div class="notes-box">
+        <p class="notes-lead">got something to say to me? say it here.
+          <span class="hand">no name, no login, no consequences. it lands in my secret spreadsheet, anonymously.</span></p>
+        <form id="note-form">
+          <textarea id="note-text" maxlength="280" rows="4" placeholder="type it. I can't see who you are. saachi, promise." required></textarea>
+          <input type="text" id="note-trap" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button class="pin-btn" type="submit">📌 la, pin it</button>
+        </form>
+        <div class="notes-wall" id="notes-wall">
+          <div class="note" style="--r:-2deg;background:var(--marker)">be nice. or at least be funny.<span class="hand">, management</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= OUTRO ================= -->
+  <section class="sec outro">
+    <p class="label">ok, that's me</p>
+    <h2 class="outro-big">k chha?</h2>
+    <p class="hand aside center">that's "what's up" for the non-nepali crowd. this is not a CV, so no cover letters. DMs are open:</p>
+    <a class="mega-mail" href="https://www.instagram.com/martin_tiwari/" target="_blank" rel="noopener">@martin_tiwari →</a>
+    <p class="hand aside center">feeling official? fine: <a class="outro-mail" href="mailto:martintiwari0@gmail.com">martintiwari0@gmail.com</a></p>
+  </section>
+
+  <footer class="foot">
+    <img class="peek" id="peek" src="assets/martin-peek.webp" alt="Martin peeking over the bottom of the page" width="420" height="425" loading="lazy" />
+    <div class="foot-row">
+      <span class="foot-signed">
+        <img src="assets/signature.png?v=2" alt="signed, Martin" width="46" height="43" />
+        <span>© <span id="year">2026</span> · martintiwari.com.np · made in nepal 🇳🇵 · fueled by momos and one specific playlist</span>
+      </span>
+      <span class="hand foot-hint">psst… ↑↑↓↓←→←→BA</span>
+    </div>
+  </footer>
+
+  <!-- lightbox -->
+  <div class="lightbox hidden" id="lightbox" role="dialog" aria-label="Photo viewer">
+    <figure class="lb-frame">
+      <span class="tape" aria-hidden="true"></span>
+      <img id="lb-img" src="" alt="" />
+      <figcaption class="hand" id="lb-cap"></figcaption>
+    </figure>
+    <button class="lb-close" id="lb-close" aria-label="Close photo">✕</button>
+  </div>
+
+  <!-- HARU.exe roams the page -->
+  <div id="haru-pet" aria-hidden="true">
+    <span class="pet-bubble hand hidden" id="pet-bubble">mrrp.</span>
+    <svg id="pet-svg" viewBox="0 0 120 64" role="img" aria-label="A tiny cat walking across the page">
+      <g class="pet-body" fill="#DE8434">
+        <path class="pet-tail" d="M16 42 C 4 38 0 22 9 12 C 5 24 10 34 20 37 Z"/>
+        <ellipse cx="52" cy="42" rx="30" ry="13"/>
+        <path d="M70 40 C 72 28 82 24 88 28 L88 40 Z"/>
+        <circle cx="88" cy="20" r="12"/>
+        <path d="M79 12 L75 0 L86 5 Z"/>
+        <path d="M94 10 L100 -1 L88 4 Z"/>
+        <path d="M40 32 C 46 28 58 28 64 32" stroke="#c76f24" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle class="pet-eye" cx="92" cy="18" r="1.9" fill="#221E19"/>
+        <path d="M96 25 c2 1.4 4 1.4 6 0" stroke="#221E19" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        <path d="M98 21 l8 -1.5 M98 23 l8 1.5" stroke="#221E19" stroke-width="1.2" stroke-linecap="round"/>
+      </g>
+      <g fill="#DE8434">
+        <g class="pet-legs-a"><rect x="30" y="46" width="6" height="16" rx="3"/><rect x="66" y="46" width="6" height="16" rx="3"/></g>
+        <g class="pet-legs-b"><rect x="42" y="46" width="6" height="16" rx="3"/><rect x="78" y="46" width="6" height="16" rx="3"/></g>
+      </g>
+      <path class="pet-eye-closed" d="M89 18 q3 2.4 6 0" stroke="#221E19" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <!-- first-visit passport ceremony -->
+  <div class="pp-intro hidden" id="pp-intro" aria-hidden="true">
+    <div class="ppb" id="ppb">
+      <!-- right page of the open book: the visa page -->
+      <div class="ppb-page">
+        <div class="ppg-visahead"><span>भिसा</span><b>VISAS</b></div>
+        <div class="ppg-visabox">
+          <div class="visa ppb-visa hidden" id="ppb-visa">
+            <span class="visa-top">ENTRY GRANTED</span>
+            <span class="visa-date" id="ppb-visa-date"></span>
+            <span class="visa-sub">martintiwari.com.np</span>
+          </div>
+        </div>
+        <p class="hand ppg-visanote">first of many. probably.</p>
+        <span class="ppg-pageno">3</span>
+      </div>
+      <!-- the cover: front is the book cover, back becomes the left page (details) -->
+      <div class="ppb-cover">
+        <div class="cov-front">
+          <span class="cov-np">कुनाको गणतन्त्र</span>
+          <b class="cov-en">REPUBLIC OF THE CORNER</b>
+          <svg class="cov-emblem" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4"/>
+            <path d="M28 62 L42 40 L50 52 L60 34 L72 62 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <g fill="currentColor">
+              <ellipse cx="50" cy="72" rx="12" ry="5"/>
+              <circle cx="59" cy="64" r="4.5"/>
+              <path d="M56 61 l-1.6 -4 3 1.4 z"/>
+              <path d="M62 61 l1.6 -4 -3 1.4 z"/>
+              <path d="M38 71 q-5 -2 -4 -8 q3 3 6 5 z"/>
+            </g>
+          </svg>
+          <span class="cov-np2">राहदानी</span>
+          <b class="cov-en2">PASSPORT</b>
+          <span class="cov-chip" aria-hidden="true"></span>
+        </div>
+        <div class="cov-back">
+          <div class="ppg-head"><span>राहदानी / PASSPORT</span><b>REPUBLIC OF THE CORNER</b></div>
+          <div class="ppg-body">
+            <div class="ppg-photo">
+              <svg viewBox="0 0 60 72" aria-hidden="true">
+                <circle cx="30" cy="24" r="13" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5 5"/>
+                <path d="M8 68 C 8 46, 52 46, 52 68" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5 5"/>
+              </svg>
+            </div>
+            <div class="ppg-fields">
+              <div><i>surname</i><b>XXXXXXXX</b></div>
+              <div><i>given name</i><b>XXXX XXXXX</b></div>
+              <div><i>type</i><b>V (VISITOR)</b></div>
+              <div><i>nationality</i><b>THE INTERNET</b></div>
+              <div><i>date of issue</i><b id="ppg-date"></b></div>
+              <div><i>date of expiry</i><b>NEVER*</b></div>
+            </div>
+          </div>
+          <div class="ppg-note">*haru permitting</div>
+          <div class="ppg-mrz">P&lt;CRNR&lt;&lt;XXXXXXXX&lt;&lt;VISITOR&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>0000000&lt;&lt;7NPL&lt;&lt;MEOW&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;04</div>
+          <span class="ppg-pageno">2</span>
+        </div>
+      </div>
+    </div>
+    <p class="hand pp-skip">tap anywhere to skip</p>
+  </div>
+
+  <!-- visitor passport -->
+  <button class="passport-tab" id="passport-tab" aria-label="Open your visitor passport">🛂<span>PASSPORT</span></button>
+  <div class="lightbox hidden" id="passport-ov" role="dialog" aria-label="Your visitor passport">
+    <div class="passport-book">
+      <div class="pp-head">
+        <span class="pp-crest">✳</span>
+        <b>REPUBLIC OF THE CORNER</b>
+        <span class="pp-sub">visitor passport · issued by management (the cat)</span>
+      </div>
+      <div class="pp-grid" id="pp-grid"></div>
+      <p class="hand pp-foot" id="pp-foot">collect all 8 stamps. there is no prize. there is honor.</p>
+    </div>
+    <button class="lb-close" id="pp-close" aria-label="Close passport">✕</button>
+  </div>
+
+  <div id="toast-root"></div>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
+  <script src="src/main.js?v=7" defer></script>
+</body>
+</html>
