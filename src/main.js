@@ -443,14 +443,25 @@
         runner.classList.remove('pet-flip');
         runner.classList.add('scratch-cat');
         catLine.appendChild(runner);
-        requestAnimationFrame(() => runner.classList.add('dash'));
+
+        const w = catLine.getBoundingClientRect().width;
+        const runDuration = 2200; // slow, readable trot, not a blur
+        runner.animate([
+          { transform: 'translateX(-90px)', offset: 0 },
+          { transform: `translateX(${w * .38}px)`, offset: .45 },
+          { transform: `translateX(${w * .42}px)`, offset: .55 },
+          { transform: `translateX(${w + 20}px)`, offset: 1 },
+        ], { duration: runDuration, easing: 'linear', fill: 'forwards' });
+
         setTimeout(() => {
           $('#scratch-target').classList.add('scratched');
-        }, 750);
+        }, runDuration * .5);
         setTimeout(() => {
-          $('#cat-edit').classList.remove('hidden');
+          const editEl = $('#cat-edit');
+          editEl.classList.remove('hidden');
+          requestAnimationFrame(() => editEl.classList.add('show'));
           runner.remove();
-        }, 1600);
+        }, runDuration + 300);
       }, 1600);
     }, { threshold: .35 }).observe(catLine);
   } else if (catLine && reduced) {
@@ -662,6 +673,14 @@
       return 'day';
     };
     let px = -90, ptarget = 140, pspeed = 42, presting = false, plast = performance.now();
+    let wasWalking = false, wasFlipped = false;
+
+    // leg/body trot cadence scales with speed, so a fast dash actually looks fast instead of gliding
+    function setSpeed(v) {
+      pspeed = v;
+      pet.style.setProperty('--pet-step', `${(.32 * (42 / v)).toFixed(3)}s`);
+    }
+    setSpeed(pspeed);
 
     function speak(text, ms = 1700) {
       petBubble.textContent = text;
@@ -671,6 +690,7 @@
     function petRest() {
       presting = true;
       pet.classList.remove('walking');
+      wasWalking = false;
       const mode = petMode();
       pet.classList.toggle('sleeping', mode === 'sleep');
       const wait = mode === 'sleep' ? 45000
@@ -680,7 +700,7 @@
         const m = petMode();
         pet.classList.toggle('sleeping', m === 'sleep');
         if (m === 'sleep') return petRest(); // keep napping, recheck later
-        pspeed = m === 'zoomies' ? 200 : 42;
+        setSpeed(m === 'zoomies' ? 200 : 42);
         presting = false;
         ptarget = 10 + Math.random() * roam();
       }, wait);
@@ -691,8 +711,9 @@
       if (!presting) {
         const d = ptarget - px;
         px += Math.sign(d) * Math.min(Math.abs(d), pspeed * dt);
-        petSvg.classList.toggle('pet-flip', d < 0);
-        pet.classList.add('walking');
+        const flipped = d < 0;
+        if (flipped !== wasFlipped) { petSvg.classList.toggle('pet-flip', flipped); wasFlipped = flipped; }
+        if (!wasWalking) { pet.classList.add('walking'); wasWalking = true; }
         if (Math.abs(d) < 2) petRest();
         pet.style.transform = `translateX(${px}px)`;
       }
@@ -712,7 +733,7 @@
       }
       speak(petMode() === 'zoomies' ? "it's 5pm. I don't make the rules." : meows[Math.floor(Math.random() * meows.length)]);
       presting = false;
-      pspeed = 280;
+      setSpeed(280);
       ptarget = 10 + Math.random() * roam();
     });
 

@@ -293,20 +293,15 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
     transparent 24px 34px);
   border-radius:2px;
 }
-.cat-edit{color:var(--red);font-size:.85em}
+.cat-edit{color:var(--red);font-size:.85em;opacity:0;transition:opacity .5s ease}
+.cat-edit.show{opacity:1}
 .scratch-cat{
-  position:absolute;bottom:-14px;left:-90px;width:64px;pointer-events:none;z-index:3;
+  position:absolute;bottom:-14px;left:0;width:64px;pointer-events:none;z-index:3;
+  will-change:transform;
 }
-.scratch-cat.dash{animation:catDash 1.5s linear forwards}
-.scratch-cat .pet-legs-a{animation:step .18s ease-in-out infinite alternate}
-.scratch-cat .pet-legs-b{animation:step .18s ease-in-out infinite alternate-reverse}
-.scratch-cat .pet-body{animation:trot .18s ease-in-out infinite alternate}
-@keyframes catDash{
-  0%{left:-90px}
-  45%{left:38%}
-  55%{left:42%}
-  100%{left:calc(100% + 20px)}
-}
+.scratch-cat .pet-legs-a{animation:step .26s ease-in-out infinite alternate}
+.scratch-cat .pet-legs-b{animation:step .26s ease-in-out infinite alternate-reverse}
+.scratch-cat .pet-body{animation:trot .26s ease-in-out infinite alternate}
 
 /* ================= anthem: track 00, outside the charts ================= */
 .anthem{
@@ -346,10 +341,10 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 .pet-tail{transform-origin:8px 38px;animation:tailflick 3.2s ease-in-out infinite}
 @keyframes tailflick{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
 .pet-legs-a,.pet-legs-b{transform-origin:center 52px}
-.walking .pet-legs-a{animation:step .32s ease-in-out infinite alternate}
-.walking .pet-legs-b{animation:step .32s ease-in-out infinite alternate-reverse}
+.walking .pet-legs-a{animation:step var(--pet-step,.32s) ease-in-out infinite alternate}
+.walking .pet-legs-b{animation:step var(--pet-step,.32s) ease-in-out infinite alternate-reverse}
 @keyframes step{from{transform:rotate(9deg)}to{transform:rotate(-9deg)}}
-.walking .pet-body{animation:trot .32s ease-in-out infinite alternate}
+.walking .pet-body{animation:trot var(--pet-step,.32s) ease-in-out infinite alternate}
 @keyframes trot{to{transform:translateY(-1.5px)}}
 .pet-bubble{
   position:absolute;left:50%;top:-6px;translate:-50% -100%;width:max-content;
