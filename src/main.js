@@ -7,11 +7,8 @@
   /* ---------- toast + confetti ---------- */
   function toast(html) {
     const root = $('#toast-root');
-    // one toast at a time: the old one leaves as the new one arrives
-    [...root.children].forEach(old => {
-      old.classList.add('bye');
-      setTimeout(() => old.remove(), 250);
-    });
+    // one toast at a time, full stop: old one is gone before the new one exists
+    root.replaceChildren();
     const t = document.createElement('div');
     t.className = 'toast';
     t.innerHTML = html;
@@ -508,6 +505,68 @@
       toast('<b>secret #3.</b> you made the star dizzy. that’s all three. we should talk.');
     }
   });
+
+  /* ---------- the sighting: dad photo cinematic reveal (scroll-scrubbed) ---------- */
+  const sightingStage = $('#sighting-stage');
+  const sightingPhoto = $('#sighting-photo');
+  const sightingHeadline = $('#sighting-headline');
+  if (sightingStage && sightingPhoto && sightingHeadline) {
+    const line = 'one (1) confirmed sighting.';
+    const highlighted = 'one <span class="hl">(1)</span> confirmed sighting.';
+    let typed = false;
+    const type = () => {
+      if (typed) return;
+      typed = true;
+      sightingHeadline.classList.add('typing');
+      let i = 0;
+      const step = () => {
+        sightingHeadline.textContent = line.slice(0, i);
+        i++;
+        if (i <= line.length) setTimeout(step, 32);
+        else {
+          sightingHeadline.classList.remove('typing');
+          sightingHeadline.innerHTML = highlighted;
+        }
+      };
+      step();
+    };
+    if (reduced) {
+      sightingStage.style.setProperty('--p', 1);
+      sightingHeadline.innerHTML = highlighted;
+    } else {
+      let shift = 0;
+      const computeShift = () => {
+        if (window.innerWidth <= 900) { shift = 0; return; }
+        const centerX = sightingPhoto.offsetLeft + sightingPhoto.offsetWidth / 2;
+        shift = (sightingStage.clientWidth / 2) - centerX;
+      };
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const rect = sightingStage.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const start = vh * 0.88;
+        const end = vh * 0.22;
+        const p = Math.min(1, Math.max(0, (start - rect.top) / (start - end)));
+        sightingStage.style.setProperty('--p', p);
+        sightingStage.style.setProperty('--shift', shift + 'px');
+        if (p > 0.82) type();
+      };
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      };
+      computeShift();
+      update();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { computeShift(); update(); }, 150);
+      });
+    }
+  }
 
   /* ---------- footer peek ---------- */
   const peek = $('#peek');

@@ -194,6 +194,54 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 }
 .ghost-frame svg{width:70%;height:auto;opacity:.85}
 
+/* ================= the sighting: dad photo cinematic reveal (scroll-scrubbed) ================= */
+.sighting-sec{display:flex;flex-direction:column;align-items:center}
+.sighting-stage{
+  --p:0;--shift:0px;position:relative;
+  display:grid;grid-template-columns:minmax(200px,280px) minmax(0,1fr);
+  align-items:center;justify-items:start;text-align:left;
+  gap:clamp(40px,7vw,90px);
+  min-height:66vh;width:100%;padding:30px 0 10px;
+}
+.sighting-photo{
+  position:relative;background:#fff;padding:12px 12px 10px;border-radius:2px;
+  width:min(280px,72vw);box-shadow:0 20px 40px rgba(34,30,25,.24),0 5px 12px rgba(34,30,25,.13);
+  transform:
+    translateX(calc(var(--shift) * (1 - var(--p))))
+    scale(calc(1 + (1 - var(--p)) * .65))
+    rotate(calc(-4deg * var(--p)));
+  will-change:transform;
+}
+.sighting-photo img{width:100%;height:auto;display:block;border-radius:1px;filter:saturate(1.06) contrast(1.03)}
+.sighting-photo .tape{transform:translateX(-50%) rotate(-2deg);background:rgba(255,224,130,.75)}
+.sighting-photo figcaption{
+  font-size:17px;text-align:center;padding:9px 4px 2px;color:var(--ink-soft);
+  opacity:clamp(0,calc((var(--p) - .55) * 2.3),1);
+}
+.sighting-photo .stamp{opacity:clamp(0,calc((var(--p) - .7) * 3.4),.85)}
+.sighting-copy{
+  opacity:clamp(0,calc((var(--p) - .4) * 1.7),1);
+  transform:translateY(calc((1 - var(--p)) * 18px));
+  max-width:640px;
+}
+.sighting-copy .label{margin-bottom:12px}
+.sighting-headline{margin-bottom:18px;min-height:1.1em}
+.sighting-headline .hl{white-space:nowrap}
+.sighting-headline.typing::after{
+  content:"";display:inline-block;width:.06em;height:.85em;background:var(--ink);
+  margin-left:.05em;vertical-align:text-bottom;animation:caretBlink .8s step-end infinite;
+}
+@keyframes caretBlink{50%{opacity:0}}
+.sighting-body{
+  font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.55;
+  color:var(--ink);max-width:44ch;margin:0 0 16px;letter-spacing:-.005em;
+}
+.sighting-small{
+  font-family:var(--serif);font-weight:500;font-size:15.5px;line-height:1.5;
+  color:var(--ink-soft);max-width:42ch;margin:0 0 16px;
+}
+.sighting-log{font-size:19px}
+
 /* the girlfriend polaroid: permanently blurred. tapping is futile. */
 .pol-gf{cursor:pointer}
 .f4{rotate:2.5deg;margin-top:30px}
@@ -688,6 +736,13 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   .classified-grid{grid-template-columns:1fr}
   .badge-scene{padding-top:26px}
   .mark-grid{grid-template-columns:1fr}
+  .sighting-stage{
+    grid-template-columns:1fr;justify-items:center;text-align:center;
+    gap:28px;min-height:56vh;
+  }
+  .sighting-photo{width:min(240px,68vw);transform:scale(calc(1 + (1 - var(--p)) * .5)) rotate(calc(-4deg * var(--p)))}
+  .sighting-copy{max-width:440px}
+  .sighting-body,.sighting-small{max-width:none;margin-left:auto;margin-right:auto}
 }
 @media (max-width:640px){
   .line{font-size:22vw}

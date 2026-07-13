@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=12" />
 </head>
 <body>
 
@@ -95,6 +95,11 @@
         <img src="assets/diet.webp" alt="A fruit salad next to a laptop playing anime at a rooftop café" width="640" height="861" loading="lazy" />
         <figcaption class="hand">the diet era. the salad is new. eating it in front of anime is not.</figcaption>
       </figure>
+      <figure class="pol p5" data-cap="flexing in the mirror. that second hand in frame is not mine. I have questions too.">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/flex-hands.webp" alt="Martin flexing in a mirror selfie while an unidentified hand throws a peace sign in the foreground" width="640" height="640" loading="lazy" />
+        <figcaption class="hand">flexing in the mirror. that second hand in frame is not mine. I have questions too.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -164,29 +169,47 @@
     <p class="hand aside center">yes, mom's in the graduation one up there. blinking. she counts double.</p>
   </section>
 
-  <!-- ================= THE LORE ================= -->
-  <section class="sec sec-wide">
-    <p class="label">the lore</p>
-    <h2 class="h2">a short story.</h2>
-    <div class="wall">
-      <figure class="pol l1 pol-empty">
+  <!-- ================= THE SIGHTING ================= -->
+  <section class="sec sec-wide sighting-sec">
+    <p class="label">cryptid update</p>
+    <div class="sighting-stage" id="sighting-stage">
+      <figure class="sighting-photo" id="sighting-photo">
+        <img src="assets/dad-topi.webp" alt="Martin's father placing a traditional topi on Martin's head during Tihar, both wearing marigold garlands" width="720" height="1234" loading="lazy" />
         <span class="tape" aria-hidden="true"></span>
-        <div class="lore-frame">
-          <img src="assets/kids-cutout.webp" alt="Young Martin in a flat cap looking unimpressed, next to his little sister in a pink hoodie giving side-eye" width="560" height="474" loading="lazy" />
-        </div>
-        <figcaption class="hand">ch. 1: protagonist spawns. flat cap era, already done with everything. sidekick shipped separately. (yes, the side-eye is the same little sister.)</figcaption>
+        <span class="stamp" aria-hidden="true">CASE CLOSED</span>
+        <figcaption class="hand">the topi ceremony. he put it on himself.</figcaption>
       </figure>
-      <figure class="pol l2" data-cap="ch. 2: discovers roadside chiya. permanent stat buff. cafés have been coping ever since.">
+      <div class="sighting-copy" id="sighting-copy">
+        <p class="label">correction filed</p>
+        <h3 class="h2 sighting-headline" id="sighting-headline"></h3>
+        <p class="sighting-body">turns out bigfoot slipped up. dad, caught in the wild: crowning me with the topi, both of us buried in marigolds, whole of Kathmandu behind us.</p>
+        <p class="sighting-small">the empire runs itself for exactly one afternoon a year. this was the afternoon.</p>
+        <p class="hand sighting-log">evidence log: case closed. 👣</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXHIBITS ================= -->
+  <section class="sec sec-wide">
+    <p class="label">exhibits, unordered</p>
+    <h2 class="h2">no plot. no chapters. just receipts.</h2>
+    <div class="wall">
+      <figure class="pol l1" data-cap="flat cap, zero patience, sidekick shipped separately. (yes, same side-eye little sister.)">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/kids-cutout.webp" alt="Young Martin in a flat cap looking unimpressed, next to his little sister in a pink hoodie giving side-eye" width="560" height="474" loading="lazy" />
+        <figcaption class="hand">flat cap, zero patience, sidekick shipped separately. (yes, same side-eye little sister.)</figcaption>
+      </figure>
+      <figure class="pol l2" data-cap="roadside chiya. permanent stat buff. cafés have been coping ever since.">
         <span class="tape" aria-hidden="true"></span>
         <img src="assets/chiya.webp" alt="Martin sipping tea at a roadside stall" width="640" height="853" loading="lazy" />
-        <figcaption class="hand">ch. 2: discovers roadside chiya. permanent stat buff. cafés have been coping ever since.</figcaption>
+        <figcaption class="hand">roadside chiya. permanent stat buff. cafés have been coping ever since.</figcaption>
       </figure>
-      <figure class="pol l3" data-cap="ch. 3: assembles the council. weekly summits above the city. agenda: nothing. attendance: mandatory.">
+      <figure class="pol l3" data-cap="the weekly rooftop summit. agenda: nothing. attendance: mandatory.">
         <span class="tape" aria-hidden="true"></span>
         <img src="assets/rooftop.webp" alt="Martin and his friends toasting on a rooftop overlooking Kathmandu hills" width="640" height="672" loading="lazy" />
-        <figcaption class="hand">ch. 3: assembles the council. weekly summits above the city. agenda: nothing. attendance: mandatory.</figcaption>
+        <figcaption class="hand">the weekly rooftop summit. agenda: nothing. attendance: mandatory.</figcaption>
       </figure>
-      <div class="note lore-note" style="--r:-2deg">ch. 4: builds this website.<br>you're standing in it.<br>la, you're all caught up. 📍</div>
+      <div class="note lore-note" style="--r:-2deg">no arc. no lesson.<br>just a guy and his chiya.<br>la, moving on. 📍</div>
     </div>
   </section>
 
@@ -272,6 +295,9 @@
         <div class="card"><span class="card-k">personal chef</span><span class="card-v">the foodmandu rider. my brother in arms 🛵</span></div>
         <div class="card"><span class="card-k">childhood superpower</span><span class="card-v">homework by candlelight, load-shedding era 🔦</span></div>
         <div class="card"><span class="card-k">keyboard volume</span><span class="card-v">louder than necessary ⌨️</span></div>
+        <div class="card"><span class="card-k">chiya or coffee</span><span class="card-v">chiya. coffee's just a diet plan wearing a trench coat ☕</span></div>
+        <div class="card"><span class="card-k">punctuality</span><span class="card-v">runs on Nepali Standard Time. UTC+5:45, and also a mood 🕰️</span></div>
+        <div class="card"><span class="card-k">proudest achievement</span><span class="card-v">survived four dashain lunches in one day, no visible regret 🍛</span></div>
         <div class="card"><span class="card-k">this website</span><span class="card-v">handmade. zero frameworks. 🛠️</span></div>
       </div>
       <p class="hand swipe-hint">swipe la, don't be shy →</p>
@@ -359,9 +385,10 @@
   <!-- ================= OUTRO ================= -->
   <section class="sec outro">
     <p class="label">ok, that's me</p>
-    <h2 class="outro-big">k chha?</h2>
-    <p class="hand aside center">that's "what's up" for the non-nepali crowd. this is not a CV, so no cover letters. DMs are open:</p>
+    <h2 class="outro-big">k chaa?</h2>
+    <p class="hand aside center">that's "what's up" for the non-nepali crowd. this is not a CV, so no cover letters. my inbox, however, has weak boundaries:</p>
     <a class="mega-mail" href="https://www.instagram.com/martin_tiwari/" target="_blank" rel="noopener">@martin_tiwari →</a>
+    <p class="hand aside center outro-note">my girlfriend has filed six complaints about this. the DMs remain open. sorry babe, it's policy.</p>
     <p class="hand aside center">feeling official? fine: <a class="outro-mail" href="mailto:martintiwari0@gmail.com">martintiwari0@gmail.com</a></p>
   </section>
 
@@ -412,6 +439,6 @@
 
   <div id="toast-root"></div>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=8" defer></script>
+  <script src="src/main.js?v=13" defer></script>
 </body>
 </html>
