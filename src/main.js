@@ -318,7 +318,6 @@
 
   /* ---------- yt music playlist sync: pulls from the public playlist below ---------- */
   const MUSIC = {
-    apiKey: 'AIzaSyCP80UqF_iCwWoMj38fSV7i9zDcEMtjm7c',
     playlistId: 'PL0-3OpEXDMjJbge2zORqKaKcgsqQq2wZM',
     max: 6, // the anthem lives outside this list, as track 00
     // pins render first, in order. a pin with `match` uses the playlist's own copy when present.
@@ -350,9 +349,7 @@
 
     if (!items) {
       try {
-        const url = 'https://www.googleapis.com/youtube/v3/playlistItems' +
-          `?part=snippet&maxResults=25&playlistId=${MUSIC.playlistId}&key=${MUSIC.apiKey}`;
-        const res = await fetch(url);
+        const res = await fetch("/api/youtube");
         if (!res.ok) throw new Error('yt ' + res.status);
         const data = await res.json();
         items = (data.items || [])
