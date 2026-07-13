@@ -27,7 +27,12 @@ body{
 ::selection{background:var(--marker);color:var(--ink)}
 em{font-style:italic}
 .hand{font-family:var(--hand);color:var(--ink-soft)}
-img{max-width:100%;height:auto}
+img{
+  max-width:100%;height:auto;
+  -webkit-user-drag:none;user-drag:none;
+  -webkit-user-select:none;user-select:none;
+  -webkit-touch-callout:none;
+}
 button{font-family:inherit;cursor:pointer}
 
 /* ---------- letterhead / brand ---------- */

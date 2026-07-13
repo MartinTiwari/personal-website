@@ -750,6 +750,10 @@
     requestAnimationFrame(petTick);
   }
 
+  /* ---------- keep photos from being right-click/drag-saved ---------- */
+  document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+  document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+
   /* ---------- tiny delights ---------- */
   $$('a[href^="mailto"]').forEach(a => a.addEventListener('click', () => confetti(40)));
   $('#year').textContent = new Date().getFullYear();
