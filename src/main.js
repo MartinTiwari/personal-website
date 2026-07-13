@@ -603,6 +603,13 @@
     const btnStats = $('#dash-update-stats');
 
     const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    // unread emails: mostly a mess, occasionally almost caught up, rarely a genuine avalanche
+    const emailCount = () => {
+      const roll = Math.random();
+      if (roll < .1) return rand(3, 60);
+      if (roll < .85) return rand(400, 2200);
+      return rand(3000, 9800);
+    };
 
     let factIndex = -1;
     const nextFact = () => {
@@ -613,7 +620,7 @@
     };
 
     const rollStats = animate => {
-      [[elEmails, rand(2000, 3000)], [elTexts, rand(50, 200)], [elTomorrow, rand(10, 100)]]
+      [[elEmails, emailCount()], [elTexts, rand(50, 200)], [elTomorrow, rand(10, 100)]]
         .forEach(([el, v]) => {
           el.textContent = v;
           if (animate && !reduced) {
