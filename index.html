@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=14" />
 </head>
 <body>
 
@@ -327,18 +327,9 @@
         <span class="player-src">YT MUSIC</span>
       </div>
       <div id="tracks">
-        <!-- fallback list, replaced automatically once the playlist sync is configured in src/main.js -->
-        <a class="track" href="https://music.youtube.com/search?q=EDIT+ME" target="_blank" rel="noopener">
-          <span class="t-num">01</span><span class="t-body"><b>song title goes here</b><span>artist name</span></span><span class="t-go">▶</span>
-        </a>
-        <a class="track" href="https://music.youtube.com/search?q=EDIT+ME" target="_blank" rel="noopener">
-          <span class="t-num">02</span><span class="t-body"><b>the 2am coding one</b><span>artist name</span></span><span class="t-go">▶</span>
-        </a>
-        <a class="track" href="https://music.youtube.com/search?q=EDIT+ME" target="_blank" rel="noopener">
-          <span class="t-num">03</span><span class="t-body"><b>the one that survived shuffle</b><span>artist name</span></span><span class="t-go">▶</span>
-        </a>
-        <a class="track" href="https://music.youtube.com/search?q=EDIT+ME" target="_blank" rel="noopener">
-          <span class="t-num">04</span><span class="t-body"><b>gym playlist opener</b><span>artist name</span></span><span class="t-go">▶</span>
+        <!-- shown only if the live playlist fetch fails -->
+        <a class="track" href="https://music.youtube.com/playlist?list=PL0-3OpEXDMjJbge2zORqKaKcgsqQq2wZM" target="_blank" rel="noopener">
+          <span class="t-num">01</span><span class="t-body"><b>martin's rotation</b><span>open the full playlist on YT Music</span></span><span class="t-go">▶</span>
         </a>
       </div>
     </div>
@@ -386,10 +377,41 @@
   <section class="sec outro">
     <p class="label">ok, that's me</p>
     <h2 class="outro-big">k chaa?</h2>
-    <p class="hand aside center">that's "what's up" for the non-nepali crowd. this is not a CV, so no cover letters. my inbox, however, has weak boundaries:</p>
-    <a class="mega-mail" href="https://www.instagram.com/martin_tiwari/" target="_blank" rel="noopener">@martin_tiwari →</a>
-    <p class="hand aside center outro-note">my girlfriend has filed six complaints about this. the DMs remain open. sorry babe, it's policy.</p>
-    <p class="hand aside center">feeling official? fine: <a class="outro-mail" href="mailto:martintiwari0@gmail.com">martintiwari0@gmail.com</a></p>
+    <p class="hand aside center">that's "what's up" for the non-nepali crowd. this is not a CV, so no cover letters. here's what's actually going on in there, allegedly:</p>
+
+    <div class="dash" id="dash">
+      <div class="dash-head">
+        <span class="dash-dot" aria-hidden="true"></span>
+        <span class="dash-title">martin dashboard</span>
+        <span class="dash-live">live · unverified</span>
+      </div>
+      <div class="dash-grid">
+        <div class="dash-stat">
+          <span class="dash-num" id="stat-emails">0</span>
+          <span class="dash-label">unread emails</span>
+        </div>
+        <div class="dash-stat">
+          <span class="dash-num" id="stat-texts">0</span>
+          <span class="dash-label">unread texts</span>
+        </div>
+        <div class="dash-stat">
+          <span class="dash-num">∞</span>
+          <span class="dash-label">unread thoughts <span class="dash-haru" aria-hidden="true">😾</span></span>
+        </div>
+        <div class="dash-stat">
+          <span class="dash-num" id="stat-tomorrow">0</span>
+          <span class="dash-label">times said "tomorrow"</span>
+        </div>
+      </div>
+      <div class="dash-fact">
+        <p class="hand dash-fact-text" id="dash-fact">loading a fact you didn't ask for...</p>
+      </div>
+      <div class="dash-actions">
+        <button class="dash-btn" id="dash-new-fact" type="button">new fact</button>
+        <button class="dash-btn dash-btn-ghost" id="dash-update-stats" type="button">update stats</button>
+      </div>
+      <p class="dash-approve hand" id="dash-approve" aria-hidden="true">HARU approved 😾</p>
+    </div>
   </section>
 
   <footer class="foot">
@@ -439,6 +461,6 @@
 
   <div id="toast-root"></div>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=13" defer></script>
+  <script src="src/main.js?v=16" defer></script>
 </body>
 </html>

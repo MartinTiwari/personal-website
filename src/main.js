@@ -267,9 +267,7 @@
     });
   }
 
-  /* ---------- anonymous notes ----------
-     notes land in a google sheet via an Apps Script web app.
-     until the URL below is pasted, they fall back to email delivery. */
+  /* ---------- anonymous notes: land in a google sheet via an Apps Script web app ---------- */
   const NOTES_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzsK7O2ZS_4MmtbSleY76mx92a8r9nogJTZfAYVDRkT_EBJMomyVpp743VGG_JMm_IsRw/exec';
   const NOTE_COLORS = ['var(--marker)', 'var(--mint)', '#fff', '#ffd3c6'];
   const wall = $('#notes-wall');
@@ -303,22 +301,12 @@
     } catch {}
 
     try {
-      if (!NOTES_ENDPOINT.startsWith('PASTE')) {
-        const res = await fetch(NOTES_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ message: msg, when: new Date().toISOString() }),
-        });
-        if (!res.ok) throw new Error('sheet ' + res.status);
-      } else {
-        const res = await fetch('https://formsubmit.co/ajax/martintiwari0@gmail.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ message: msg, _subject: 'anonymous note from the wall 📌' }),
-        });
-        const out = await res.json().catch(() => ({}));
-        if (!res.ok || String(out.success) === 'false') throw new Error();
-      }
+      const res = await fetch(NOTES_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ message: msg, when: new Date().toISOString() }),
+      });
+      if (!res.ok) throw new Error('sheet ' + res.status);
       toast('📬 pugyo! filed in the secret spreadsheet. martin reads it with morning chiya.');
       confetti(36);
     } catch {
@@ -328,11 +316,7 @@
     btn.disabled = false; btn.textContent = '📌 pin it anonymously';
   });
 
-  /* ---------- yt music playlist sync ----------
-     1) make the playlist public or unlisted
-     2) paste the playlist ID (the part after list= in its URL)
-     3) paste a YouTube Data API v3 key (restrict it to your domain)
-     leave as-is and the fallback list in the HTML stays. */
+  /* ---------- yt music playlist sync: pulls from the public playlist below ---------- */
   const MUSIC = {
     apiKey: 'AIzaSyCP80UqF_iCwWoMj38fSV7i9zDcEMtjm7c',
     playlistId: 'PL0-3OpEXDMjJbge2zORqKaKcgsqQq2wZM',
@@ -355,7 +339,6 @@
     'the reply-to-emails one',
   ];
   async function syncMusic() {
-    if (MUSIC.apiKey.startsWith('PASTE') || MUSIC.playlistId.startsWith('PASTE')) return;
     const box = $('#tracks');
     if (!box) return;
 
@@ -566,6 +549,98 @@
         resizeTimer = setTimeout(() => { computeShift(); update(); }, 150);
       });
     }
+  }
+
+  /* ---------- martin dashboard ---------- */
+  const dash = $('#dash');
+  if (dash) {
+    const facts = [
+      "can debug a production issue at 2am but still forget my own passwords weekly.",
+      "have said 'starting monday' about the gym since roughly the time monday was invented.",
+      "own four water bottles and am currently thirsty because none of them are filled.",
+      "once introduced myself as a 'full-stack developer' to my grandmother. she still asked if i fix wifi.",
+      "have 47 browser tabs open right now. eleven are stack overflow. i need none of them anymore.",
+      "consider wai wai, uncooked, straight from the packet, a legitimate snack and not a cry for help.",
+      "have a to-do list from three weeks ago with one item checked off: 'make to-do list.'",
+      "can recite the entire dashain tika sequence but forget where i put my keys mid sentence.",
+      "believe 'i'll fix it later' is a valid architectural decision. it is not.",
+      "have strong opinions about tabs vs spaces and no opinions about doing my laundry.",
+      "drink chiya like it's a personality trait because, at this point, it is.",
+      "my commit messages are more honest than my diary.",
+      "peaked academically in the one group project where i did nothing and still got an A.",
+      "run on nepali standard time, which is a state of mind, not a timezone.",
+      "own a cat who has filed zero complaints, mostly because she doesn't file, she just judges.",
+      "consider 'it works on my machine' a complete and satisfying explanation.",
+      "have restarted my sleep schedule more times than my laptop, and that's saying something.",
+      "can explain recursion. cannot explain why the fridge is empty again right after dashain.",
+      "treat every deadline as a suggestion made by someone who misunderstood the assignment.",
+      "have a favorite mug that isn't even my best mug. loyalty over quality, apparently.",
+      "still say 'i'll do it in the morning' during load-shedding, in the dark, holding a candle.",
+      "genuinely believe i am a morning person. have never once tested this theory before 10am.",
+      "my search history is 90% 'how to' and 10% regret.",
+      "took a personality test once. the result was 'concerning but consistent.'",
+      "have strong feelings about semicolons and no feelings about ironing clothes.",
+      "have practiced looking busy longer than i've practiced most actual skills.",
+      "keep saying this website is 'almost done.' it has been almost done since roughly last dashain.",
+      "am, by my own admission, a work in progress. mostly the 'in progress' part.",
+      "can finish a full plate of momo and still say 'i wasn't even that hungry.'",
+      "have used 'yeti weather' as a valid excuse for being late, indoors, on a clear day.",
+    ];
+    const elEmails = $('#stat-emails');
+    const elTexts = $('#stat-texts');
+    const elTomorrow = $('#stat-tomorrow');
+    const elFact = $('#dash-fact');
+    const elApprove = $('#dash-approve');
+    const btnFact = $('#dash-new-fact');
+    const btnStats = $('#dash-update-stats');
+
+    const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+    let factIndex = -1;
+    const nextFact = () => {
+      let i;
+      do { i = Math.floor(Math.random() * facts.length); } while (i === factIndex && facts.length > 1);
+      factIndex = i;
+      return facts[i];
+    };
+
+    const rollStats = animate => {
+      [[elEmails, rand(2000, 3000)], [elTexts, rand(50, 200)], [elTomorrow, rand(10, 100)]]
+        .forEach(([el, v]) => {
+          el.textContent = v;
+          if (animate && !reduced) {
+            el.classList.remove('rolling');
+            void el.offsetWidth;
+            el.classList.add('rolling');
+          }
+        });
+    };
+
+    const showFact = animate => {
+      const text = nextFact();
+      if (animate && !reduced) {
+        elFact.classList.add('fading');
+        setTimeout(() => {
+          elFact.textContent = text;
+          elFact.classList.remove('fading');
+        }, 150);
+      } else {
+        elFact.textContent = text;
+      }
+    };
+
+    let approveTimer;
+    const approve = () => {
+      if (reduced) return;
+      elApprove.classList.add('show');
+      clearTimeout(approveTimer);
+      approveTimer = setTimeout(() => elApprove.classList.remove('show'), 1400);
+    };
+
+    rollStats(false);
+    showFact(false);
+    btnFact.addEventListener('click', () => { showFact(true); approve(); });
+    btnStats.addEventListener('click', () => { rollStats(true); approve(); });
   }
 
   /* ---------- footer peek ---------- */

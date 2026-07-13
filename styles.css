@@ -662,18 +662,50 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   font-size:clamp(64px,15vw,150px);line-height:1;letter-spacing:-.03em;
   margin:0 0 26px;
 }
-.mega-mail{
-  display:inline-block;font-family:var(--serif);font-weight:640;
-  font-size:clamp(19px,4vw,34px);color:var(--red);text-decoration:none;
-  position:relative;padding-bottom:4px;word-break:break-all;
+/* ================= martin dashboard ================= */
+.dash{
+  position:relative;text-align:left;margin:34px auto 0;max-width:540px;
+  border:2px solid var(--ink);border-radius:18px;background:#fff;
+  box-shadow:8px 8px 0 var(--paper-2);padding:22px clamp(18px,5vw,28px);
 }
-.mega-mail::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--red);
-  transform:scaleX(1);transform-origin:left;transition:transform .35s cubic-bezier(.2,1,.3,1);
+.dash-head{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.dash-dot{
+  width:9px;height:9px;border-radius:50%;background:var(--red);flex:none;
+  box-shadow:0 0 0 3px rgba(232,83,47,.15);animation:dashPulse 2s ease-in-out infinite;
 }
-.mega-mail:hover::after{transform:scaleX(0);transform-origin:right}
-.outro-mail{color:var(--blue);text-decoration:none;border-bottom:1.5px solid var(--blue)}
-.outro-mail:hover{background:var(--blue);color:var(--paper)}
+.dash-title{font-family:var(--serif);font-weight:640;font-size:15px;letter-spacing:.01em}
+.dash-live{margin-left:auto;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft)}
+.dash-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px 18px;margin-bottom:20px}
+.dash-stat{display:flex;flex-direction:column;gap:3px}
+.dash-num{font-family:var(--serif);font-weight:640;font-size:clamp(24px,5vw,32px);line-height:1;color:var(--ink);transition:opacity .12s ease}
+.dash-num.rolling{animation:dashRoll .4s ease}
+.dash-label{font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+.dash-haru{margin-left:2px;font-size:12px;text-transform:none;letter-spacing:0}
+.dash-fact{
+  min-height:54px;display:flex;align-items:center;
+  border-top:1.5px dashed rgba(34,30,25,.2);border-bottom:1.5px dashed rgba(34,30,25,.2);
+  padding:14px 1px;margin-bottom:18px;
+}
+.dash-fact-text{margin:0;font-size:clamp(17px,3.2vw,20px);transition:opacity .15s ease}
+.dash-fact-text.fading{opacity:0}
+.dash-actions{display:flex;gap:10px;flex-wrap:wrap}
+.dash-btn{
+  font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.01em;
+  padding:10px 18px;border-radius:999px;border:2px solid var(--ink);
+  background:var(--ink);color:var(--paper);cursor:pointer;transition:transform .15s ease;
+}
+.dash-btn:hover{transform:translateY(-2px)}
+.dash-btn:active{transform:translateY(0)}
+.dash-btn-ghost{background:transparent;color:var(--ink)}
+.dash-approve{
+  position:absolute;top:-15px;right:20px;background:var(--marker);
+  border:2px solid var(--ink);border-radius:10px;padding:3px 12px;
+  font-size:15px;opacity:0;transform:translateY(6px) rotate(-4deg) scale(.9);
+  pointer-events:none;transition:opacity .3s ease,transform .3s cubic-bezier(.2,1.4,.4,1);
+}
+.dash-approve.show{opacity:1;transform:translateY(0) rotate(-4deg) scale(1)}
+@keyframes dashPulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes dashRoll{0%{opacity:.2;transform:translateY(3px)}100%{opacity:1;transform:translateY(0)}}
 
 /* ================= footer + peek ================= */
 .foot{position:relative;overflow:hidden;margin-top:60px}
