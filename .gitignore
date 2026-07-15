@@ -1,3 +1,4 @@
 .vercel
 .claude
 _originals
+.env*

@@ -318,7 +318,7 @@
 
   /* ---------- yt music playlist sync: pulls from the public playlist below ---------- */
   const MUSIC = {
-    playlistId: 'PL0-3OpEXDMjJbge2zORqKaKcgsqQq2wZM',
+    playlistId: 'PLd24CpR0JfXc',
     max: 6, // the anthem lives outside this list, as track 00
     // pins render first, in order. a pin with `match` uses the playlist's own copy when present.
     pins: [
@@ -343,7 +343,7 @@
 
     let items = null;
     try {
-      const cached = JSON.parse(localStorage.getItem('yt-rotation-v3') || 'null');
+      const cached = JSON.parse(localStorage.getItem('yt-rotation-v4') || 'null');
       if (cached && Date.now() - cached.t < 6 * 3600e3) items = cached.items;
     } catch {}
 
@@ -368,7 +368,7 @@
             : { id: pin.id, title: pin.title, artist: pin.artist, cap: pin.cap });
         }
         items = items.slice(0, MUSIC.max);
-        localStorage.setItem('yt-rotation-v3', JSON.stringify({ t: Date.now(), items }));
+        localStorage.setItem('yt-rotation-v4', JSON.stringify({ t: Date.now(), items }));
       } catch (err) {
         console.warn('playlist sync skipped:', err);
         return; // fallback list stays

@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const playlistId = "PL0-3OpEXDMjJbge2zORqKaKcgsqQq2wZM";
+  const playlistId = "PLd24CpR0JfXc";
 
   const url =
     `https://www.googleapis.com/youtube/v3/playlistItems` +
