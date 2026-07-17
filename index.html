@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=18" />
+  <link rel="stylesheet" href="styles.css?v=22" />
 </head>
 <body>
 
@@ -35,10 +35,10 @@
   <!-- ================= HERO ================= -->
   <section class="hero" id="top">
     <div class="stage">
-      <span class="chip c1" data-speed="-.12">👨‍💻 cs student</span>
-      <span class="chip c2" data-speed=".18">🎧 chronically online</span>
-      <span class="chip c3" data-speed="-.22">🛠️ breaks things professionally</span>
-      <span class="chip c4" data-speed=".1">✌️ hi, you found me</span>
+      <span class="chip c1" data-speed="-.12">🏔️ kathmandu, +5:45</span>
+      <span class="chip c2" data-speed=".18">😾 HARU's human</span>
+      <span class="chip c3" data-speed="-.22">🌙 2am is a personality</span>
+      <span class="chip c4" data-speed=".1">🎧 yeat on loop</span>
 
       <div class="hero-note hand">
         <svg class="note-arrow" viewBox="0 0 90 60" aria-hidden="true">
@@ -61,14 +61,21 @@
   </section>
 
   <!-- ================= HELLO ================= -->
-  <section class="sec">
+  <section class="sec hello-sec">
     <p class="label">hello hello</p>
-    <p class="big">Namaste. I'm Martin. I make things on the internet, break them,
-      <span class="hl">fix them at 2am</span>, and tell exactly one person about it.</p>
+    <p class="big">Namaste. I'm Martin. I build things on the internet, break them,
+      <span class="hl">negotiate with them at 2am</span>, and act like nothing happened by morning.</p>
     <p class="big">This is <em>not</em> a CV. No grades, no "passionate self-starter" nonsense.
-      Just me, <span class="hl hl-2">the places I actually live online</span>,
-      and a couple of secrets hidden in the page.</p>
-    <p class="hand aside">(three secrets. no, that counter was not generated. I counted them myself.)</p>
+      Just me, <span class="hl hl-2">the corners of the internet I actually live in</span>,
+      and three secrets hidden where you least expect them.</p>
+    <p class="hand aside">(three. counted by hand, like everything else here.)</p>
+    <button class="cr-card hidden" id="cr-card" type="button" aria-label="Live Clash Royale stats">
+      <span class="tape" aria-hidden="true"></span>
+      <span class="cr-head">live from the arena <span class="chip-dot" aria-hidden="true"></span></span>
+      <span class="cr-troph">🏆 <b id="cr-num"></b></span>
+      <span id="cr-rows"></span>
+      <span class="cr-foot hand">the ladder is a lifestyle.</span>
+    </button>
   </section>
 
   <!-- ================= PHOTO WALL ================= -->
@@ -255,6 +262,8 @@
           <div class="row"><span class="k">family business</span><span class="v">the water you drink, the bag you carry, the chemicals you can't pronounce. we're everywhere. you're welcome.</span></div>
           <div class="row"><span class="k">location</span><span class="v">earth, probably. good momos within walking distance.</span></div>
           <div class="row"><span class="k">timezone</span><span class="v">NPT, +5:45. round offsets are for other countries. <span class="npt-live hidden" id="npt-live">it is <b id="npt-clock"></b> in kathmandu right now.</span></span></div>
+          <div class="row"><span class="k">weather</span><span class="v" id="ktm-weather">the sky refuses to comment.</span></div>
+          <div class="row"><span class="k">combat record</span><span class="v" id="cr-line">arena data classified. for now.</span></div>
         </div>
       </div>
 
@@ -406,6 +415,7 @@
       <div class="dash-fact">
         <p class="hand dash-fact-text" id="dash-fact">loading a fact you didn't ask for...</p>
       </div>
+      <p class="dash-ship hidden" id="dash-ship"></p>
       <div class="dash-actions">
         <button class="dash-btn" id="dash-new-fact" type="button">new fact</button>
         <button class="dash-btn dash-btn-ghost" id="dash-update-stats" type="button">update stats</button>
@@ -461,6 +471,6 @@
 
   <div id="toast-root"></div>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=22" defer></script>
+  <script src="src/main.js?v=27" defer></script>
 </body>
 </html>

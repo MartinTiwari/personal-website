@@ -45,6 +45,127 @@
     $('#npt-live').classList.remove('hidden');
   }
 
+  /* ---------- kathmandu, live: actual weather (open-meteo, no key) ---------- */
+  (async () => {
+    const el = $('#ktm-weather');
+    if (!el) return;
+    try {
+      let wx = null;
+      try {
+        const cached = JSON.parse(sessionStorage.getItem('ktm-wx') || 'null');
+        if (cached && Date.now() - cached.t < 30 * 60000) wx = cached;
+      } catch {}
+      if (!wx) {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=27.72&longitude=85.32&current=temperature_2m,weather_code&timezone=Asia%2FKathmandu');
+        if (!res.ok) throw new Error();
+        const j = await res.json();
+        wx = { t: Date.now(), temp: Math.round(j.current.temperature_2m), code: j.current.weather_code };
+        sessionStorage.setItem('ktm-wx', JSON.stringify(wx));
+      }
+      const c = wx.code, deg = wx.temp + '°C';
+      el.textContent =
+        c >= 95 ? `thunderstorm over kathmandu, ${deg}. the sky is doing drama again.` :
+        c >= 71 && c <= 86 && c !== 80 && c !== 81 && c !== 82 ? `snow near kathmandu, ${deg}. the yeti sends regards.` :
+        c >= 80 || (c >= 51 && c <= 67) ? `raining in kathmandu, ${deg}. chappals are a mistake today.` :
+        c >= 45 ? `fog over kathmandu, ${deg}. the hills went on privacy mode.` :
+        c >= 1 ? `${deg} and cloudy-ish in kathmandu. certified chiya weather.` :
+        `clear skies over kathmandu, ${deg}. suspicious. it never lasts.`;
+    } catch { /* the "no comment" line stays */ }
+  })();
+
+  /* ---------- combat record: live clash royale trophies ---------- */
+  (async () => {
+    const el = $('#cr-line');
+    if (!el) return;
+    try {
+      let cr = null;
+      try {
+        const cached = JSON.parse(sessionStorage.getItem('cr-stats') || 'null');
+        if (cached && Date.now() - cached.t < 15 * 60000) cr = cached;
+      } catch {}
+      if (!cr) {
+        const res = await fetch('/api/clash');
+        if (!res.ok) throw new Error();
+        const j = await res.json();
+        if (!j.trophies) throw new Error();
+        cr = { t: Date.now(), ...j };
+        sessionStorage.setItem('cr-stats', JSON.stringify(cr));
+      }
+      const bits = [`clash royale: ${cr.trophies.toLocaleString()} trophies, live`];
+      if (cr.best) bits.push(`personal best ${cr.best.toLocaleString()}`);
+      if (cr.card) bits.push(`current crutch card: ${cr.card}`);
+      el.textContent = bits.join(' · ') + '. the ladder is a lifestyle.';
+
+      // the arena card: the one thing on the landing page that's actually live
+      const card = $('#cr-card');
+      if (card) {
+        $('#cr-num').textContent = cr.trophies.toLocaleString();
+        const rows = $('#cr-rows');
+        rows.replaceChildren();
+        const addRow = (k, v) => {
+          if (!v && v !== 0) return;
+          const r = document.createElement('span');
+          r.className = 'cr-row';
+          const kk = document.createElement('span'); kk.textContent = k;
+          const vv = document.createElement('b'); vv.textContent = v;
+          r.append(kk, vv);
+          rows.appendChild(r);
+        };
+        addRow('personal best', cr.best && cr.best.toLocaleString());
+        addRow('arena', cr.arena);
+        addRow('king level', cr.level);
+        if (cr.wins && cr.losses) addRow('record', `${cr.wins.toLocaleString()}W · ${cr.losses.toLocaleString()}L`);
+        addRow('crutch card', cr.card);
+        card.classList.remove('hidden');
+
+        const comebacks = [
+          'yes, live from the arena. no, I can’t "just win more."',
+          cr.card ? `the ${cr.card} carries. I merely supervise.` : 'the deck carries. I merely supervise.',
+          cr.threeCrown ? `${cr.threeCrown.toLocaleString()} three-crown wins. humility not included.` : 'ladder anxiety is a real condition and I have it.',
+          cr.battles ? `${cr.battles.toLocaleString()} battles played. the homework can wait.` : 'somewhere in kathmandu, a deck is being blamed right now.',
+          'this number may drop while you watch. respect the volatility.',
+        ];
+        let crTaps = 0;
+        card.addEventListener('click', () => toast('🏆 ' + comebacks[Math.min(crTaps++, comebacks.length - 1)]));
+      }
+    } catch { /* stays classified; the card never shows */ }
+  })();
+
+  /* ---------- the dashboard's one real stat: last public commit ---------- */
+  (async () => {
+    const el = $('#dash-ship');
+    if (!el) return;
+    try {
+      let ship = null;
+      try {
+        const cached = JSON.parse(localStorage.getItem('gh-ship') || 'null');
+        if (cached && Date.now() - cached.t < 30 * 60000) ship = cached;
+      } catch {}
+      if (!ship) {
+        const res = await fetch('https://api.github.com/users/MartinTiwari/events/public');
+        if (!res.ok) throw new Error();
+        const push = (await res.json()).find(e => e.type === 'PushEvent' && e.payload.head);
+        if (!push) throw new Error();
+        // the events feed only carries the SHA; the commit itself has the message
+        const cres = await fetch(`https://api.github.com/repos/${push.repo.name}/commits/${push.payload.head}`);
+        if (!cres.ok) throw new Error();
+        const msg = (await cres.json()).commit.message.split('\n')[0];
+        ship = { t: Date.now(), msg: msg.length > 64 ? msg.slice(0, 61) + '…' : msg, when: push.created_at };
+        localStorage.setItem('gh-ship', JSON.stringify(ship));
+      }
+      const mins = Math.max(1, Math.round((Date.now() - new Date(ship.when)) / 60000));
+      const ago = mins < 60 ? mins + ' min ago'
+        : mins < 1440 ? Math.round(mins / 60) + 'h ago'
+        : Math.round(mins / 1440) + ' days ago';
+      el.replaceChildren();
+      el.append('last shipped: ');
+      const b = document.createElement('b');
+      b.textContent = '"' + ship.msg + '"';
+      el.append(b, ` · ${ago} · the only stat up there that's real.`);
+      el.classList.remove('hidden');
+    } catch { /* stays hidden; the dashboard remains 100% fiction */ }
+  })();
+
   /* ---------- hero chip parallax ---------- */
   const chips = $$('.chip');
   if (!reduced && chips.length) {
@@ -192,16 +313,51 @@
     });
   });
 
-  /* ---------- id badge: tug it (pure CSS, runs on the compositor) ---------- */
+  /* ---------- id badge: grab it, drag it, let it swing back ---------- */
   const badge = $('#badge');
-  badge.addEventListener('pointerdown', () => {
-    badge.classList.remove('tugged');
-    void badge.offsetWidth;
-    badge.classList.add('tugged');
-  });
-  badge.addEventListener('animationend', e => {
-    if (e.animationName === 'tug') badge.classList.remove('tugged');
-  });
+  {
+    let held = false, startX = 0, startRot = 0, rot = 0;
+    const MAX_ROT = 38;
+    badge.addEventListener('pointerdown', e => {
+      held = true;
+      startX = e.clientX;
+      startRot = rot;
+      // the idle sway owns transform while animating; physics mode hands it to us
+      badge.classList.add('phys', 'held');
+      if (window.anime) anime.remove(badge);
+      try { badge.setPointerCapture(e.pointerId); } catch {}
+      e.preventDefault();
+    });
+    badge.addEventListener('pointermove', e => {
+      if (!held) return;
+      rot = Math.max(-MAX_ROT, Math.min(MAX_ROT, startRot + (e.clientX - startX) * .28));
+      badge.style.transform = `rotate(${rot}deg)`;
+    });
+    const release = () => {
+      if (!held) return;
+      held = false;
+      badge.classList.remove('held');
+      if (window.anime && !reduced) {
+        anime({
+          targets: badge,
+          rotate: 0,
+          duration: 1400,
+          easing: 'easeOutElastic(1, .25)',
+          complete: () => {
+            rot = 0;
+            badge.style.transform = '';
+            badge.classList.remove('phys'); // idle sway resumes
+          },
+        });
+      } else {
+        rot = 0;
+        badge.style.transform = '';
+        badge.classList.remove('phys');
+      }
+    };
+    badge.addEventListener('pointerup', release);
+    badge.addEventListener('pointercancel', release);
+  }
 
   /* ---------- whiteboard ---------- */
   const board = $('#board');
