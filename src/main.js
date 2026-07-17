@@ -33,21 +33,41 @@
   /* ---------- nepal time ---------- */
   const nptNow = () => new Date(Date.now() + (345 + new Date().getTimezoneOffset()) * 60000);
 
-  /* ---------- kathmandu, live ---------- */
+  /* ---------- kathmandu, live: local time ---------- */
   {
-    const clock = $('#npt-clock');
-    const tick = () => {
-      const t = nptNow();
-      clock.textContent = String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0');
-    };
-    tick();
-    setInterval(tick, 30000);
-    $('#npt-live').classList.remove('hidden');
+    const el = $('#disp-time');
+    if (el) {
+      const tick = () => {
+        const t = nptNow();
+        el.textContent = String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0') + ' NPT';
+      };
+      tick();
+      setInterval(tick, 30000);
+    }
+  }
+
+  /* ---------- kathmandu, live: what I'm probably doing right now ---------- */
+  {
+    const el = $('#disp-status');
+    if (el) {
+      const statusFor = h =>
+        h < 5 ? "should be asleep. is not." :
+        h < 7 ? "asleep. correctly, for once." :
+        h < 10 ? "pretending to be a morning person." :
+        h < 14 ? "productive-ish. don't push it." :
+        h < 17 ? "post-lunch fog. send chiya." :
+        h === 17 ? "gym. (theoretical.)" :
+        h < 21 ? "prime coding hours. or doom-scrolling. 50/50." :
+        '"two more minutes" - narrator: it was not two minutes.';
+      const tick = () => { el.textContent = statusFor(nptNow().getHours()); };
+      tick();
+      setInterval(tick, 60000);
+    }
   }
 
   /* ---------- kathmandu, live: actual weather (open-meteo, no key) ---------- */
   (async () => {
-    const el = $('#ktm-weather');
+    const el = $('#disp-sky');
     if (!el) return;
     try {
       let wx = null;
@@ -73,10 +93,10 @@
     } catch { /* the "no comment" line stays */ }
   })();
 
-  /* ---------- combat record: live clash royale trophies ---------- */
+  /* ---------- clash royale: live arena card ---------- */
   (async () => {
-    const el = $('#cr-line');
-    if (!el) return;
+    const card = $('#cr-card');
+    if (!card) return;
     try {
       let cr = null;
       try {
@@ -91,80 +111,56 @@
         cr = { t: Date.now(), ...j };
         sessionStorage.setItem('cr-stats', JSON.stringify(cr));
       }
-      const bits = [`clash royale: ${cr.trophies.toLocaleString()} trophies, live`];
-      if (cr.best) bits.push(`personal best ${cr.best.toLocaleString()}`);
-      if (cr.card) bits.push(`current crutch card: ${cr.card}`);
-      el.textContent = bits.join(' · ') + '. the ladder is a lifestyle.';
+      $('#cr-num').textContent = cr.trophies.toLocaleString();
 
-      // the arena card: the one thing on the landing page that's actually live
-      const card = $('#cr-card');
-      if (card) {
-        $('#cr-num').textContent = cr.trophies.toLocaleString();
-        const rows = $('#cr-rows');
-        rows.replaceChildren();
-        const addRow = (k, v) => {
-          if (!v && v !== 0) return;
-          const r = document.createElement('span');
-          r.className = 'cr-row';
-          const kk = document.createElement('span'); kk.textContent = k;
-          const vv = document.createElement('b'); vv.textContent = v;
-          r.append(kk, vv);
-          rows.appendChild(r);
-        };
-        addRow('personal best', cr.best && cr.best.toLocaleString());
-        addRow('arena', cr.arena);
-        addRow('king level', cr.level);
-        if (cr.wins && cr.losses) addRow('record', `${cr.wins.toLocaleString()}W · ${cr.losses.toLocaleString()}L`);
-        addRow('crutch card', cr.card);
-        card.classList.remove('hidden');
+      // trophy road: how close to the personal-best peak, right now
+      const pct = cr.best ? Math.max(4, Math.min(100, Math.round(cr.trophies / cr.best * 100))) : 100;
+      $('#cr-bar-fill').style.width = pct + '%';
 
-        const comebacks = [
-          'yes, live from the arena. no, I can’t "just win more."',
-          cr.card ? `the ${cr.card} carries. I merely supervise.` : 'the deck carries. I merely supervise.',
-          cr.threeCrown ? `${cr.threeCrown.toLocaleString()} three-crown wins. humility not included.` : 'ladder anxiety is a real condition and I have it.',
-          cr.battles ? `${cr.battles.toLocaleString()} battles played. the homework can wait.` : 'somewhere in kathmandu, a deck is being blamed right now.',
-          'this number may drop while you watch. respect the volatility.',
-        ];
-        let crTaps = 0;
-        card.addEventListener('click', () => toast('🏆 ' + comebacks[Math.min(crTaps++, comebacks.length - 1)]));
-      }
-    } catch { /* stays classified; the card never shows */ }
+      const rows = $('#cr-rows');
+      rows.replaceChildren();
+      const addRow = (k, v) => {
+        if (!v && v !== 0) return;
+        const r = document.createElement('span');
+        r.className = 'cr-row';
+        const kk = document.createElement('span'); kk.textContent = k;
+        const vv = document.createElement('b'); vv.textContent = v;
+        r.append(kk, vv);
+        rows.appendChild(r);
+      };
+      addRow('personal best', cr.best && cr.best.toLocaleString());
+      addRow('arena', cr.arena);
+      addRow('king tower lvl', cr.level);
+      if (cr.wins && cr.losses) addRow('battle record', `${cr.wins.toLocaleString()}W · ${cr.losses.toLocaleString()}L`);
+      addRow('crutch card', cr.card);
+      card.classList.remove('hidden');
+
+      const comebacks = [
+        'yes, live from the arena. no, I can’t "just win more."',
+        cr.card ? `the ${cr.card} carries. I merely supervise.` : 'the deck carries. I merely supervise.',
+        cr.threeCrown ? `${cr.threeCrown.toLocaleString()} three-crown wins. humility not included.` : 'ladder anxiety is a real condition and I have it.',
+        cr.battles ? `${cr.battles.toLocaleString()} battles played. the homework can wait.` : 'somewhere in kathmandu, a deck is being blamed right now.',
+        pct < 100 ? `${pct}% of the way back to my peak. the climb is spiritual now.` : 'this IS the peak. please clap.',
+        'this number may drop while you watch. respect the volatility.',
+      ];
+      let crTaps = 0;
+      card.addEventListener('click', () => toast('🏆 ' + comebacks[Math.min(crTaps++, comebacks.length - 1)]));
+    } catch { /* stays hidden; the card never shows */ }
   })();
 
-  /* ---------- the dashboard's one real stat: last public commit ---------- */
-  (async () => {
-    const el = $('#dash-ship');
-    if (!el) return;
-    try {
-      let ship = null;
-      try {
-        const cached = JSON.parse(localStorage.getItem('gh-ship') || 'null');
-        if (cached && Date.now() - cached.t < 30 * 60000) ship = cached;
-      } catch {}
-      if (!ship) {
-        const res = await fetch('https://api.github.com/users/MartinTiwari/events/public');
-        if (!res.ok) throw new Error();
-        const push = (await res.json()).find(e => e.type === 'PushEvent' && e.payload.head);
-        if (!push) throw new Error();
-        // the events feed only carries the SHA; the commit itself has the message
-        const cres = await fetch(`https://api.github.com/repos/${push.repo.name}/commits/${push.payload.head}`);
-        if (!cres.ok) throw new Error();
-        const msg = (await cres.json()).commit.message.split('\n')[0];
-        ship = { t: Date.now(), msg: msg.length > 64 ? msg.slice(0, 61) + '…' : msg, when: push.created_at };
-        localStorage.setItem('gh-ship', JSON.stringify(ship));
-      }
-      const mins = Math.max(1, Math.round((Date.now() - new Date(ship.when)) / 60000));
-      const ago = mins < 60 ? mins + ' min ago'
-        : mins < 1440 ? Math.round(mins / 60) + 'h ago'
-        : Math.round(mins / 1440) + ' days ago';
-      el.replaceChildren();
-      el.append('last shipped: ');
-      const b = document.createElement('b');
-      b.textContent = '"' + ship.msg + '"';
-      el.append(b, ` · ${ago} · the only stat up there that's real.`);
-      el.classList.remove('hidden');
-    } catch { /* stays hidden; the dashboard remains 100% fiction */ }
-  })();
+  /* ---------- dispatch: HARU, same clock as the roaming cat widget ---------- */
+  {
+    const el = $('#disp-haru');
+    if (el) {
+      const haruFor = h =>
+        h >= 23 || h < 6 ? "asleep. as any reasonable creature would be." :
+        h === 17 ? "zoomies. it's 5pm somewhere in her mind." :
+        "awake, silently judging.";
+      const tick = () => { el.textContent = haruFor(nptNow().getHours()); };
+      tick();
+      setInterval(tick, 60000);
+    }
+  }
 
   /* ---------- hero chip parallax ---------- */
   const chips = $$('.chip');
@@ -330,7 +326,9 @@
     });
     badge.addEventListener('pointermove', e => {
       if (!held) return;
-      rot = Math.max(-MAX_ROT, Math.min(MAX_ROT, startRot + (e.clientX - startX) * .28));
+      // badge hangs from the top, so a rightward drag must swing the bottom right,
+      // which is a *negative* CSS rotation around a top pivot — hence the minus sign
+      rot = Math.max(-MAX_ROT, Math.min(MAX_ROT, startRot - (e.clientX - startX) * .28));
       badge.style.transform = `rotate(${rot}deg)`;
     });
     const release = () => {
@@ -713,105 +711,6 @@
         resizeTimer = setTimeout(() => { computeShift(); update(); }, 150);
       });
     }
-  }
-
-  /* ---------- martin dashboard ---------- */
-  const dash = $('#dash');
-  if (dash) {
-    const facts = [
-      "can debug a production issue at 2am but still forget my own passwords weekly.",
-      "have said 'starting monday' about the gym since roughly the time monday was invented.",
-      "own four water bottles and am currently thirsty because none of them are filled.",
-      "once introduced myself as a 'full-stack developer' to my grandmother. she still asked if i fix wifi.",
-      "have 47 browser tabs open right now. eleven are stack overflow. i need none of them anymore.",
-      "consider wai wai, uncooked, straight from the packet, a legitimate snack and not a cry for help.",
-      "have a to-do list from three weeks ago with one item checked off: 'make to-do list.'",
-      "can recite the entire dashain tika sequence but forget where i put my keys mid sentence.",
-      "believe 'i'll fix it later' is a valid architectural decision. it is not.",
-      "have strong opinions about tabs vs spaces and no opinions about doing my laundry.",
-      "drink chiya like it's a personality trait because, at this point, it is.",
-      "my commit messages are more honest than my diary.",
-      "peaked academically in the one group project where i did nothing and still got an A.",
-      "run on nepali standard time, which is a state of mind, not a timezone.",
-      "own a cat who has filed zero complaints, mostly because she doesn't file, she just judges.",
-      "consider 'it works on my machine' a complete and satisfying explanation.",
-      "have restarted my sleep schedule more times than my laptop, and that's saying something.",
-      "can explain recursion. cannot explain why the fridge is empty again right after dashain.",
-      "treat every deadline as a suggestion made by someone who misunderstood the assignment.",
-      "have a favorite mug that isn't even my best mug. loyalty over quality, apparently.",
-      "still say 'i'll do it in the morning' during load-shedding, in the dark, holding a candle.",
-      "genuinely believe i am a morning person. have never once tested this theory before 10am.",
-      "my search history is 90% 'how to' and 10% regret.",
-      "took a personality test once. the result was 'concerning but consistent.'",
-      "have strong feelings about semicolons and no feelings about ironing clothes.",
-      "have practiced looking busy longer than i've practiced most actual skills.",
-      "keep saying this website is 'almost done.' it has been almost done since roughly last dashain.",
-      "am, by my own admission, a work in progress. mostly the 'in progress' part.",
-      "can finish a full plate of momo and still say 'i wasn't even that hungry.'",
-      "have used 'yeti weather' as a valid excuse for being late, indoors, on a clear day.",
-    ];
-    const elEmails = $('#stat-emails');
-    const elTexts = $('#stat-texts');
-    const elTomorrow = $('#stat-tomorrow');
-    const elFact = $('#dash-fact');
-    const elApprove = $('#dash-approve');
-    const btnFact = $('#dash-new-fact');
-    const btnStats = $('#dash-update-stats');
-
-    const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-    // unread emails: mostly a mess, occasionally almost caught up, rarely a genuine avalanche
-    const emailCount = () => {
-      const roll = Math.random();
-      if (roll < .1) return rand(3, 60);
-      if (roll < .85) return rand(400, 2200);
-      return rand(3000, 9800);
-    };
-
-    let factIndex = -1;
-    const nextFact = () => {
-      let i;
-      do { i = Math.floor(Math.random() * facts.length); } while (i === factIndex && facts.length > 1);
-      factIndex = i;
-      return facts[i];
-    };
-
-    const rollStats = animate => {
-      [[elEmails, emailCount()], [elTexts, rand(50, 200)], [elTomorrow, rand(10, 100)]]
-        .forEach(([el, v]) => {
-          el.textContent = v;
-          if (animate && !reduced) {
-            el.classList.remove('rolling');
-            void el.offsetWidth;
-            el.classList.add('rolling');
-          }
-        });
-    };
-
-    const showFact = animate => {
-      const text = nextFact();
-      if (animate && !reduced) {
-        elFact.classList.add('fading');
-        setTimeout(() => {
-          elFact.textContent = text;
-          elFact.classList.remove('fading');
-        }, 150);
-      } else {
-        elFact.textContent = text;
-      }
-    };
-
-    let approveTimer;
-    const approve = () => {
-      if (reduced) return;
-      elApprove.classList.add('show');
-      clearTimeout(approveTimer);
-      approveTimer = setTimeout(() => elApprove.classList.remove('show'), 1400);
-    };
-
-    rollStats(false);
-    showFact(false);
-    btnFact.addEventListener('click', () => { showFact(true); approve(); });
-    btnStats.addEventListener('click', () => { rollStats(true); approve(); });
   }
 
   /* ---------- footer peek ---------- */

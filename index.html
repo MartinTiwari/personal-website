@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=22" />
+  <link rel="stylesheet" href="styles.css?v=24" />
 </head>
 <body>
 
@@ -71,8 +71,10 @@
     <p class="hand aside">(three. counted by hand, like everything else here.)</p>
     <button class="cr-card hidden" id="cr-card" type="button" aria-label="Live Clash Royale stats">
       <span class="tape" aria-hidden="true"></span>
+      <span class="cr-game">👑 clash royale</span>
       <span class="cr-head">live from the arena <span class="chip-dot" aria-hidden="true"></span></span>
       <span class="cr-troph">🏆 <b id="cr-num"></b></span>
+      <span class="cr-bar" aria-hidden="true"><span class="cr-bar-fill" id="cr-bar-fill"></span></span>
       <span id="cr-rows"></span>
       <span class="cr-foot hand">the ladder is a lifestyle.</span>
     </button>
@@ -261,9 +263,6 @@
           <div class="row"><span class="k">boss</span><span class="v">HARU. complaints go through her. she ignores them.</span></div>
           <div class="row"><span class="k">family business</span><span class="v">the water you drink, the bag you carry, the chemicals you can't pronounce. we're everywhere. you're welcome.</span></div>
           <div class="row"><span class="k">location</span><span class="v">earth, probably. good momos within walking distance.</span></div>
-          <div class="row"><span class="k">timezone</span><span class="v">NPT, +5:45. round offsets are for other countries. <span class="npt-live hidden" id="npt-live">it is <b id="npt-clock"></b> in kathmandu right now.</span></span></div>
-          <div class="row"><span class="k">weather</span><span class="v" id="ktm-weather">the sky refuses to comment.</span></div>
-          <div class="row"><span class="k">combat record</span><span class="v" id="cr-line">arena data classified. for now.</span></div>
         </div>
       </div>
 
@@ -386,41 +385,21 @@
   <section class="sec outro">
     <p class="label">ok, that's me</p>
     <h2 class="outro-big">k chaa?</h2>
-    <p class="hand aside center">that's "what's up" for the non-nepali crowd. this is not a CV, so no cover letters. here's what's actually going on in there, allegedly:</p>
+    <p class="hand aside center">that's "what's up" for the non-nepali crowd. this is not a CV, so here's what's actually happening right now, no "allegedly" about it:</p>
 
-    <div class="dash" id="dash">
-      <div class="dash-head">
-        <span class="dash-dot" aria-hidden="true"></span>
-        <span class="dash-title">martin dashboard</span>
-        <span class="dash-live">live · unverified</span>
+    <div class="dispatch" id="dispatch">
+      <div class="dispatch-head">
+        <span class="dispatch-dot" aria-hidden="true"></span>
+        <span class="dispatch-title">dispatch from kathmandu</span>
+        <span class="dispatch-live">live</span>
       </div>
-      <div class="dash-grid">
-        <div class="dash-stat">
-          <span class="dash-num" id="stat-emails">0</span>
-          <span class="dash-label">unread emails</span>
-        </div>
-        <div class="dash-stat">
-          <span class="dash-num" id="stat-texts">0</span>
-          <span class="dash-label">unread texts</span>
-        </div>
-        <div class="dash-stat">
-          <span class="dash-num">∞</span>
-          <span class="dash-label">unread thoughts <span class="dash-haru" aria-hidden="true">😾</span></span>
-        </div>
-        <div class="dash-stat">
-          <span class="dash-num" id="stat-tomorrow">0</span>
-          <span class="dash-label">times said "tomorrow"</span>
-        </div>
+      <div class="dispatch-rows">
+        <div class="dispatch-row"><span class="dk">local time</span><span class="dv" id="disp-time">--:--</span></div>
+        <div class="dispatch-row"><span class="dk">sky</span><span class="dv" id="disp-sky">the sky refuses to comment.</span></div>
+        <div class="dispatch-row"><span class="dk">status</span><span class="dv" id="disp-status">calibrating.</span></div>
+        <div class="dispatch-row"><span class="dk">HARU</span><span class="dv" id="disp-haru">calibrating.</span></div>
       </div>
-      <div class="dash-fact">
-        <p class="hand dash-fact-text" id="dash-fact">loading a fact you didn't ask for...</p>
-      </div>
-      <p class="dash-ship hidden" id="dash-ship"></p>
-      <div class="dash-actions">
-        <button class="dash-btn" id="dash-new-fact" type="button">new fact</button>
-        <button class="dash-btn dash-btn-ghost" id="dash-update-stats" type="button">update stats</button>
-      </div>
-      <p class="dash-approve hand" id="dash-approve" aria-hidden="true">HARU approved 😾</p>
+      <p class="dispatch-foot hand">signal ends here. HARU has muted further notifications.</p>
     </div>
   </section>
 
@@ -471,6 +450,6 @@
 
   <div id="toast-root"></div>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=27" defer></script>
+  <script src="src/main.js?v=30" defer></script>
 </body>
 </html>
