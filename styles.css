@@ -279,13 +279,11 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   max-width:640px;
 }
 .sighting-copy .label{margin-bottom:12px}
-.sighting-headline{margin-bottom:18px;min-height:1.1em}
-.sighting-headline .hl{white-space:nowrap}
-.sighting-headline.typing::after{
-  content:"";display:inline-block;width:.06em;height:.85em;background:var(--ink);
-  margin-left:.05em;vertical-align:text-bottom;animation:caretBlink .8s step-end infinite;
+.sighting-headline{
+  margin-bottom:18px;min-height:1.1em;will-change:clip-path;
+  clip-path:inset(0 calc((1 - clamp(0,(var(--p) - .72) * 5,1)) * 100%) 0 0);
 }
-@keyframes caretBlink{50%{opacity:0}}
+.sighting-headline .hl{white-space:nowrap}
 .sighting-body{
   font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.55;
   color:var(--ink);max-width:44ch;margin:0 0 16px;letter-spacing:-.005em;
@@ -401,7 +399,9 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 .walking .pet-body{animation:trot var(--pet-step,.32s) ease-in-out infinite alternate}
 @keyframes trot{to{transform:translateY(-1.5px)}}
 .pet-bubble{
-  position:absolute;left:50%;top:-6px;translate:-50% -100%;width:max-content;
+  position:absolute;left:50%;top:-6px;translate:-50% -100%;
+  transform:translateX(var(--bubble-shift,0px));
+  width:max-content;max-width:min(70vw,250px);line-height:1.3;
   background:var(--ink);color:var(--paper);border-radius:10px;padding:5px 11px;
   font-size:16px;pointer-events:none;animation:noteIn .3s cubic-bezier(.2,1.5,.4,1) both;
 }
@@ -702,7 +702,10 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   content:"📌";position:absolute;top:-12px;left:50%;transform:translateX(-50%);
   font-size:15px;
 }
-@keyframes noteIn{from{opacity:0;transform:translateY(14px) scale(.85)}to{opacity:1;transform:none}}
+@keyframes noteIn{
+  from{opacity:0;transform:translateX(var(--bubble-shift,0px)) translateY(14px) scale(.85)}
+  to{opacity:1;transform:translateX(var(--bubble-shift,0px))}
+}
 
 /* ================= outro ================= */
 .outro{text-align:center;padding-bottom:30px}

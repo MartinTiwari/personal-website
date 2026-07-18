@@ -656,28 +656,8 @@
   const sightingPhoto = $('#sighting-photo');
   const sightingHeadline = $('#sighting-headline');
   if (sightingStage && sightingPhoto && sightingHeadline) {
-    const line = 'one (1) confirmed sighting.';
-    const highlighted = 'one <span class="hl">(1)</span> confirmed sighting.';
-    let typed = false;
-    const type = () => {
-      if (typed) return;
-      typed = true;
-      sightingHeadline.classList.add('typing');
-      let i = 0;
-      const step = () => {
-        sightingHeadline.textContent = line.slice(0, i);
-        i++;
-        if (i <= line.length) setTimeout(step, 32);
-        else {
-          sightingHeadline.classList.remove('typing');
-          sightingHeadline.innerHTML = highlighted;
-        }
-      };
-      step();
-    };
     if (reduced) {
       sightingStage.style.setProperty('--p', 1);
-      sightingHeadline.innerHTML = highlighted;
     } else {
       let shift = 0;
       const computeShift = () => {
@@ -695,7 +675,6 @@
         const p = Math.min(1, Math.max(0, (start - rect.top) / (start - end)));
         sightingStage.style.setProperty('--p', p);
         sightingStage.style.setProperty('--shift', shift + 'px');
-        if (p > 0.82) type();
       };
       const onScroll = () => {
         if (ticking) return;
@@ -746,7 +725,17 @@
 
     function speak(text, ms = 1700) {
       petBubble.textContent = text;
+      petBubble.style.setProperty('--bubble-shift', '0px');
       petBubble.classList.remove('hidden');
+      // long messages near a screen edge get nudged back on-screen instead of running off it
+      requestAnimationFrame(() => {
+        const r = petBubble.getBoundingClientRect();
+        const margin = 10;
+        let shift = 0;
+        if (r.left < margin) shift = margin - r.left;
+        else if (r.right > innerWidth - margin) shift = (innerWidth - margin) - r.right;
+        if (shift) petBubble.style.setProperty('--bubble-shift', shift + 'px');
+      });
       setTimeout(() => petBubble.classList.add('hidden'), ms);
     }
     function petRest() {
