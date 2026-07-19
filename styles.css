@@ -738,6 +738,16 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 .dv{text-align:right;font-size:14.5px;color:var(--ink)}
 .dv b{font-weight:600}
 .dispatch-foot{margin:16px 0 0;font-size:16px;color:var(--ink-soft);text-align:center}
+
+/* the p.s. note: the letter's last word, taped above the signature */
+.ps-note{
+  position:relative;max-width:520px;margin:52px auto 0;padding:28px 28px 18px;
+  background:#fff;border-radius:4px;rotate:-1.2deg;text-align:left;
+  box-shadow:0 10px 26px rgba(34,30,25,.14);
+}
+.ps-note .tape{background:rgba(185,232,201,.8)}
+.ps-note p{font-size:19.5px;line-height:1.5;color:var(--ink);margin:0 0 13px}
+.ps-note .ps-sign{margin:6px 0 0;text-align:right;color:var(--ink-soft);font-size:18px}
 @keyframes livePulse{0%,100%{opacity:1}50%{opacity:.35}}
 
 /* ================= footer + peek ================= */
