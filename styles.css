@@ -852,3 +852,64 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   .badge-swing{animation:none}
   .eq i{animation:none}
 }
+
+/* ================= the envelope: the site arrives as mail ================= */
+#intro{
+  position:fixed;inset:0;z-index:200;background:var(--paper);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;
+  cursor:pointer;animation:introBye .4s ease 2.05s both;
+}
+.env{
+  position:relative;width:min(320px,78vw);aspect-ratio:3/2;
+  animation:envIn .5s cubic-bezier(.2,1.4,.4,1) both;
+  filter:drop-shadow(0 18px 30px rgba(34,30,25,.18));
+}
+.env-back{
+  position:absolute;inset:0;background:var(--paper-2);border-radius:8px;
+  border:2px solid var(--ink);
+}
+.env-letter{
+  position:absolute;left:6%;right:6%;top:8%;bottom:6%;background:#fff;
+  border-radius:4px;border:1.5px solid rgba(34,30,25,.25);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:12px;
+  animation:letterUp .65s cubic-bezier(.2,1.2,.3,1) 1.3s both;
+}
+.env-to{font-size:17px;color:var(--ink-soft);rotate:-1deg}
+.env-sig{width:54px;height:auto;rotate:-7deg;opacity:.92}
+.env-pocket{
+  position:absolute;inset:0;z-index:3;background:var(--paper-2);
+  clip-path:polygon(0 0,50% 42%,100% 0,100% 100%,0 100%);
+  border-radius:8px;box-shadow:inset 0 0 0 2px var(--ink);
+}
+.env-flap{
+  position:absolute;left:0;right:0;top:0;height:56%;z-index:4;
+  background:#EBDFC8;clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:50% 0;
+  animation:flapOpen .5s ease-in 1.0s both;
+}
+.env-seal{
+  position:absolute;left:50%;top:42%;translate:-50% -50%;z-index:5;
+  width:52px;height:52px;border-radius:50%;background:var(--red);
+  border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;
+  font-size:22px;box-shadow:2px 3px 0 rgba(34,30,25,.35);
+  animation:sealCrack .45s ease-in .7s both;
+}
+.env-hint{
+  font-size:17px;color:var(--ink-soft);margin:0;
+  animation:hintPulse 1.6s ease-in-out infinite;
+}
+@keyframes envIn{from{opacity:0;transform:translateY(36px) scale(.72) rotate(-3deg)}to{opacity:1;transform:none}}
+@keyframes sealCrack{
+  0%{transform:none}
+  30%{transform:rotate(-10deg) scale(1.06)}
+  100%{transform:translateY(56px) rotate(24deg);opacity:0}
+}
+@keyframes flapOpen{
+  0%{transform:rotateX(0);z-index:4}
+  55%{z-index:1}
+  100%{transform:rotateX(178deg);z-index:1}
+}
+@keyframes letterUp{from{transform:none}to{transform:translateY(-72%) rotate(1.5deg)}}
+@keyframes introBye{to{opacity:0;visibility:hidden}}
+@keyframes hintPulse{50%{opacity:.45}}
+body.intro-hold .chip,body.intro-hold .hero-note{animation-play-state:paused}

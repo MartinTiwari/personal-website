@@ -4,6 +4,24 @@
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
 
+  /* ---------- the envelope: opens itself, once per session ---------- */
+  {
+    const intro = $('#intro');
+    if (intro) {
+      document.body.classList.add('intro-hold'); // hero entrances wait their turn
+      let finished = false;
+      const done = () => {
+        if (finished) return;
+        finished = true;
+        try { sessionStorage.setItem('intro-done', '1'); } catch {}
+        document.body.classList.remove('intro-hold');
+        intro.remove();
+      };
+      intro.addEventListener('click', done);
+      setTimeout(done, 2600); // CSS timeline ends ~2.45s; this is cleanup
+    }
+  }
+
   /* ---------- toast + confetti ---------- */
   function toast(html) {
     const root = $('#toast-root');

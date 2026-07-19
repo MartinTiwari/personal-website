@@ -15,9 +15,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=26" />
+  <link rel="stylesheet" href="styles.css?v=28" />
 </head>
 <body>
+
+  <!-- the envelope: the site arrives as mail, once per session -->
+  <div id="intro" aria-hidden="true">
+    <div class="env">
+      <div class="env-back"></div>
+      <div class="env-letter">
+        <span class="env-to hand">for: whoever found the link</span>
+        <img class="env-sig" src="assets/signature.png?v=2" alt="" width="54" height="50" />
+      </div>
+      <div class="env-pocket"></div>
+      <div class="env-flap"></div>
+      <div class="env-seal">🐾</div>
+    </div>
+    <p class="env-hint hand">tap to open faster</p>
+  </div>
+  <script>try{if(sessionStorage.getItem('intro-done')||matchMedia('(prefers-reduced-motion: reduce)').matches)document.getElementById('intro').remove()}catch(e){}</script>
 
   <!-- letterhead -->
   <header class="top">
@@ -458,6 +474,6 @@
 
   <div id="toast-root"></div>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=31" defer></script>
+  <script src="src/main.js?v=32" defer></script>
 </body>
 </html>
