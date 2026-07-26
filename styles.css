@@ -230,6 +230,8 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 .f1{rotate:-2deg}
 .f2{rotate:2deg;margin-top:26px}
 .f3{rotate:-3deg;margin-top:12px;cursor:default}
+.f5{rotate:1.5deg;margin-top:6px}
+.f5 .tape{transform:translateX(-50%) rotate(1.5deg);background:rgba(232,83,47,.35)}
 .pol img{width:100%;height:auto;display:block;border-radius:2px}
 .pol figcaption{font-size:20px;text-align:center;padding:9px 4px 4px;color:var(--ink);line-height:1.25}
 .tape{
@@ -840,7 +842,7 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   .s-wide .s-arrow{position:absolute;top:16px;right:18px}
   .aside{font-size:19px}
   .wall{gap:26px}
-  .p1,.p3,.p4,.f2,.f3{margin-top:0}
+  .p1,.p3,.p4,.f2,.f3,.f5{margin-top:0}
   .dossier .row{grid-template-columns:1fr;gap:2px;padding:13px 16px}
   .stamp{top:-14px;right:6px;font-size:12px}
   #board{height:250px}
