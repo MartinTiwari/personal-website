@@ -950,17 +950,21 @@ body.intro-hold .chip,body.intro-hold .hero-note{animation-play-state:paused}
 
 /* ---------- grain: the sheet drifts under the ink as you scroll ---------- */
 .grain{
-  position:fixed;inset:-60px;z-index:1;pointer-events:none;opacity:.3;
+  position:fixed;inset:-60px;z-index:1;pointer-events:none;opacity:.72;
   mix-blend-mode:multiply;
-  /* real fibre, not more dots. the body already has a dot grid: layering a
-     fainter copy of it on top was invisible, which is exactly what happened. */
-  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+  /* Real fibre, not more dots: the body already has a dot grid, so layering a
+     fainter copy of it on top was invisible — which is exactly what happened.
+     feComponentTransfer squashes the noise into a light band and biases it off
+     blue. Plain greyscale noise multiplies the warm cream into cold grey, so
+     the texture only became visible by draining the paper's colour. */
+  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncR type='linear' slope='.30' intercept='.70'/><feFuncG type='linear' slope='.30' intercept='.67'/><feFuncB type='linear' slope='.30' intercept='.60'/><feFuncA type='linear' slope='0' intercept='1'/></feComponentTransfer></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
   background-size:180px 180px;
   background-position:0 var(--grain-y,0px);
 }
-/* a fixed, blended, full-screen layer re-composites the whole page every frame.
-   worth it on a desktop, not worth the scroll jank on a phone. */
-@media (pointer:coarse),(max-width:640px){.grain{display:none}}
+/* the expensive part was never the layer, it was repainting it every scroll
+   frame. that drift is desktop-only, so on touch this is a single static
+   quad. hiding it outright just meant phones got no paper at all. */
+@media (pointer:coarse),(max-width:640px){.grain{opacity:.6}}
 
 /* ---------- section labels: wet ink settling into the paper ---------- */
 /* wet ink hitting paper: it lands spread and unfocused, then draws in
