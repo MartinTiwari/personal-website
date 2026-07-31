@@ -220,9 +220,26 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   position:relative;background:#fff;padding:11px 11px 8px;border-radius:3px;
   box-shadow:0 14px 34px rgba(34,30,25,.16),0 3px 8px rgba(34,30,25,.1);
   width:min(250px,78vw);flex:0 0 auto;cursor:zoom-in;
-  transition:transform .3s cubic-bezier(.2,1.4,.4,1),box-shadow .3s;
+  /* picked up off the table: real perspective, driven by where the pointer is */
+  transform:
+    perspective(780px)
+    rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))
+    translateY(calc(var(--ty,0px) + var(--rv,0px))) scale(var(--sc,1));
+  transition:transform .34s cubic-bezier(.2,1.4,.4,1),box-shadow .3s,rotate .34s ease,opacity .6s ease;
 }
-.pol:hover{transform:rotate(0) translateY(-8px) scale(1.02);box-shadow:0 22px 44px rgba(34,30,25,.22);z-index:2}
+/* the scroll reveal rides its own variable so it can't fight the tilt */
+.pol.reveal{--rv:30px}
+.pol.reveal.in{--rv:0px}
+/* while the pointer is tracking, transform must not lag behind it */
+.pol.tilting{transition:box-shadow .3s,rotate .34s ease}
+.pol:hover{--ty:-9px;--sc:1.03;rotate:0deg;box-shadow:0 30px 52px rgba(34,30,25,.24),0 6px 14px rgba(34,30,25,.12);z-index:2}
+/* the sheen of light sliding across a glossy print */
+.pol::after{
+  content:"";position:absolute;inset:0;z-index:4;border-radius:3px;pointer-events:none;
+  opacity:0;transition:opacity .3s;mix-blend-mode:overlay;
+  background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.6),transparent 62%);
+}
+.pol:hover::after{opacity:1}
 .p1{rotate:-3deg;margin-top:22px}
 .p2{rotate:2deg}
 .p3{rotate:-1.5deg;margin-top:34px}
@@ -392,9 +409,10 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 }
 #haru-pet svg{display:block;width:100%;height:auto;pointer-events:auto;cursor:pointer}
 .pet-flip{scale:-1 1}
-.pet-tail{transform-origin:8px 38px;animation:tailflick 3.2s ease-in-out infinite}
-@keyframes tailflick{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
-.pet-legs-a,.pet-legs-b{transform-origin:center 52px}
+/* the tail hinges at its base, where it meets the rump */
+.pet-tail{transform-origin:21px 36px;animation:tailflick 3.2s ease-in-out infinite}
+@keyframes tailflick{0%,100%{transform:rotate(0)}50%{transform:rotate(-12deg)}}
+.pet-legs-a,.pet-legs-b{transform-origin:center 44px}
 .walking .pet-legs-a{animation:step var(--pet-step,.32s) ease-in-out infinite alternate}
 .walking .pet-legs-b{animation:step var(--pet-step,.32s) ease-in-out infinite alternate-reverse}
 @keyframes step{from{transform:rotate(9deg)}to{transform:rotate(-9deg)}}
@@ -581,15 +599,15 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 .strip::-webkit-scrollbar{display:none}
 .strip.dragging{cursor:grabbing;scroll-snap-type:none}
 .card{
-  flex:0 0 auto;width:min(240px,68vw);scroll-snap-align:start;
-  background:#fff;border:2px solid var(--ink);border-radius:16px;
-  padding:20px;box-shadow:4px 4px 0 var(--paper-2);
-  display:flex;flex-direction:column;gap:8px;user-select:none;
+  flex:0 0 auto;width:min(240px,68vw);height:176px;scroll-snap-align:start;
+  position:relative;user-select:none;cursor:pointer;
 }
 .card:nth-child(odd){rotate:-1deg}
 .card:nth-child(even){rotate:1deg}
+.card:nth-child(3n){rotate:1.6deg}
+.card:nth-child(5n){rotate:-1.8deg}
 .card-k{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
-.card-v{font-family:var(--serif);font-weight:640;font-size:21px;line-height:1.3}
+.card-v{font-family:var(--serif);font-weight:640;font-size:20px;line-height:1.28}
 .swipe-hint{text-align:right;font-size:19px;margin-top:-6px}
 
 /* ================= music player ================= */
@@ -786,7 +804,12 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 #haru-pet.sleeping .pet-eye-closed{opacity:1}
 #haru-pet.sleeping .pet-tail{animation-duration:7s}
 #haru-pet.sleeping .pet-body{animation:snooze 3s ease-in-out infinite}
-@keyframes snooze{50%{transform:translateY(1.5px) scaleY(.97)}}
+/* the loaf breathes. keep the folded-down offset in every frame or the
+   animation would override it and stand her back up. */
+@keyframes snooze{
+  0%,100%{transform:translateY(9px)}
+  50%{transform:translateY(10.5px) scaleY(.97)}
+}
 
 /* ================= toasts & confetti ================= */
 #toast-root{
@@ -846,6 +869,9 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   .dossier .row{grid-template-columns:1fr;gap:2px;padding:13px 16px}
   .stamp{top:-14px;right:6px;font-size:12px}
   #board{height:250px}
+  /* narrower cards wrap to more lines, and the height is fixed for the flip */
+  .card{height:200px}
+  .card-v{font-size:19px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -915,3 +941,347 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 @keyframes introBye{to{opacity:0;visibility:hidden}}
 @keyframes hintPulse{50%{opacity:.45}}
 body.intro-hold .chip,body.intro-hold .hero-note{animation-play-state:paused}
+
+/* ============================================================
+   paper physics, second pass
+   ink that bleeds, stamps that land, paper that tears,
+   a cat with opinions, and a letter that folds itself up.
+   ============================================================ */
+
+/* ---------- grain: the sheet drifts under the ink as you scroll ---------- */
+.grain{
+  position:fixed;inset:-60px;z-index:1;pointer-events:none;opacity:.55;
+  mix-blend-mode:multiply;
+  background-image:
+    radial-gradient(rgba(34,30,25,.05) .7px,transparent .8px),
+    radial-gradient(rgba(34,30,25,.03) .5px,transparent .6px);
+  background-size:13px 13px,7px 7px;
+  background-position:0 var(--grain-y,0px),0 calc(var(--grain-y,0px) * -.55);
+}
+/* a fixed, blended, full-screen layer re-composites the whole page every frame.
+   worth it on a desktop, not worth the scroll jank on a phone. */
+@media (pointer:coarse),(max-width:640px){.grain{display:none}}
+
+/* ---------- section labels: wet ink settling into the paper ---------- */
+.label.ink{
+  opacity:0;filter:blur(5px);transform:translateY(7px);
+  transition:opacity .55s ease,filter .7s ease,transform .7s cubic-bezier(.2,1,.3,1);
+}
+.label.ink.in{opacity:1;filter:blur(0);transform:none}
+.label.ink::after{transform:scaleX(0);transform-origin:0 50%;transition:transform .9s cubic-bezier(.2,1,.3,1) .12s}
+.label.ink.in::after{transform:scaleX(1)}
+
+/* ---------- stamps: they don't fade in, they land ---------- */
+.dossier-wrap .stamp.thud{animation:thud .6s cubic-bezier(.2,1.4,.4,1) both}
+.gf-stamp.thud{animation:thudSealed .6s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes thud{
+  0%{transform:scale(2.7) rotate(-16deg);opacity:0}
+  40%{opacity:.85}
+  58%{transform:scale(.92) rotate(3deg)}
+  76%{transform:scale(1.05) rotate(-1.5deg)}
+  100%{transform:none;opacity:.75}
+}
+@keyframes thudSealed{
+  0%{transform:scale(2.7) rotate(-16deg);opacity:0}
+  40%{opacity:1}
+  58%{transform:scale(.92) rotate(3deg)}
+  76%{transform:scale(1.05) rotate(-1.5deg)}
+  100%{transform:none;opacity:1}
+}
+.dossier-wrap .stamp.thud::before,.gf-stamp.thud::before{
+  content:"";position:absolute;inset:-7px;border-radius:8px;
+  border:2px solid rgba(194,42,18,.45);pointer-events:none;
+  animation:thudRing .65s ease-out .3s both;
+}
+@keyframes thudRing{
+  0%{opacity:0;transform:scale(.72)}
+  22%{opacity:.9}
+  100%{opacity:0;transform:scale(1.55)}
+}
+
+/* ---------- torn edge between sections: the page rips open as you arrive ---------- */
+.tear{
+  position:relative;height:19px;overflow:hidden;
+  margin:clamp(46px,7.5vh,80px) 0 calc(clamp(46px,7.5vh,80px) * -.55);
+  clip-path:inset(0 50% 0 50%);
+  transition:clip-path 1.05s cubic-bezier(.2,1,.3,1);
+}
+.tear.in{clip-path:inset(0 0 0 0)}
+.tear::before{
+  content:"";position:absolute;inset:0;background:var(--paper-2);
+  clip-path:polygon(
+    0% 38%,4% 21%,9% 42%,14% 18%,19% 40%,25% 24%,31% 45%,37% 20%,43% 39%,
+    49% 19%,55% 43%,61% 22%,67% 41%,73% 18%,79% 42%,85% 25%,91% 44%,96% 21%,100% 38%,
+    100% 64%,95% 83%,89% 59%,83% 81%,77% 62%,71% 85%,65% 60%,59% 80%,53% 59%,
+    47% 82%,41% 61%,35% 79%,29% 60%,23% 84%,17% 59%,11% 80%,5% 62%,0% 81%
+  );
+}
+
+/* ---------- shuffle the evidence: deal the photos again ---------- */
+.shuffle-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;border:2px solid var(--ink);border-radius:999px;
+  padding:5px 16px 7px;font-size:19px;color:var(--ink);
+  box-shadow:3px 3px 0 var(--paper-2);rotate:-1.2deg;
+  margin:-8px 0 8px;transition:transform .2s,box-shadow .2s,rotate .2s;
+}
+.shuffle-btn:hover{rotate:1deg;transform:translate(-2px,-2px);box-shadow:5px 6px 0 var(--ink)}
+.shuffle-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.shuffle-btn .shuffle-ico{display:inline-block;transition:transform .55s cubic-bezier(.2,1.6,.4,1)}
+.shuffle-btn.spun .shuffle-ico{transform:rotate(360deg) scale(1.2)}
+
+/* ---------- socials lean toward the cursor ---------- */
+.social{will-change:transform}
+.social.reveal{--sy:30px}
+.social.reveal.in{--sy:0px}
+/* out-specifies .reveal.in{transform:none} so the reveal rides --sy instead of fighting it */
+.social,.social.reveal,.social.reveal.in,.social:hover{transform:translate(var(--sx,0px),var(--sy,0px))}
+.social:hover,.social.reveal.in:hover{--sy:-5px}
+
+/* same trick for the polaroids: the reveal moves through --rv, never through transform */
+.pol,.pol.reveal,.pol.reveal.in{
+  transform:
+    perspective(780px)
+    rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))
+    translateY(calc(var(--ty,0px) + var(--rv,0px))) scale(var(--sc,1));
+}
+
+/* ---------- HARU: sitting, grooming, and thoroughly spooked ---------- */
+/* sitting: rear legs fold under, front legs stay braced, the rump drops.
+   that tilt is the whole reason a sitting cat reads as sitting. */
+.leg-rear,.leg-front{transform-origin:center 58px;transition:transform .35s ease}
+#haru-pet.sitting .leg-rear{transform:scaleY(.26)}
+#haru-pet.sitting .pet-body{transform-origin:80px 34px;transform:rotate(-10deg) translateY(3px)}
+
+/* asleep: everything folds away into a loaf */
+#haru-pet.sleeping .leg-rear,#haru-pet.sleeping .leg-front{transform:scaleY(.14)}
+#haru-pet.sleeping .pet-body{transform:translateY(9px)}
+#haru-pet.sitting .pet-tail{animation:tailcurl 4.4s ease-in-out infinite}
+@keyframes tailcurl{0%,100%{transform:rotate(7deg)}50%{transform:rotate(-5deg)}}
+
+/* grooming: she sits, then lifts a front paw and dips her head to it */
+#haru-pet.grooming .leg-rear{transform:scaleY(.26)}
+#haru-pet.grooming .pet-body{
+  transform-origin:80px 34px;animation:groomLean 1.15s ease-in-out infinite;
+}
+@keyframes groomLean{
+  0%,100%{transform:rotate(-10deg) translateY(3px)}
+  45%{transform:rotate(-3deg) translateY(6px)}
+}
+#haru-pet.grooming .pet-legs-b .leg-front{animation:groomPaw 1.15s ease-in-out infinite}
+@keyframes groomPaw{
+  0%,100%{transform:translateY(0) rotate(0)}
+  45%{transform:translateY(-13px) rotate(-17deg)}
+}
+
+#haru-pet.spooked .pet-tail{animation:tailpuff .5s ease-out;transform-origin:21px 36px}
+@keyframes tailpuff{
+  0%{transform:rotate(0) scale(1)}
+  30%{transform:rotate(-46deg) scale(1.5)}
+  100%{transform:rotate(-10deg) scale(1.1)}
+}
+
+/* ---------- the chiya glass. it has approximately 40 seconds to live. ---------- */
+#chiya{
+  position:fixed;left:0;bottom:calc(env(safe-area-inset-bottom) + 1px);z-index:43;
+  width:26px;pointer-events:none;opacity:0;
+  transform:translateX(var(--cx,0px));
+  transition:opacity .45s ease;
+}
+#chiya.here{opacity:1}
+#chiya svg{display:block;width:100%;height:auto;overflow:visible}
+.chiya-steam{animation:steam 2.8s ease-in-out infinite}
+@keyframes steam{0%,100%{opacity:.18;transform:translateY(1px)}50%{opacity:.5;transform:translateY(-2.5px)}}
+#chiya.falling{animation:chiyaFall .95s cubic-bezier(.42,.05,.9,.62) forwards}
+@keyframes chiyaFall{
+  0%{transform:translateX(var(--cx,0px)) rotate(0)}
+  14%{transform:translateX(calc(var(--cx,0px) + 9px)) translateY(-6px) rotate(24deg)}
+  100%{transform:translateX(calc(var(--cx,0px) + 30px)) translateY(120px) rotate(170deg);opacity:0}
+}
+
+/* ---------- the letter folds itself back up ---------- */
+.ps-stage{--f:0;position:relative;max-width:560px;margin:52px auto 0}
+/* scroll runway: guarantees there's enough page left for the fold to finish */
+.ps-runway{height:clamp(190px,40vh,400px)}
+.ps-stage .ps-note{
+  margin:0 auto;z-index:2;
+  transform:scale(calc(1 - var(--f) * .56)) translateY(calc(var(--f) * 22px));
+  transform-origin:50% 58%;
+  will-change:transform;
+}
+.ps-crease{
+  position:absolute;left:-1px;right:-1px;background:#fff;pointer-events:none;z-index:3;
+  opacity:clamp(0,calc((var(--f) - .28) * 7),1);
+}
+.ps-crease-a{
+  top:0;height:calc(clamp(0,(var(--f) - .3) * 2.7,1) * 35%);
+  border-bottom:1px solid rgba(34,30,25,.16);
+  box-shadow:0 7px 13px -7px rgba(34,30,25,.5);
+}
+.ps-crease-b{
+  bottom:0;height:calc(clamp(0,(var(--f) - .42) * 2.7,1) * 35%);
+  border-top:1px solid rgba(34,30,25,.16);
+  box-shadow:0 -7px 13px -7px rgba(34,30,25,.5);
+}
+.ps-env-back,.ps-env-front{
+  position:absolute;left:50%;top:50%;translate:-50% -50%;
+  width:min(310px,76vw);aspect-ratio:3/2;pointer-events:none;
+  opacity:clamp(0,calc((var(--f) - .48) * 3.4),1);
+}
+.ps-env-back{
+  z-index:1;background:var(--paper-2);border:2px solid var(--ink);border-radius:8px;
+  box-shadow:0 16px 30px rgba(34,30,25,.16);
+}
+.ps-env-front{z-index:4;perspective:600px}
+.ps-env-pocket{
+  position:absolute;inset:0;background:var(--paper-2);border-radius:8px;
+  clip-path:polygon(0 0,50% 42%,100% 0,100% 100%,0 100%);
+  box-shadow:inset 0 0 0 2px var(--ink);
+}
+.ps-env-flap{
+  position:absolute;left:0;right:0;top:0;height:56%;
+  background:#EBDFC8;clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:50% 0;
+  transform:rotateX(calc((1 - clamp(0,(var(--f) - .66) * 3.6,1)) * -168deg));
+}
+.ps-env-seal{
+  position:absolute;left:50%;top:42%;translate:-50% -50%;
+  width:44px;height:44px;border-radius:50%;background:var(--red);
+  border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;
+  font-size:19px;box-shadow:2px 3px 0 rgba(34,30,25,.35);
+  opacity:clamp(0,calc((var(--f) - .9) * 12),1);
+  transform:scale(calc(.62 + clamp(0,(var(--f) - .9) * 12,1) * .38)) rotate(-6deg);
+}
+.ps-posted{
+  position:absolute;top:100%;left:0;right:0;z-index:5;
+  text-align:center;font-size:18px;margin:16px 0 0;
+  opacity:clamp(0,calc((var(--f) - .93) * 14),1);
+}
+
+/* ============================================================
+   rapid fire: six kinds of scrap paper, each with a punchline on the back
+   ============================================================ */
+.strip{perspective:1400px}
+/* the reveal rides --rv so it can't fight the flip (see .pol for the same trick) */
+.card,.card.reveal,.card.reveal.in{
+  transform:translateY(var(--rv,0px)) rotateY(var(--fy,0deg));
+  transform-style:preserve-3d;
+  transition:transform .62s cubic-bezier(.3,1.05,.35,1);
+}
+.card.reveal{--rv:30px}
+.card.reveal.in{--rv:0px}
+.card.flipped{--fy:180deg}
+
+.card-face{
+  position:absolute;inset:0;overflow:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  display:flex;flex-direction:column;gap:9px;padding:18px 17px;
+}
+.card-back{
+  transform:rotateY(180deg);
+  align-items:center;justify-content:center;text-align:center;gap:0;
+}
+.card-b{font-family:var(--hand);font-size:20.5px;line-height:1.32;color:var(--ink);rotate:-1deg}
+.card-turn{
+  position:absolute;right:11px;bottom:8px;font-size:15px;color:var(--ink-soft);
+  opacity:.4;transition:opacity .25s,rotate .4s;
+}
+.card:hover .card-turn{opacity:.85;rotate:110deg}
+
+/* — ruled index card — */
+.c-index .card-face{
+  background:#fff;
+  background-image:repeating-linear-gradient(transparent 0 24px,rgba(43,91,226,.14) 24px 25px);
+  background-position:0 36px;
+  border:1px solid rgba(34,30,25,.2);border-radius:3px;
+  box-shadow:2px 3px 0 rgba(34,30,25,.09);
+}
+.c-index .card-face::before{
+  content:"";position:absolute;left:0;right:0;top:33px;height:1.5px;background:rgba(232,83,47,.45);
+}
+
+/* — graph paper slip — */
+.c-graph .card-face{
+  background:#fff;
+  background-image:
+    linear-gradient(rgba(43,91,226,.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(43,91,226,.12) 1px,transparent 1px);
+  background-size:11px 11px;
+  border:1px solid rgba(34,30,25,.18);border-radius:2px;
+  box-shadow:2px 3px 0 rgba(34,30,25,.07);
+}
+
+/* — sticky note, with the corner starting to lift — */
+.c-sticky .card-face{
+  background:linear-gradient(158deg,#FFEC9B,#FFE15A 62%,#F6D64C);
+  border-radius:1px;
+  box-shadow:3px 6px 14px rgba(34,30,25,.17);
+}
+.c-sticky .card-face::after{
+  content:"";position:absolute;right:0;bottom:0;
+  border:9px solid transparent;border-right-color:#EBCB47;border-bottom-color:#EBCB47;
+  filter:drop-shadow(-1px -1px 1px rgba(34,30,25,.18));
+}
+.c-sticky .card-k{color:#7A6410}
+
+/* — thermal receipt, torn off at both ends — */
+.c-receipt .card-face{
+  background:#FCFAF3;
+  box-shadow:0 3px 11px rgba(34,30,25,.13);
+  clip-path:polygon(
+    0 2%,7% 0,14% 2.4%,21% 0,28% 2.4%,35% 0,42% 2.4%,49% 0,56% 2.4%,63% 0,70% 2.4%,77% 0,84% 2.4%,91% 0,100% 2%,
+    100% 98%,91% 100%,84% 97.6%,77% 100%,70% 97.6%,63% 100%,56% 97.6%,49% 100%,42% 97.6%,35% 100%,28% 97.6%,21% 100%,14% 97.6%,7% 100%,0 98%
+  );
+  padding:22px 16px;
+}
+.c-receipt .card-k,.c-receipt .card-v,.c-receipt .card-b{
+  font-family:ui-monospace,'Courier New',monospace;
+}
+.c-receipt .card-v{font-size:15.5px;font-weight:700;line-height:1.4;letter-spacing:-.015em}
+.c-receipt .card-b{font-size:14px;line-height:1.45}
+.c-receipt .card-v{margin-top:9px}
+.c-receipt .card-front::after{
+  content:"";position:absolute;left:16px;right:16px;top:43px;
+  border-top:1.5px dashed rgba(34,30,25,.28);
+}
+
+/* — manila luggage tag, corner cut, eyelet punched — */
+.c-tag .card-face{
+  background:#EFE1C4;
+  border:1.5px solid rgba(34,30,25,.26);
+  border-radius:3px;
+  clip-path:polygon(0 22px,22px 0,100% 0,100% 100%,0 100%);
+  padding-top:42px;
+}
+.c-tag .card-face::before{
+  content:"";position:absolute;left:13px;top:24px;width:10px;height:10px;border-radius:50%;
+  background:var(--paper);box-shadow:0 0 0 1.5px rgba(34,30,25,.35);
+}
+.c-tag .card-back{padding-top:18px}
+.c-tag .card-k{color:#6B5A3A}
+
+/* — ticket stub, notched and perforated — */
+.c-ticket .card-face{
+  border:1.5px solid rgba(34,30,25,.24);border-radius:3px;
+  background:
+    radial-gradient(circle 7px at 0 46px,var(--paper) 97%,transparent 100%),
+    radial-gradient(circle 7px at 100% 46px,var(--paper) 97%,transparent 100%),
+    #F8F0E1;
+}
+.c-ticket .card-face::before{
+  content:"";position:absolute;left:8px;right:8px;top:45px;
+  border-top:1.5px dashed rgba(34,30,25,.28);
+}
+.c-ticket .card-k{color:#6E5B44}
+
+@media (prefers-reduced-motion:reduce){
+  .card,.card.reveal,.card.reveal.in{transition:none}
+  .grain{display:none}
+  .label.ink{opacity:1;filter:none;transform:none}
+  .label.ink::after{transform:none}
+  .tear{clip-path:none}
+  .ps-stage{--f:0}
+  .ps-env-back,.ps-env-front,.ps-posted,.ps-runway{display:none}
+  #chiya{display:none}
+  .pol::after{display:none}
+}

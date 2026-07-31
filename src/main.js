@@ -223,19 +223,67 @@
     obs.observe(el);
   });
 
-  /* ---------- rapid-fire strip: drag to scroll on desktop ---------- */
+  /* ---------- rapid-fire strip: drag to scroll, then let it coast ---------- */
   const strip = $('#strip');
   if (strip) {
-    let down = false, startX = 0, startL = 0;
+    let down = false, startX = 0, startL = 0, vel = 0, lastX = 0, lastT = 0, glide = 0, moved = 0;
     strip.addEventListener('pointerdown', e => {
       if (e.pointerType !== 'mouse') return;
-      down = true; startX = e.clientX; startL = strip.scrollLeft;
+      cancelAnimationFrame(glide);
+      down = true; startX = lastX = e.clientX; startL = strip.scrollLeft;
+      lastT = performance.now(); vel = 0; moved = 0;
       strip.classList.add('dragging');
     });
     addEventListener('pointermove', e => {
-      if (down) strip.scrollLeft = startL - (e.clientX - startX);
+      if (!down) return;
+      moved = Math.max(moved, Math.abs(e.clientX - startX));
+      strip.scrollLeft = startL - (e.clientX - startX);
+      const now = performance.now(), dt = now - lastT;
+      if (dt > 8) { vel = (e.clientX - lastX) / dt; lastX = e.clientX; lastT = now; }
     });
-    addEventListener('pointerup', () => { down = false; strip.classList.remove('dragging'); });
+    // a drag that ends on a card must not also flip it
+    strip.addEventListener('click', e => {
+      if (moved > 6) { e.stopPropagation(); e.preventDefault(); moved = 0; }
+    }, true);
+    addEventListener('pointerup', () => {
+      if (!down) return;
+      down = false;
+      strip.classList.remove('dragging');
+      if (reduced || Math.abs(vel) < .25) return;
+      // flick physics: the cards keep sliding, then friction eats it
+      let v = vel * 16;
+      const coast = () => {
+        strip.scrollLeft -= v;
+        v *= .94;
+        if (Math.abs(v) > .4) glide = requestAnimationFrame(coast);
+      };
+      strip.classList.add('dragging'); // scroll-snap off while it's still moving
+      glide = requestAnimationFrame(coast);
+      setTimeout(() => strip.classList.remove('dragging'), 900);
+    });
+
+    /* ---------- turn a card over for the bit that didn't fit on the front ---------- */
+    {
+      const flips = [
+        '🃏 there is a back to every one of these.',
+        '🃏 yes, all fourteen. I had a lot to get off my chest.',
+        '🃏 you are reading the footnotes of a stranger. good.',
+      ];
+      let turned = 0;
+      for (const card of $$('#strip .card')) {
+        const flip = () => {
+          card.classList.toggle('flipped');
+          card.setAttribute('aria-pressed', card.classList.contains('flipped'));
+          if (card.classList.contains('flipped') && ++turned % 5 === 1) {
+            toast(flips[Math.min((turned - 1) / 5 | 0, flips.length - 1)]);
+          }
+        };
+        card.addEventListener('click', flip);
+        card.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); }
+        });
+      }
+    }
   }
 
   /* ---------- lightbox for polaroids ---------- */
@@ -612,6 +660,9 @@
       setTimeout(() => {
         const runner = $('#pet-svg').cloneNode(true);
         runner.removeAttribute('id');
+        // drop the cloned <defs> so the gradients/clips resolve to the original's ids
+        // instead of duplicating every one of them into the document
+        runner.querySelector('defs')?.remove();
         runner.classList.remove('pet-flip');
         runner.classList.add('scratch-cat');
         catLine.appendChild(runner);
@@ -731,8 +782,10 @@
       if (h === 17) return 'zoomies';          // 5pm. she doesn't make the rules either
       return 'day';
     };
+    const chiya = $('#chiya');
     let px = -90, ptarget = 140, pspeed = 42, presting = false, plast = performance.now();
     let wasWalking = false, wasFlipped = false;
+    let chiyaX = 0, chiyaAlive = false, onArrive = null;
 
     // leg/body trot cadence scales with speed, so a fast dash actually looks fast instead of gliding
     function setSpeed(v) {
@@ -756,24 +809,73 @@
       });
       setTimeout(() => petBubble.classList.add('hidden'), ms);
     }
+    const clearIdle = () => pet.classList.remove('sitting', 'grooming');
+
     function petRest() {
       presting = true;
       pet.classList.remove('walking');
       wasWalking = false;
       const mode = petMode();
       pet.classList.toggle('sleeping', mode === 'sleep');
+
+      // a resting cat is never just standing there. she sits, or she grooms.
+      if (mode === 'day') {
+        const r = Math.random();
+        pet.classList.toggle('grooming', r < .35);
+        pet.classList.toggle('sitting', r >= .35 && r < .8);
+      } else clearIdle();
+
       const wait = mode === 'sleep' ? 45000
         : mode === 'zoomies' ? 500 + Math.random() * 1200
+        : pet.classList.contains('grooming') ? 4200 + Math.random() * 3400
         : 2600 + Math.random() * 5200;
       setTimeout(() => {
         const m = petMode();
         pet.classList.toggle('sleeping', m === 'sleep');
         if (m === 'sleep') return petRest(); // keep napping, recheck later
+        clearIdle();
         setSpeed(m === 'zoomies' ? 200 : 42);
         presting = false;
-        ptarget = 10 + Math.random() * roam();
+        // if there's a glass of chiya on the ledge, it becomes the destination
+        if (chiyaAlive && m === 'day' && Math.random() < .55) {
+          onArrive = swatChiya;
+          ptarget = Math.max(6, chiyaX - 44);
+        } else {
+          onArrive = null;
+          ptarget = 10 + Math.random() * roam();
+        }
       }, wait);
     }
+
+    /* ---------- the chiya glass: placed by a human, removed by a cat ---------- */
+    function spawnChiya() {
+      if (!chiya || chiyaAlive || petMode() === 'sleep') return;
+      chiyaX = 70 + Math.random() * Math.max(60, roam() - 150);
+      chiya.style.setProperty('--cx', chiyaX + 'px');
+      chiya.classList.remove('falling');
+      chiya.classList.add('here');
+      chiyaAlive = true;
+    }
+    function swatChiya() {
+      if (!chiyaAlive) return petRest();
+      presting = true;
+      pet.classList.remove('walking');
+      wasWalking = false;
+      pet.classList.add('sitting');       // sit. assess. commit.
+      setTimeout(() => speak('this glass is in my way.', 1500), 500);
+      setTimeout(() => {
+        chiya.classList.add('falling');
+        clearIdle();
+      }, 2100);
+      setTimeout(() => {
+        chiya.classList.remove('here', 'falling');
+        chiyaAlive = false;
+        speak(['gravity works. tested it.', 'the floor needed it more.', 'I regret nothing.', 'that was an experiment.'][Math.floor(Math.random() * 4)], 2200);
+        setTimeout(spawnChiya, 55000 + Math.random() * 50000);
+      }, 3100);
+      setTimeout(() => { onArrive = null; petRest(); }, 3400);
+    }
+    setTimeout(spawnChiya, 22000 + Math.random() * 15000);
     function petTick(now) {
       const dt = Math.min((now - plast) / 1000, .1);
       plast = now;
@@ -782,8 +884,8 @@
         px += Math.sign(d) * Math.min(Math.abs(d), pspeed * dt);
         const flipped = d < 0;
         if (flipped !== wasFlipped) { petSvg.classList.toggle('pet-flip', flipped); wasFlipped = flipped; }
-        if (!wasWalking) { pet.classList.add('walking'); wasWalking = true; }
-        if (Math.abs(d) < 2) petRest();
+        if (!wasWalking) { pet.classList.add('walking'); clearIdle(); wasWalking = true; }
+        if (Math.abs(d) < 2) { const done = onArrive; onArrive = null; (done || petRest)(); }
         pet.style.transform = `translateX(${px}px)`;
       }
       requestAnimationFrame(petTick);
@@ -793,8 +895,14 @@
       if (pet.classList.contains('sleeping') && petBubble.classList.contains('hidden')) speak('z z z', 1500);
     }, 9000);
 
-    const meows = ['mrrp.', 'khoi?', 'feed me, kta.', 'busy. clearly.', 'ma HARU. yes, THE haru.', 'ok one pat. ONE.'];
+    const meows = [
+      'mrrp.', 'khoi?', 'feed me, kta.', 'busy. clearly.', 'ma HARU. yes, THE haru.',
+      'ok one pat. ONE.', 'I was mid-bath. rude.', 'you scroll loud.',
+      'he writes the code. I approve it.', 'this is my website. he just pays for it.',
+      'stop reading. start feeding.',
+    ];
     petSvg.addEventListener('click', () => {
+      clearIdle();
       if (petMode() === 'sleep') {
         const t = nptNow();
         speak(`it is ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')} in kathmandu. why are YOU awake?`, 2600);
@@ -805,6 +913,30 @@
       setSpeed(280);
       ptarget = 10 + Math.random() * roam();
     });
+
+    /* scroll like you mean it and she bolts. cats do not negotiate with sudden movement. */
+    {
+      // she gets a grace period on arrival, then startles at most once every 22s
+      let lastY = scrollY, lastT = performance.now(), lastSpook = performance.now();
+      addEventListener('scroll', () => {
+        const now = performance.now(), dt = now - lastT;
+        if (dt < 90) return;
+        const v = Math.abs(scrollY - lastY) / dt; // px per ms
+        lastY = scrollY; lastT = now;
+        if (v < 3.2 || petMode() === 'sleep' || now - lastSpook < 22000) return;
+        lastSpook = now;
+        clearIdle();
+        pet.classList.add('spooked');
+        speak('!!', 900);
+        onArrive = null;
+        presting = false;
+        setSpeed(340);
+        // straight for the nearest wall, obviously
+        ptarget = px < innerWidth / 2 ? 6 : roam();
+        setTimeout(() => pet.classList.remove('spooked'), 700);
+        setTimeout(() => speak('I meant to do that.', 1800), 1500);
+      }, { passive: true });
+    }
 
     // spawn: asleep cats start on-screen, awake ones stroll in
     if (petMode() === 'sleep') {
@@ -817,6 +949,141 @@
       setTimeout(() => { presting = false; }, 1500);
     }
     requestAnimationFrame(petTick);
+  }
+
+  /* ---------- paper grain drifts under the ink ---------- */
+  if (!reduced && !matchMedia('(pointer:coarse)').matches) {
+    let graining = false;
+    addEventListener('scroll', () => {
+      if (graining) return;
+      graining = true;
+      requestAnimationFrame(() => {
+        document.documentElement.style.setProperty('--grain-y', (scrollY * .06 % 13).toFixed(2) + 'px');
+        graining = false;
+      });
+    }, { passive: true });
+  }
+
+  /* ---------- section labels: wet ink settling ---------- */
+  {
+    const inkObs = new IntersectionObserver(es => {
+      for (const e of es) if (e.isIntersecting) { e.target.classList.add('in'); inkObs.unobserve(e.target); }
+    }, { threshold: .6 });
+    $$('.label').forEach(l => { l.classList.add('ink'); inkObs.observe(l); });
+  }
+
+  /* ---------- torn edges rip open on arrival ---------- */
+  {
+    const tearObs = new IntersectionObserver(es => {
+      for (const e of es) if (e.isIntersecting) { e.target.classList.add('in'); tearObs.unobserve(e.target); }
+    }, { threshold: .5 });
+    $$('.tear').forEach(t => tearObs.observe(t));
+  }
+
+  /* ---------- stamps land, they don't fade ---------- */
+  if (!reduced) {
+    const stampObs = new IntersectionObserver(es => {
+      for (const e of es) {
+        if (!e.isIntersecting) continue;
+        stampObs.unobserve(e.target);
+        setTimeout(() => e.target.classList.add('thud'), 260);
+      }
+    }, { threshold: .9 });
+    $$('.dossier-wrap .stamp, .gf-stamp').forEach(s => stampObs.observe(s));
+  }
+
+  /* ---------- polaroids: picked up off the table ---------- */
+  if (!reduced && !matchMedia('(pointer:coarse)').matches) {
+    for (const p of $$('.pol')) {
+      p.addEventListener('pointermove', e => {
+        const r = p.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width, ny = (e.clientY - r.top) / r.height;
+        p.classList.add('tilting');
+        p.style.setProperty('--ry', ((nx - .5) * 14).toFixed(2) + 'deg');
+        p.style.setProperty('--rx', ((.5 - ny) * 11).toFixed(2) + 'deg');
+        p.style.setProperty('--mx', (nx * 100).toFixed(1) + '%');
+        p.style.setProperty('--my', (ny * 100).toFixed(1) + '%');
+      });
+      p.addEventListener('pointerleave', () => {
+        p.classList.remove('tilting');
+        p.style.removeProperty('--rx');
+        p.style.removeProperty('--ry');
+      });
+    }
+  }
+
+  /* ---------- shuffle the evidence: deal the photos again (FLIP) ---------- */
+  {
+    const shuffleBtn = $('#shuffle-btn'), wall = $('#evidence-wall');
+    const lines = [
+      '🃏 same life, new order. still no plot.',
+      '🃏 reshuffled. the story does not improve.',
+      '🃏 dealt again. HARU still outranks me.',
+      '🃏 you are now looking at my life out of order. as intended.',
+    ];
+    let shuffles = 0, busy = false;
+    if (shuffleBtn && wall) shuffleBtn.addEventListener('click', () => {
+      if (busy) return;
+      busy = true;
+      shuffleBtn.classList.add('spun');
+      setTimeout(() => shuffleBtn.classList.remove('spun'), 560);
+
+      const kids = [...wall.children];
+      const before = new Map(kids.map(k => [k, k.getBoundingClientRect()]));
+      for (const k of kids.slice().sort(() => Math.random() - .5)) wall.appendChild(k);
+
+      if (!reduced) for (const k of kids) {
+        const a = before.get(k), b = k.getBoundingClientRect();
+        const dx = a.left - b.left, dy = a.top - b.top;
+        if (!dx && !dy) continue;
+        const lift = -14 - Math.random() * 16;
+        k.animate([
+          { transform: `translate(${dx}px,${dy}px) rotate(${(Math.random() * 10 - 5).toFixed(1)}deg)` },
+          { transform: `translate(${dx * .4}px,${dy * .4 + lift}px) rotate(${(Math.random() * 12 - 6).toFixed(1)}deg)`, offset: .5 },
+          { transform: 'none' },
+        ], { duration: 620, easing: 'cubic-bezier(.2,1,.3,1)' });
+      }
+      if (++shuffles === 1 || shuffles % 3 === 0) toast(lines[Math.min(shuffles - 1, lines.length - 1)]);
+      setTimeout(() => { busy = false; }, 640);
+    });
+  }
+
+  /* ---------- socials lean toward the cursor ---------- */
+  if (!reduced && !matchMedia('(pointer:coarse)').matches) {
+    for (const s of $$('.social')) {
+      s.addEventListener('pointermove', e => {
+        const r = s.getBoundingClientRect();
+        s.style.setProperty('--sx', (((e.clientX - r.left) / r.width - .5) * 11).toFixed(1) + 'px');
+        s.style.setProperty('--sy', ((((e.clientY - r.top) / r.height - .5) * 8) - 5).toFixed(1) + 'px');
+      });
+      s.addEventListener('pointerleave', () => {
+        s.style.removeProperty('--sx');
+        s.style.removeProperty('--sy');
+      });
+    }
+  }
+
+  /* ---------- the letter folds itself back up (scroll-scrubbed, reversible) ---------- */
+  {
+    const psStage = $('#ps-stage'), psNote = $('#ps-note');
+    if (psStage && psNote && !reduced) {
+      let psTick = false;
+      const psUpdate = () => {
+        psTick = false;
+        const vh = innerHeight, bottom = psNote.getBoundingClientRect().bottom;
+        // the fold must be able to finish before the page runs out of scroll,
+        // so the range stays well inside the runway + footer below the note
+        const f = Math.min(1, Math.max(0, (vh * .86 - bottom) / (vh * .36)));
+        psStage.style.setProperty('--f', f.toFixed(3));
+      };
+      psUpdate();
+      addEventListener('scroll', () => {
+        if (psTick) return;
+        psTick = true;
+        requestAnimationFrame(psUpdate);
+      }, { passive: true });
+      addEventListener('resize', psUpdate);
+    }
   }
 
   /* ---------- keep photos from being right-click/drag-saved ---------- */
