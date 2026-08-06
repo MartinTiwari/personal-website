@@ -24,7 +24,16 @@ export default async function handler(req, res) {
     const r = await sb(
       `${TABLE}?select=id,text,created_at&hidden=eq.false&order=created_at.desc&limit=${WALL_SIZE}`
     );
-    if (!r.ok) return res.status(502).json({ error: "read failed" });
+    if (!r.ok) {
+      // surface what postgrest actually said: 401 = wrong key (anon instead of
+      // service_role), 403 = missing grant, 404 = wrong url or table
+      const detail = await r.text().catch(() => "");
+      return res.status(502).json({
+        error: "read failed",
+        upstream: r.status,
+        detail: detail.slice(0, 300),
+      });
+    }
     const rows = await r.json();
     // newest last, so the wall reads in the order people actually wrote
     res.setHeader("Cache-Control", "s-maxage=20, stale-while-revalidate=120");
