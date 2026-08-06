@@ -15,9 +15,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=34" />
+  <link rel="stylesheet" href="styles.css?v=43" />
 </head>
 <body>
+
+  <a class="skip" href="#top">skip to the good part</a>
 
   <!-- paper grain: drifts with the scroll so the page feels like a physical sheet -->
   <div class="grain" aria-hidden="true"></div>
@@ -99,9 +101,11 @@
     </button>
   </section>
 
-  <!-- ================= PHOTO WALL ================= -->
+  <!-- ================= KATHMANDU ================= -->
+  <!-- one wall, one idea: the city, and him standing around in it -->
   <section class="sec sec-wide">
-    <p class="label">evidence that I exist</p>
+    <p class="label">where this actually happens</p>
+    <h2 class="h2">kathmandu, and me loitering in it.</h2>
     <button class="shuffle-btn hand" id="shuffle-btn" type="button">
       <span class="shuffle-ico" aria-hidden="true">🃏</span> shuffle the evidence
     </button>
@@ -111,27 +115,18 @@
         <img src="assets/martin-rain.webp" alt="Martin in the rain, hood up, throwing a peace sign" width="640" height="640" loading="lazy" />
         <figcaption class="hand">it was raining. went out anyway. ✌️</figcaption>
       </figure>
-      <figure class="pol p2" data-cap="HARU. head of security. wears my birthday hat better than me.">
+      <figure class="pol p2" data-cap="roadside chiya. permanent stat buff. cafés have been coping ever since.">
         <span class="tape" aria-hidden="true"></span>
-        <img src="assets/haru.webp" alt="HARU the cat wearing a shiny birthday hat, deeply unimpressed" width="640" height="853" loading="lazy" />
-        <figcaption class="hand">HARU. head of security. wears my birthday hat better than me.</figcaption>
+        <img src="assets/chiya.webp" alt="Martin sipping tea at a roadside stall" width="640" height="853" loading="lazy" />
+        <figcaption class="hand">roadside chiya. permanent stat buff. cafés have been coping ever since.</figcaption>
       </figure>
-      <figure class="pol p3" data-cap="graduation day. mom blinked. we're framing it anyway.">
+      <figure class="pol p3" data-cap="the weekly rooftop summit. agenda: nothing. attendance: mandatory.">
         <span class="tape" aria-hidden="true"></span>
-        <img src="assets/graduation.webp" alt="Martin at graduation with his mom, who is blinking" width="640" height="880" loading="lazy" />
-        <figcaption class="hand">graduation day. mom blinked. we're framing it anyway.</figcaption>
-      </figure>
-      <figure class="pol p4" data-cap="the diet era. the salad is new. eating it in front of anime is not.">
-        <span class="tape" aria-hidden="true"></span>
-        <img src="assets/diet.webp" alt="A fruit salad next to a laptop playing anime at a rooftop café" width="640" height="861" loading="lazy" />
-        <figcaption class="hand">the diet era. the salad is new. eating it in front of anime is not.</figcaption>
-      </figure>
-      <figure class="pol p5" data-cap="flexing in the mirror. that second hand in frame is not mine. I have questions too.">
-        <span class="tape" aria-hidden="true"></span>
-        <img src="assets/flex-hands.webp" alt="Martin flexing in a mirror selfie while an unidentified hand throws a peace sign in the foreground" width="640" height="640" loading="lazy" />
-        <figcaption class="hand">flexing in the mirror. that second hand in frame is not mine. I have questions too.</figcaption>
+        <img src="assets/rooftop.webp" alt="Martin and his friends toasting on a rooftop overlooking Kathmandu hills" width="640" height="672" loading="lazy" />
+        <figcaption class="hand">the weekly rooftop summit. agenda: nothing. attendance: mandatory.</figcaption>
       </figure>
     </div>
+    <p class="hand aside center">one city, zero plans. that's the whole system.</p>
   </section>
 
   <div class="tear" aria-hidden="true"></div>
@@ -145,6 +140,22 @@
       young lady.<span class="hand cat-edit hidden" id="cat-edit"> menace. she scratched out the lie herself, as you just saw.</span>
     </p>
     <div class="wall">
+      <!-- the cat opens the wall, since the line above is about her -->
+      <figure class="pol f6" data-cap="HARU. head of security. wears my birthday hat better than me.">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/haru.webp" alt="HARU the cat wearing a shiny birthday hat, deeply unimpressed" width="640" height="853" loading="lazy" />
+        <figcaption class="hand">HARU. head of security. wears my birthday hat better than me.</figcaption>
+      </figure>
+      <figure class="pol f7" data-cap="graduation day. mom blinked. we're framing it anyway.">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/graduation.webp" alt="Martin at graduation with his mom, who is blinking" width="640" height="880" loading="lazy" />
+        <figcaption class="hand">graduation day. mom blinked. we're framing it anyway.</figcaption>
+      </figure>
+      <figure class="pol f8" data-cap="flat cap, zero patience, sidekick shipped separately. (yes, same side-eye little sister.)">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="assets/kids-cutout.webp" alt="Young Martin in a flat cap looking unimpressed, next to his little sister in a pink hoodie giving side-eye" width="560" height="474" loading="lazy" />
+        <figcaption class="hand">flat cap, zero patience, sidekick shipped separately. (yes, same side-eye little sister.)</figcaption>
+      </figure>
       <figure class="pol f1" data-cap="big sister. we toast to surviving each other. annually.">
         <span class="tape" aria-hidden="true"></span>
         <img src="assets/sis-big.webp" alt="Martin and his big sister raising a toast at a night event" width="640" height="996" loading="lazy" />
@@ -160,6 +171,12 @@
         <img src="assets/maiju.webp" alt="Martin as a baby held by his saili maiju as a young woman, with another young cousin seated beside them on a blue sofa" width="720" height="505" loading="lazy" />
         <figcaption class="hand">saili maiju. on the job since before I could hold my own head up. still is.</figcaption>
       </figure>
+    </div>
+    <p class="hand aside center">the cat is first because she'd have made a scene otherwise.</p>
+
+    <!-- the two with no photo on file pair off into their own row -->
+    <p class="label">no photo on file</p>
+    <div class="wall wall-pair">
       <figure class="pol f3 pol-empty" data-cap="dad. zero confirmed photos. too busy running the empire: chemicals, drinking water, and probably the plastic bag in your kitchen. bigfoot has better paparazzi coverage.">
         <span class="tape" aria-hidden="true"></span>
         <div class="ghost-frame" aria-hidden="true">
@@ -204,7 +221,7 @@
         <figcaption class="hand" id="gf-cap">the girlfriend file. above your clearance level.</figcaption>
       </figure>
     </div>
-    <p class="hand aside center">yes, mom's in the graduation one up there. blinking. she counts double.</p>
+    <p class="hand aside center">one is genuinely camera-shy. one is classified. I'll let you guess which.</p>
   </section>
 
   <!-- ================= THE SIGHTING ================= -->
@@ -227,27 +244,23 @@
     </div>
   </section>
 
-  <!-- ================= EXHIBITS ================= -->
+  <!-- ================= THE ROLLBACK ================= -->
+  <!-- pays off the hero note: "rollback in progress: protein up, sugar gone" -->
   <section class="sec sec-wide">
-    <p class="label">exhibits, unordered</p>
-    <h2 class="h2">no plot. no chapters. just receipts.</h2>
+    <p class="label">the rollback, in progress</p>
+    <h2 class="h2">protein up. sugar gone. allegedly.</h2>
     <div class="wall">
-      <figure class="pol l1" data-cap="flat cap, zero patience, sidekick shipped separately. (yes, same side-eye little sister.)">
+      <figure class="pol l1" data-cap="the diet era. the salad is new. eating it in front of anime is not.">
         <span class="tape" aria-hidden="true"></span>
-        <img src="assets/kids-cutout.webp" alt="Young Martin in a flat cap looking unimpressed, next to his little sister in a pink hoodie giving side-eye" width="560" height="474" loading="lazy" />
-        <figcaption class="hand">flat cap, zero patience, sidekick shipped separately. (yes, same side-eye little sister.)</figcaption>
+        <img src="assets/diet.webp" alt="A fruit salad next to a laptop playing anime at a rooftop café" width="640" height="861" loading="lazy" />
+        <figcaption class="hand">the diet era. the salad is new. eating it in front of anime is not.</figcaption>
       </figure>
-      <figure class="pol l2" data-cap="roadside chiya. permanent stat buff. cafés have been coping ever since.">
+      <figure class="pol l2" data-cap="flexing in the mirror. that second hand in frame is not mine. I have questions too.">
         <span class="tape" aria-hidden="true"></span>
-        <img src="assets/chiya.webp" alt="Martin sipping tea at a roadside stall" width="640" height="853" loading="lazy" />
-        <figcaption class="hand">roadside chiya. permanent stat buff. cafés have been coping ever since.</figcaption>
+        <img src="assets/flex-hands.webp" alt="Martin flexing in a mirror selfie while an unidentified hand throws a peace sign in the foreground" width="640" height="640" loading="lazy" />
+        <figcaption class="hand">flexing in the mirror. that second hand in frame is not mine. I have questions too.</figcaption>
       </figure>
-      <figure class="pol l3" data-cap="the weekly rooftop summit. agenda: nothing. attendance: mandatory.">
-        <span class="tape" aria-hidden="true"></span>
-        <img src="assets/rooftop.webp" alt="Martin and his friends toasting on a rooftop overlooking Kathmandu hills" width="640" height="672" loading="lazy" />
-        <figcaption class="hand">the weekly rooftop summit. agenda: nothing. attendance: mandatory.</figcaption>
-      </figure>
-      <div class="note lore-note" style="--r:-2deg">no arc. no lesson.<br>just a guy and his chiya.<br>la, moving on. 📍</div>
+      <div class="note lore-note" style="--r:-2deg">no before photo.<br>no after photo.<br>just a during, indefinitely. 📍</div>
     </div>
   </section>
 
@@ -479,7 +492,7 @@
   <!-- ================= LEAVE YOUR MARK ================= -->
   <section class="sec sec-wide" id="mark">
     <p class="label">leave your mark</p>
-    <h2 class="h2">this wall is yours.</h2>
+    <h2 class="h2">sign the book on your way out.</h2>
     <div class="mark-grid">
 
       <div class="board-box">
@@ -497,16 +510,52 @@
         <canvas id="board" aria-label="Drawing whiteboard"></canvas>
       </div>
 
+      <!-- the guestbook: shut on the table until someone opens it -->
       <div class="notes-box">
-        <p class="notes-lead">got something to say to me? say it here.
-          <span class="hand">no name, no login, no consequences. it lands in my secret spreadsheet, anonymously.</span></p>
-        <form id="note-form">
-          <textarea id="note-text" maxlength="280" rows="4" placeholder="type it. I can't see who you are. saachi, promise." required></textarea>
-          <input type="text" id="note-trap" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <button class="pin-btn" type="submit">📌 la, pin it</button>
-        </form>
-        <div class="notes-wall" id="notes-wall">
-          <div class="note" style="--r:-2deg;background:var(--marker)">be nice. or at least be funny.<span class="hand">, management</span></div>
+        <div class="book" id="guestbook">
+
+          <button class="book-cover" id="book-open" aria-expanded="false" aria-controls="book-inner">
+            <span class="book-ribbon" aria-hidden="true"></span>
+            <span class="book-plate">
+              <span class="book-title">guestbook</span>
+              <span class="book-rule" aria-hidden="true"></span>
+              <span class="book-sub hand">signed by strangers, mostly</span>
+            </span>
+            <span class="book-count hand" id="book-count">nobody's signed it yet</span>
+            <span class="book-hint hand">open it</span>
+          </button>
+
+          <div class="book-inner hidden" id="book-inner">
+            <div class="book-spread">
+
+              <!-- left: the pages already signed -->
+              <div class="book-page book-left" id="book-left">
+                <div class="notes-wall" id="notes-wall"></div>
+                <span class="page-no hand" id="page-no">—</span>
+              </div>
+
+              <!-- right: the open page you sign on -->
+              <div class="book-page book-right">
+                <p class="sign-lead hand">your turn.</p>
+                <form id="note-form">
+                  <textarea id="note-text" maxlength="280" rows="4" placeholder="write something. I can't see who you are. saachi, promise." required></textarea>
+                  <input type="text" id="note-trap" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                  <button class="pin-btn" type="submit">sign it</button>
+                </form>
+                <!-- main.js rewrites this only once /api/notes really answers,
+                     so it never promises a public wall that isn't there yet -->
+                <p class="hand book-privacy" id="notes-privacy">no name, no login, no consequences. it lands in my secret spreadsheet, anonymously.</p>
+              </div>
+            </div>
+
+            <div class="book-nav">
+              <button class="book-btn" id="page-prev" aria-label="Previous page">‹</button>
+              <span class="book-label hand" id="page-label">page 1</span>
+              <button class="book-btn" id="page-next" aria-label="Next page">›</button>
+              <button class="book-btn book-shut" id="book-close">shut it</button>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -532,6 +581,23 @@
         <div class="dispatch-row"><span class="dk">HARU</span><span class="dv" id="disp-haru">calibrating.</span></div>
       </div>
       <p class="dispatch-foot hand">signal ends here. HARU has muted further notifications.</p>
+    </div>
+
+    <!-- the three secrets get a stamp card, so the promise upstairs has a scoreboard -->
+    <div class="secrets" id="secrets">
+      <p class="secrets-head">the secrets, officially</p>
+      <div class="secrets-row" id="secrets-row" role="list">
+        <span class="slot" data-n="1" role="listitem" aria-label="Secret 1: not found yet">
+          <span class="slot-ink" aria-hidden="true">1</span>
+        </span>
+        <span class="slot" data-n="2" role="listitem" aria-label="Secret 2: not found yet">
+          <span class="slot-ink" aria-hidden="true">2</span>
+        </span>
+        <span class="slot" data-n="3" role="listitem" aria-label="Secret 3: not found yet">
+          <span class="slot-ink" aria-hidden="true">3</span>
+        </span>
+      </div>
+      <p class="secrets-foot hand" id="secrets-foot" aria-live="polite">none stamped yet. they're all still up there.</p>
     </div>
 
     <!-- the letter folds itself back up. it arrived as mail, it leaves as mail. -->
@@ -569,11 +635,14 @@
 
   <!-- lightbox -->
   <div class="lightbox hidden" id="lightbox" role="dialog" aria-label="Photo viewer">
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous photo">‹</button>
     <figure class="lb-frame">
       <span class="tape" aria-hidden="true"></span>
       <img id="lb-img" src="" alt="" />
       <figcaption class="hand" id="lb-cap"></figcaption>
+      <span class="lb-count hand" id="lb-count"></span>
     </figure>
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Next photo">›</button>
     <button class="lb-close" id="lb-close" aria-label="Close photo">✕</button>
   </div>
 
@@ -728,6 +797,6 @@
 
   <div id="toast-root"></div>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=35" defer></script>
+  <script src="src/main.js?v=43" defer></script>
 </body>
 </html>

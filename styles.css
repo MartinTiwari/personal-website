@@ -25,6 +25,16 @@ body{
   background-size:11px 11px;
 }
 ::selection{background:var(--marker);color:var(--ink)}
+:focus-visible{outline:2px dashed var(--ink);outline-offset:3px}
+
+/* keyboard users shouldn't have to tab past the whole letterhead */
+.skip{
+  position:fixed;top:-100px;left:14px;z-index:300;
+  font-family:var(--hand);font-size:19px;color:var(--ink);text-decoration:none;
+  background:var(--marker);border:2px solid var(--ink);border-radius:10px;
+  padding:8px 16px;box-shadow:3px 3px 0 rgba(34,30,25,.35);
+}
+.skip:focus,.skip:focus-visible{top:14px}
 em{font-style:italic}
 .hand{font-family:var(--hand);color:var(--ink-soft)}
 img{
@@ -216,6 +226,8 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   display:flex;gap:clamp(18px,3vw,34px);justify-content:center;align-items:flex-start;
   flex-wrap:wrap;padding-top:14px;
 }
+/* the two with no photo on file: a deliberate pair, not a leftover row */
+.wall-pair{max-width:660px;margin:0 auto;gap:clamp(22px,4vw,46px)}
 .pol{
   position:relative;background:#fff;padding:11px 11px 8px;border-radius:3px;
   box-shadow:0 14px 34px rgba(34,30,25,.16),0 3px 8px rgba(34,30,25,.1);
@@ -224,9 +236,18 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   transform:
     perspective(780px)
     rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))
+    /* --pile 1 = still stacked on the table, 0 = spread across the wall */
+    translate(calc(var(--dx,0px) * var(--pile,0)),calc(var(--dy,0px) * var(--pile,0)))
     translateY(calc(var(--ty,0px) + var(--rv,0px))) scale(var(--sc,1));
   transition:transform .34s cubic-bezier(.2,1.4,.4,1),box-shadow .3s,rotate .34s ease,opacity .6s ease;
 }
+/* the loose note in the exhibits wall travels with the pile too */
+.wall > .note{
+  transform:translate(calc(var(--dx,0px) * var(--pile,0)),calc(var(--dy,0px) * var(--pile,0)));
+  transition:transform .34s cubic-bezier(.2,1.4,.4,1);
+}
+/* while the pile is still collapsed the prints overlap, so the shadow reads as one stack */
+.wall.piled .pol{box-shadow:0 8px 18px rgba(34,30,25,.2),0 2px 5px rgba(34,30,25,.14)}
 /* the scroll reveal rides its own variable so it can't fight the tilt */
 .pol.reveal{--rv:30px}
 .pol.reveal.in{--rv:0px}
@@ -243,12 +264,17 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 .p1{rotate:-3deg;margin-top:22px}
 .p2{rotate:2deg}
 .p3{rotate:-1.5deg;margin-top:34px}
-.p4{rotate:2.5deg;margin-top:10px}
 .f1{rotate:-2deg}
 .f2{rotate:2deg;margin-top:26px}
 .f3{rotate:-3deg;margin-top:12px;cursor:default}
 .f5{rotate:1.5deg;margin-top:6px}
+.f6{rotate:2deg;margin-top:4px}
+.f7{rotate:-2.5deg;margin-top:24px}
+.f8{rotate:1.5deg;margin-top:40px}
 .f5 .tape{transform:translateX(-50%) rotate(1.5deg);background:rgba(232,83,47,.35)}
+.f6 .tape{transform:translateX(-50%) rotate(2deg);background:rgba(255,224,130,.75)}
+.f7 .tape{transform:translateX(-50%) rotate(-2.5deg);background:rgba(185,232,201,.8)}
+.f8 .tape{transform:translateX(-50%) rotate(2deg);background:rgba(232,83,47,.3)}
 .pol img{width:100%;height:auto;display:block;border-radius:2px}
 .pol figcaption{font-size:20px;text-align:center;padding:9px 4px 4px;color:var(--ink);line-height:1.25}
 .tape{
@@ -258,7 +284,6 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 }
 .p2 .tape{transform:translateX(-50%) rotate(2.5deg);background:rgba(185,232,201,.8)}
 .p3 .tape{transform:translateX(-50%) rotate(-1.5deg);background:rgba(232,83,47,.35)}
-.p4 .tape{transform:translateX(-50%) rotate(3deg);background:rgba(43,91,226,.25)}
 .f2 .tape{transform:translateX(-50%) rotate(2deg);background:rgba(43,91,226,.25)}
 .f3 .tape{transform:translateX(-50%) rotate(-2deg);background:rgba(185,232,201,.8)}
 .ghost-frame{
@@ -339,9 +364,7 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 /* ================= the lore ================= */
 .l1{rotate:-2.5deg;margin-top:18px}
 .l2{rotate:2deg}
-.l3{rotate:-1.5deg;margin-top:26px}
 .l2 .tape{background:rgba(232,83,47,.3)}
-.l3 .tape{background:rgba(43,91,226,.25)}
 .lore-frame{
   background:linear-gradient(180deg,var(--paper-2),#efe4d0);
   border-radius:2px;padding:14px 8px 0;
@@ -453,6 +476,66 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   transition:transform .2s,background .2s;
 }
 .lb-close:hover{background:var(--red);border-color:var(--red);transform:rotate(90deg)}
+/* walk the wall without closing it */
+.lb-nav{
+  position:absolute;top:50%;translate:0 -50%;z-index:2;
+  width:52px;height:52px;border-radius:50%;border:2px solid var(--paper);
+  background:rgba(34,30,25,.35);color:var(--paper);
+  font-size:30px;line-height:1;padding-bottom:4px;
+  transition:transform .2s,background .2s;
+}
+.lb-prev{left:max(14px,3vw)}
+.lb-next{right:max(14px,3vw)}
+.lb-nav:hover{background:var(--red);border-color:var(--red)}
+.lb-prev:hover{transform:translateX(-3px)}
+.lb-next:hover{transform:translateX(3px)}
+.lb-count{
+  position:absolute;top:-32px;left:50%;translate:-50% 0;
+  color:var(--paper);font-size:17px;opacity:.75;white-space:nowrap;
+}
+@media (max-width:640px){
+  .lb-nav{width:44px;height:44px;font-size:25px}
+  .lb-prev{left:6px}
+  .lb-next{right:6px}
+}
+
+/* ================= the secrets stamp card ================= */
+.secrets{
+  max-width:400px;margin:34px auto 0;text-align:center;
+  background:#fff;border:1.5px solid rgba(34,30,25,.2);border-radius:4px;
+  padding:18px 20px 16px;
+  box-shadow:0 14px 30px rgba(34,30,25,.13),0 3px 7px rgba(34,30,25,.09);
+  rotate:-.8deg;
+}
+.secrets-head{
+  font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:600;margin-bottom:14px;
+}
+.secrets-row{display:flex;justify-content:center;gap:18px}
+.slot{
+  position:relative;width:62px;height:62px;border-radius:50%;
+  display:grid;place-items:center;
+  border:2px dashed rgba(34,30,25,.24);color:rgba(34,30,25,.26);
+  font-family:var(--serif);font-weight:640;font-size:25px;
+  transition:color .3s,border-color .3s;
+}
+.slot-ink{position:relative;z-index:2;line-height:1}
+.slot.got{
+  border:2.5px solid var(--red);color:var(--red);
+  rotate:var(--sr,-7deg);
+}
+.slot.got::after{
+  content:"";position:absolute;inset:6px;border-radius:50%;
+  border:1.5px solid var(--red);opacity:.55;
+}
+.slot.landed{animation:stampDown .45s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes stampDown{
+  0%{transform:scale(2.4);opacity:0}
+  55%{transform:scale(.92);opacity:1}
+  100%{transform:scale(1);opacity:1}
+}
+.secrets-foot{font-size:19px;margin-top:14px;color:var(--ink-soft);line-height:1.3}
+.secrets.all-found{border-color:rgba(232,83,47,.5)}
 
 /* ================= social wall ================= */
 .social-grid{
@@ -639,10 +722,10 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 .track{
   display:flex;align-items:center;gap:16px;padding:14px 20px;color:var(--ink);
   text-decoration:none;border-bottom:1.5px dashed rgba(34,30,25,.15);
-  transition:background .2s,padding-left .2s;
+  transition:background .2s,transform .2s;
 }
 .track:last-child{border-bottom:none}
-.track:hover{background:var(--paper);padding-left:26px}
+.track:hover{background:var(--paper);transform:translateX(6px)}
 .t-num{font-family:var(--serif);font-weight:640;color:var(--red);font-size:15px}
 .t-body{display:flex;flex-direction:column;line-height:1.3;min-width:0}
 .t-body b{font-size:16px}
@@ -689,38 +772,146 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
     radial-gradient(rgba(34,30,25,.06) .6px,transparent .6px) 0 0/12px 12px;
 }
 
-.notes-box{display:flex;flex-direction:column;gap:14px}
-.notes-lead{font-size:16px;font-weight:600;line-height:1.5}
-.notes-lead .hand{display:block;font-weight:500;font-size:19px}
+.notes-box{display:flex;flex-direction:column;gap:14px;justify-content:center}
+
+/* ---------- the guestbook: a real book, shut until you open it ---------- */
+.book{perspective:1600px}
+
+/* the cover, closed */
+.book-cover{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;width:100%;min-height:300px;padding:34px 26px;
+  border:none;border-radius:5px 12px 12px 5px;
+  /* cloth board, with the spine darker where it's glued */
+  background:
+    linear-gradient(90deg,#5B2733 0 20px,#7A3444 20px 26px,#8C3D4E 26px 100%);
+  box-shadow:
+    0 18px 40px rgba(34,30,25,.32),
+    0 4px 10px rgba(34,30,25,.2),
+    inset -2px 0 0 rgba(255,255,255,.06);
+  color:#F6E6D2;
+  transition:transform .3s cubic-bezier(.2,1,.3,1),box-shadow .3s;
+}
+.book-cover::after{                      /* the grain of the cloth */
+  content:"";position:absolute;inset:0;border-radius:5px 12px 12px 5px;
+  pointer-events:none;opacity:.5;
+  background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.09) 0 1px,transparent 1px 3px);
+}
+.book-cover:hover{transform:translateY(-4px) rotate(-.5deg);box-shadow:0 26px 54px rgba(34,30,25,.36),0 6px 14px rgba(34,30,25,.22)}
+.book-cover:active{transform:translateY(-1px)}
+.book-ribbon{
+  position:absolute;top:0;right:34px;width:16px;height:74px;background:var(--red);
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%);
+  box-shadow:0 3px 6px rgba(0,0,0,.3);
+}
+.book-plate{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding:22px 30px;border:1.5px solid rgba(246,230,210,.42);border-radius:3px;
+}
+.book-title{
+  font-family:var(--serif);font-weight:640;font-size:clamp(26px,3.4vw,38px);
+  letter-spacing:.04em;line-height:1;
+}
+.book-rule{width:52px;height:1.5px;background:rgba(246,230,210,.5)}
+.book-sub{font-size:19px;color:rgba(246,230,210,.8)}
+.book-count{font-size:18px;color:rgba(246,230,210,.66)}
+.book-hint{
+  font-size:19px;color:#F6E6D2;border-bottom:1.5px dashed rgba(246,230,210,.6);
+  padding-bottom:2px;
+}
+
+/* the open spread */
+.book-inner{animation:bookOpen .5s cubic-bezier(.2,1,.3,1) both}
+@keyframes bookOpen{
+  from{opacity:0;transform:rotateX(28deg) translateY(16px)}
+  to{opacity:1;transform:none}
+}
+.book-spread{
+  display:grid;grid-template-columns:1fr 1fr;
+  background:#FBF5E6;border-radius:5px;
+  box-shadow:0 18px 40px rgba(34,30,25,.28),0 4px 10px rgba(34,30,25,.16);
+  overflow:hidden;
+}
+.book-page{
+  position:relative;padding:24px 22px 34px;min-height:330px;
+  /* ruled paper, and the shadow of the gutter */
+  background-image:repeating-linear-gradient(
+    transparent 0 30px,rgba(34,30,25,.10) 30px 31px);
+  background-position:0 14px;
+}
+.book-left{
+  border-right:1px solid rgba(34,30,25,.14);
+  box-shadow:inset -18px 0 22px -18px rgba(34,30,25,.4);
+  transform-origin:right center;backface-visibility:hidden;
+}
+.book-right{box-shadow:inset 18px 0 22px -18px rgba(34,30,25,.4)}
+/* the turn: the signed page lifts and swings over the gutter */
+.book-left.turning{animation:pageTurn .42s cubic-bezier(.4,0,.2,1)}
+@keyframes pageTurn{
+  0%{transform:rotateY(0);opacity:1}
+  55%{transform:rotateY(-88deg);opacity:.35}
+  56%{transform:rotateY(-88deg);opacity:.35}
+  100%{transform:rotateY(0);opacity:1}
+}
+.page-no{
+  position:absolute;left:0;right:0;bottom:12px;text-align:center;
+  font-size:17px;color:var(--ink-soft);
+}
+
+/* entries written on the ruled lines */
+.notes-wall{display:flex;flex-direction:column;gap:11px}
+.note{
+  font-family:var(--hand);font-size:20px;line-height:30px;color:var(--ink);
+  padding:0 2px 6px;border-bottom:1px dashed rgba(34,30,25,.16);
+  rotate:var(--r,0deg);word-break:break-word;
+  animation:noteIn .45s cubic-bezier(.2,1.4,.4,1) both;
+}
+.note:last-child{border-bottom:none}
+.note .hand{display:inline;color:var(--ink-soft);font-size:.9em}
+.note-empty{
+  font-family:var(--hand);font-size:20px;color:var(--ink-soft);opacity:.75;
+  line-height:30px;
+}
+
+.sign-lead{font-size:21px;color:var(--ink);margin-bottom:10px;line-height:30px}
 #note-form{display:flex;flex-direction:column;gap:10px}
 #note-text{
-  border:2px solid var(--ink);border-radius:14px;background:#fff;
-  font-family:var(--hand);font-size:20px;color:var(--ink);
-  padding:14px 16px;resize:vertical;min-height:96px;
-  box-shadow:4px 4px 0 var(--paper-2);outline:none;
+  border:none;border-bottom:1px dashed rgba(34,30,25,.3);background:transparent;
+  font-family:var(--hand);font-size:20px;line-height:30px;color:var(--ink);
+  padding:0 2px;resize:none;min-height:120px;outline:none;
 }
-#note-text:focus{border-color:var(--red);box-shadow:4px 4px 0 rgba(232,83,47,.25)}
+#note-text::placeholder{color:var(--ink-soft);opacity:.6}
+#note-text:focus{border-bottom-color:var(--red)}
 #note-trap{position:absolute;left:-9999px;opacity:0;height:0}
 .pin-btn{
   align-self:flex-start;background:var(--ink);color:var(--paper);border:none;
-  border-radius:999px;padding:12px 22px;font-weight:700;font-size:14px;
+  border-radius:999px;padding:11px 22px;font-weight:700;font-size:14px;
   box-shadow:3px 3px 0 var(--red);
   transition:transform .18s cubic-bezier(.2,1.6,.4,1),box-shadow .18s;
 }
 .pin-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--red)}
 .pin-btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--red)}
 .pin-btn[disabled]{opacity:.6;transform:none}
-.notes-wall{display:flex;flex-wrap:wrap;gap:10px}
-.note{
-  background:var(--mint);border-radius:4px;padding:12px 14px;max-width:210px;
-  font-family:var(--hand);font-size:18px;line-height:1.3;color:var(--ink);
-  rotate:var(--r,0deg);box-shadow:0 6px 14px rgba(34,30,25,.18);
-  position:relative;animation:noteIn .5s cubic-bezier(.2,1.5,.4,1) both;
-  word-break:break-word;
+.book-privacy{font-size:17px;color:var(--ink-soft);line-height:1.35;margin-top:4px}
+
+.book-nav{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding-top:14px;flex-wrap:wrap;
 }
-.note::before{
-  content:"📌";position:absolute;top:-12px;left:50%;transform:translateX(-50%);
-  font-size:15px;
+.book-btn{
+  font-family:var(--hand);font-size:19px;color:var(--ink);
+  background:var(--paper);border:2px solid var(--ink);border-radius:999px;
+  min-width:40px;padding:4px 14px;line-height:1.4;
+  transition:transform .18s cubic-bezier(.2,1.4,.4,1),background .18s;
+}
+.book-btn:hover:not([disabled]){transform:translateY(-2px);background:var(--marker)}
+.book-btn[disabled]{opacity:.4;cursor:not-allowed}
+.book-label{font-size:18px;color:var(--ink-soft);min-width:76px;text-align:center}
+.book-shut{margin-left:8px}
+
+@keyframes noteIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}
 }
 @keyframes noteIn{
   from{opacity:0;transform:translateX(var(--bubble-shift,0px)) translateY(14px) scale(.85)}
@@ -865,7 +1056,7 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   .s-wide .s-arrow{position:absolute;top:16px;right:18px}
   .aside{font-size:19px}
   .wall{gap:26px}
-  .p1,.p3,.p4,.f2,.f3,.f5{margin-top:0}
+  .p1,.p3,.f2,.f3,.f5,.f6,.f7,.f8,.l1{margin-top:0}
   .dossier .row{grid-template-columns:1fr;gap:2px;padding:13px 16px}
   .stamp{top:-14px;right:6px;font-size:12px}
   #board{height:250px}
@@ -1069,11 +1260,13 @@ body.intro-hold .chip,body.intro-hold .hero-note{animation-play-state:paused}
 .social,.social.reveal,.social.reveal.in,.social:hover{transform:translate(var(--sx,0px),var(--sy,0px))}
 .social:hover,.social.reveal.in:hover{--sy:-5px}
 
-/* same trick for the polaroids: the reveal moves through --rv, never through transform */
+/* same trick for the polaroids: the reveal moves through --rv, never through transform.
+   --dx/--dy/--pile carry the pile here too, or this rule would flatten it back out. */
 .pol,.pol.reveal,.pol.reveal.in{
   transform:
     perspective(780px)
     rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))
+    translate(calc(var(--dx,0px) * var(--pile,0)),calc(var(--dy,0px) * var(--pile,0)))
     translateY(calc(var(--ty,0px) + var(--rv,0px))) scale(var(--sc,1));
 }
 
@@ -1315,4 +1508,95 @@ body.intro-hold .chip,body.intro-hold .hero-note{animation-play-state:paused}
   .ps-env-back,.ps-env-front,.ps-posted,.ps-runway{display:none}
   #chiya{display:none}
   .pol::after{display:none}
+}
+
+/* ============================================================
+   print: it arrived as a letter, so it should leave as one.
+   the live furniture (cat, chiya, canvas, toasts) stays on screen;
+   what prints is the photos, the words, and the p.s.
+   ============================================================ */
+@media print{
+  @page{margin:15mm}
+  html,body{
+    background:#fff!important;background-image:none!important;
+    color:#000;font-size:10.5pt;line-height:1.45;
+  }
+  /* the paper look is the whole point, so let the colour through */
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+  /* anything that only makes sense with a pointer stays behind */
+  .grain,#intro,#haru-pet,#chiya,#toast-root,.lightbox,.skip,
+  .board-box,.shuffle-btn,.top-link,.top-dot,.peek,.down,
+  .ps-env-front,.ps-env-back,.ps-posted,.ps-runway,.swipe-hint,
+  .card-turn,.badge-hint,.tap-hint,.note-arrow,.chip,
+  .dispatch-live,.dispatch-dot,#note-form,.gf-veil{display:none!important}
+
+  /* reveals never fire without scrolling, so unhide everything */
+  .reveal,.reveal.in,.pol,.pol.reveal{opacity:1!important;transform:none!important}
+  .pol{--pile:0!important}
+  .hl,.hl-2{background-size:100% 100%!important}
+  .label.ink{opacity:1!important;filter:none!important;transform:none!important}
+
+  /* the letterhead becomes an actual letterhead */
+  .top{padding:0 0 6mm;border-bottom:1pt solid #bbb;margin-bottom:8mm}
+  .hero{padding:0;min-height:0}
+  .stage{min-height:0;padding:0}
+  h1{position:static;text-align:left}
+  .line1,.line2{font-size:34pt;line-height:.9}
+  .hero-cutout{
+    position:static;width:44mm;translate:none;float:right;
+    margin:0 0 4mm 5mm;filter:none;
+  }
+  .hero-note{position:static;max-width:none;rotate:0deg;margin:4mm 0 0;font-size:12pt}
+  .hero-foot{font-size:12pt;padding-top:3mm}
+
+  .sec{padding:6mm 0;max-width:none;break-inside:auto}
+  .big{font-size:13pt;max-width:none}
+  .h2{font-size:17pt}
+  .tear{display:none}
+
+  /* photos: keep a print whole on one page */
+  .wall{display:block;padding:0}
+  .pol{
+    width:62mm;float:left;margin:0 6mm 6mm 0;rotate:0deg!important;
+    box-shadow:none;border:1pt solid #ccc;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .pol figcaption{font-size:11pt}
+  .sec-wide::after{content:"";display:block;clear:both}
+
+  /* flip cards flatten: front and back both readable */
+  .strip-wrap,.strip{display:block;overflow:visible}
+  .card{
+    width:auto;height:auto;perspective:none;
+    break-inside:avoid;page-break-inside:avoid;margin-bottom:4mm;
+  }
+  .card-face{
+    position:static;transform:none!important;backface-visibility:visible;
+    box-shadow:none;border:1pt solid #ddd;padding:3mm 4mm;
+  }
+  .card-back{background:#f4f0e8;color:#000;margin-top:-1pt}
+
+  /* the badge and dossier read as attachments */
+  .classified-grid,.mark-grid,.sighting-stage{display:block}
+  .badge-swing{animation:none;transform:none!important}
+  .badge-card{break-inside:avoid;page-break-inside:avoid}
+  .strap{display:none}
+  .social-grid{display:block}
+  .social{
+    break-inside:avoid;border:1pt solid #ddd;margin-bottom:3mm;
+    box-shadow:none;background:none!important;color:#000!important;
+  }
+  .social *{color:#000!important}
+
+  .notes-wall{display:block}
+  .note{rotate:0deg!important;break-inside:avoid;margin-bottom:3mm;max-width:none}
+  .secrets{rotate:0deg;box-shadow:none;break-inside:avoid}
+
+  .outro-big{font-size:30pt}
+  .ps-stage{min-height:0;margin-top:6mm}
+  .ps-note{position:static;transform:none!important;opacity:1!important;box-shadow:none;border:1pt solid #ccc}
+  .foot{padding:6mm 0 0;border-top:1pt solid #bbb;margin-top:8mm}
+  .foot-hint{display:none}
+  a{text-decoration:none;color:#000}
 }

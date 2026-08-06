@@ -48,6 +48,43 @@
     }
   }
 
+  /* ---------- the secrets get a stamp card, so "three secrets" has a scoreboard ---------- */
+  const secrets = (() => {
+    const card = $('#secrets'), foot = $('#secrets-foot');
+    const slots = $$('#secrets-row .slot');
+    let found = new Set();
+    try { found = new Set(JSON.parse(localStorage.getItem('secrets') || '[]')); } catch {}
+
+    const notes = {
+      0: "none stamped yet. they're all still up there.",
+      1: 'one down. two still hiding, and they are not subtle.',
+      2: 'two of three. the last one is the pettiest, obviously.',
+      3: 'all three. you went looking. genuinely, respect.',
+    };
+    function paint(animateN) {
+      for (const s of slots) {
+        const n = +s.dataset.n;
+        const got = found.has(n);
+        s.classList.toggle('got', got);
+        s.style.setProperty('--sr', `${(n % 2 ? -1 : 1) * (5 + n * 2)}deg`);
+        s.setAttribute('aria-label', `Secret ${n}: ${got ? 'found' : 'not found yet'}`);
+        if (got && n === animateN && !reduced) {
+          s.classList.remove('landed'); void s.offsetWidth; s.classList.add('landed');
+        }
+      }
+      if (foot) foot.textContent = notes[found.size] || notes[3];
+      if (card) card.classList.toggle('all-found', found.size === 3);
+    }
+    paint();
+    return n => {                       // called the moment a secret fires
+      if (found.has(n)) return false;
+      found.add(n);
+      try { localStorage.setItem('secrets', JSON.stringify([...found])); } catch {}
+      paint(n);
+      return true;
+    };
+  })();
+
   /* ---------- nepal time ---------- */
   const nptNow = () => new Date(Date.now() + (345 + new Date().getTimezoneOffset()) * 60000);
 
@@ -207,7 +244,8 @@
     if (++pokes === 5 && !pokeDone) {
       pokeDone = true;
       confetti(50);
-      toast("<b>secret #1.</b> okay okay, you found me. please stop poking, I'm shy. (two more secrets hide on this page.)");
+      secrets(1);
+      toast("<b>secret #1.</b> okay okay, you found me. please stop poking, I'm shy. (two more secrets hide on this page, and there's a stamp card for them at the bottom.)");
     }
   });
 
@@ -222,6 +260,66 @@
     el.style.transitionDelay = (i % 6) * 40 + 'ms';
     obs.observe(el);
   });
+
+  /* ---------- the pile: photos arrive stacked on the table, then get
+     dealt out across the wall as you scroll past. --pile 1 = stacked,
+     0 = laid out where the layout actually put them. ---------- */
+  const walls = $$('.wall');
+  if (walls.length && !reduced) {
+    // a vertical column of prints collapsing into one point reads as a glitch,
+    // not a pile, so the effect only runs where the wall is genuinely multi-column
+    const wide = () => innerWidth > 760;
+
+    function measurePile() {
+      for (const w of walls) {
+        const kids = [...w.children];
+        if (!kids.length) continue;
+        // offsetLeft/Top are layout positions, untouched by the transform we're
+        // about to set. getBoundingClientRect would include the current pile
+        // offset and every re-measure would shrink the effect toward nothing.
+        const mid = k => ({
+          x: k.offsetLeft + k.offsetWidth / 2,
+          y: k.offsetTop + k.offsetHeight / 2,
+        });
+        const pts = kids.map(mid);
+        const cx = pts.reduce((a, p) => a + p.x, 0) / pts.length;
+        const cy = pts.reduce((a, p) => a + p.y, 0) / pts.length;
+        kids.forEach((k, i) => {
+          k.style.setProperty('--dx', (cx - pts[i].x).toFixed(1) + 'px');
+          k.style.setProperty('--dy', (cy - pts[i].y).toFixed(1) + 'px');
+        });
+      }
+    }
+
+    function updatePile() {
+      const on = wide();
+      for (const w of walls) {
+        if (!on) { w.style.setProperty('--pile', '0'); w.classList.remove('piled'); continue; }
+        const r = w.getBoundingClientRect();
+        // stacked while the wall is still low on the screen, fully dealt by the time it's read
+        const from = innerHeight * .92, to = innerHeight * .34;
+        const p = Math.max(0, Math.min(1, (r.top - to) / (from - to)));
+        w.style.setProperty('--pile', p.toFixed(3));
+        w.classList.toggle('piled', p > .5);
+      }
+    }
+
+    measurePile();
+    updatePile();
+    let pileTick = 0;
+    addEventListener('scroll', () => {
+      if (pileTick) return;
+      pileTick = requestAnimationFrame(() => { pileTick = 0; updatePile(); });
+    }, { passive: true });
+    let pileRt;
+    addEventListener('resize', () => {
+      clearTimeout(pileRt);
+      pileRt = setTimeout(() => { measurePile(); updatePile(); }, 200);
+    });
+    // late-loading photos change the layout under us
+    addEventListener('load', () => { measurePile(); updatePile(); });
+    window.__remeasurePile = () => { measurePile(); updatePile(); };
+  }
 
   /* ---------- rapid-fire strip: drag to scroll, then let it coast ---------- */
   const strip = $('#strip');
@@ -286,18 +384,44 @@
     }
   }
 
-  /* ---------- lightbox for polaroids ---------- */
+  /* ---------- lightbox: opens one print, then walks the whole wall ---------- */
   const lb = $('#lightbox'), lbImg = $('#lb-img'), lbCap = $('#lb-cap');
-  function openLightbox(src, alt, cap) {
-    lbImg.src = src; lbImg.alt = alt || '';
-    lbCap.textContent = cap || '';
-    lb.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    const frame = lb.querySelector('.lb-frame');
-    if (window.anime && !reduced) {
-      anime.remove(frame);
+  const lbCount = $('#lb-count'), lbFrame = lb.querySelector('.lb-frame');
+  // every hangable print, in the order they sit on the page
+  const gallery = $$('.pol:not(.pol-empty):not(.pol-gf)');
+  let lbIndex = -1;
+  const lbOpen = () => !lb.classList.contains('hidden');
+
+  function showAt(i, dir = 0) {
+    if (!gallery.length) return;
+    lbIndex = (i + gallery.length) % gallery.length;   // wraps both ways
+    const p = gallery[lbIndex];
+    const img = p.querySelector('img');
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt || '';
+    lbCap.textContent = p.dataset.cap || '';
+    lbCount.textContent = `${lbIndex + 1} of ${gallery.length}`;
+    if (dir && window.anime && !reduced) {
+      anime.remove(lbFrame);
       anime({
-        targets: frame,
+        targets: lbFrame,
+        translateX: [dir * 42, 0],
+        opacity: [0, 1],
+        duration: 340,
+        easing: 'cubicBezier(.2,1,.3,1)',
+      });
+    }
+  }
+  function openLightbox(i) {
+    showAt(i);
+    lb.classList.remove('hidden');
+    lb.setAttribute('aria-modal', 'true');
+    document.body.style.overflow = 'hidden';
+    $('#lb-close').focus();
+    if (window.anime && !reduced) {
+      anime.remove(lbFrame);
+      anime({
+        targets: lbFrame,
         scale: [.6, 1],
         rotate: [-6, Math.random() * 4 - 2],
         opacity: [0, 1],
@@ -307,19 +431,59 @@
     }
   }
   function closeLightbox() {
+    if (!lbOpen()) return;
     lb.classList.add('hidden');
+    lb.removeAttribute('aria-modal');
     lbImg.src = '';
     document.body.style.overflow = '';
+    // hand focus back to whichever print you ended up on
+    const back = gallery[lbIndex];
+    if (back && back.focus) back.focus();
   }
-  $$('.pol:not(.pol-empty):not(.pol-gf)').forEach(p => {
-    p.addEventListener('click', () => {
-      const img = p.querySelector('img');
-      openLightbox(img.currentSrc || img.src, img.alt, p.dataset.cap);
+  const step = d => showAt(lbIndex + d, d);
+
+  // the frames are <figure>s, so they need the button treatment by hand:
+  // without this the whole photo wall is mouse-only
+  gallery.forEach((p, i) => {
+    p.tabIndex = 0;
+    p.setAttribute('role', 'button');
+    p.setAttribute('aria-label', `Open photo: ${p.dataset.cap || p.querySelector('img').alt || 'photo'}`);
+    p.addEventListener('click', () => openLightbox(i));
+    p.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
     });
   });
+
   lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
   $('#lb-close').addEventListener('click', closeLightbox);
-  addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  $('#lb-prev').addEventListener('click', e => { e.stopPropagation(); step(-1); });
+  $('#lb-next').addEventListener('click', e => { e.stopPropagation(); step(1); });
+  // three controls in there now, so keep Tab cycling between them
+  lb.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const stops = [$('#lb-prev'), $('#lb-next'), $('#lb-close')];
+    const at = stops.indexOf(document.activeElement);
+    e.preventDefault();
+    stops[(at + (e.shiftKey ? -1 : 1) + stops.length) % stops.length].focus();
+  });
+  addEventListener('keydown', e => {
+    if (e.key === 'Escape') return closeLightbox();
+    if (!lbOpen()) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+  });
+  // swipe on the print itself
+  {
+    let sx = 0, sy = 0, tracking = false;
+    lbFrame.addEventListener('pointerdown', e => { tracking = true; sx = e.clientX; sy = e.clientY; });
+    lbFrame.addEventListener('pointerup', e => {
+      if (!tracking) return;
+      tracking = false;
+      const dx = e.clientX - sx;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(e.clientY - sy)) step(dx < 0 ? 1 : -1);
+    });
+    lbFrame.addEventListener('pointercancel', () => { tracking = false; });
+  }
 
   /* ---------- the girlfriend file: schrödinger edition.
      never unblurs. confirms nothing. denies nothing. ---------- */
@@ -438,8 +602,40 @@
       ctx.scale(dpr, dpr);
       ctx.lineCap = ctx.lineJoin = 'round';
       if (snap) ctx.putImageData(snap, 0, 0);
+      else drawHint();
     }
+
+    /* an empty white rectangle tells nobody it's a whiteboard.
+       this sits on the canvas until the first stroke wipes it. */
+    function drawHint() {
+      if (dirty) return;
+      const r = board.getBoundingClientRect();
+      const cx = r.width / 2, cy = r.height / 2;
+      ctx.clearRect(0, 0, r.width, r.height);
+      ctx.save();
+      ctx.globalAlpha = .32;
+      ctx.fillStyle = '#221E19';
+      ctx.textAlign = 'center';
+      ctx.font = '600 27px Caveat, cursive';
+      ctx.fillText('go on. draw something here.', cx, cy - 4);
+      ctx.strokeStyle = '#221E19';
+      ctx.lineWidth = 2.6;
+      ctx.lineCap = 'round';
+      ctx.beginPath();               // a little squiggle, drawn by nobody
+      ctx.moveTo(cx - 48, cy + 26);
+      ctx.bezierCurveTo(cx - 16, cy + 10, cx + 16, cy + 42, cx + 48, cy + 24);
+      ctx.stroke();
+      ctx.restore();
+    }
+    function clearHint() {
+      if (dirty) return;
+      const r = board.getBoundingClientRect();
+      ctx.clearRect(0, 0, r.width, r.height);
+    }
+
     sizeBoard();
+    // Caveat may still be loading when the board first paints
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawHint).catch(() => {});
     let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(sizeBoard, 200); });
 
     const pos = e => {
@@ -447,6 +643,7 @@
       return { x: e.clientX - r.left, y: e.clientY - r.top };
     };
     board.addEventListener('pointerdown', e => {
+      clearHint();                 // the prompt goes before the first mark lands
       drawing = true; dirty = true; last = pos(e);
       board.setPointerCapture(e.pointerId);
     });
@@ -476,9 +673,11 @@
     $('#board-clear').addEventListener('click', () => {
       ctx.clearRect(0, 0, board.width, board.height);
       dirty = false;
+      drawHint();
       toast('🧽 wiped. like it never happened.');
     });
     $('#board-save').addEventListener('click', () => {
+      if (!dirty) { toast('🖍️ draw something first. I can\'t frame an empty board.'); return; }
       const a = document.createElement('a');
       a.download = 'my-masterpiece-for-martin.png';
       a.href = board.toDataURL('image/png');
@@ -489,20 +688,112 @@
 
   /* ---------- anonymous notes: land in a google sheet via an Apps Script web app ---------- */
   const NOTES_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzsK7O2ZS_4MmtbSleY76mx92a8r9nogJTZfAYVDRkT_EBJMomyVpp743VGG_JMm_IsRw/exec';
-  const NOTE_COLORS = ['var(--marker)', 'var(--mint)', '#fff', '#ffd3c6'];
   const wall = $('#notes-wall');
-  function pinNote(text) {
-    const n = document.createElement('div');
-    n.className = 'note';
-    n.style.setProperty('--r', (Math.random() * 6 - 3).toFixed(1) + 'deg');
-    n.style.background = NOTE_COLORS[Math.floor(Math.random() * NOTE_COLORS.length)];
-    n.textContent = text;
-    wall.appendChild(n);
-    while (wall.children.length > 13) wall.removeChild(wall.children[1]);
+
+  /* ---------- the book: entries live in a store, pages render from it ---------- */
+  const PER_PAGE = 4;
+  const entries = ['be nice. or at least be funny. , management']; // the house rule, page one
+  let bookPage = 0;
+
+  const pageCount = () => Math.max(1, Math.ceil(entries.length / PER_PAGE));
+
+  function renderPage(turning) {
+    if (!wall) return;
+    bookPage = Math.max(0, Math.min(bookPage, pageCount() - 1));
+    const slice = entries.slice(bookPage * PER_PAGE, bookPage * PER_PAGE + PER_PAGE);
+    const paint = () => {
+      wall.replaceChildren();
+      if (!slice.length) {
+        const e = document.createElement('p');
+        e.className = 'note-empty';
+        e.textContent = 'nothing on this page yet.';
+        wall.appendChild(e);
+      }
+      for (const t of slice) {
+        const n = document.createElement('div');
+        n.className = 'note';
+        n.style.setProperty('--r', (Math.random() * 1.6 - .8).toFixed(2) + 'deg');
+        n.textContent = t;
+        wall.appendChild(n);
+      }
+      const no = $('#page-no');
+      if (no) no.textContent = String(bookPage * 2 + 1);
+      const label = $('#page-label');
+      if (label) label.textContent = `page ${bookPage + 1} of ${pageCount()}`;
+      const prev = $('#page-prev'), next = $('#page-next');
+      if (prev) prev.disabled = bookPage === 0;
+      if (next) next.disabled = bookPage >= pageCount() - 1;
+    };
+    const left = $('#book-left');
+    if (turning && left && !reduced) {
+      left.classList.remove('turning');
+      void left.offsetWidth;
+      left.classList.add('turning');
+      setTimeout(paint, 230);              // repaint while the page is edge-on
+      setTimeout(() => left.classList.remove('turning'), 460);
+    } else paint();
   }
-  try {
-    JSON.parse(localStorage.getItem('notes') || '[]').slice(-12).forEach(pinNote);
-  } catch {}
+
+  function updateCover() {
+    const c = $('#book-count');
+    if (!c) return;
+    const n = entries.length - 1;          // the house rule isn't a signature
+    c.textContent = n <= 0 ? "nobody's signed it yet"
+      : n === 1 ? '1 signature inside'
+      : `${n} signatures inside`;
+  }
+
+  function pinNote(text) {
+    entries.push(text);
+    updateCover();
+  }
+
+  {
+    const cover = $('#book-open'), inner = $('#book-inner');
+    if (cover && inner) {
+      const setOpen = open => {
+        inner.classList.toggle('hidden', !open);
+        cover.classList.toggle('hidden', open);
+        cover.setAttribute('aria-expanded', String(open));
+      };
+      cover.addEventListener('click', () => {
+        bookPage = pageCount() - 1;        // opens to the most recent page
+        renderPage(false);
+        setOpen(true);
+        const t = $('#note-text');
+        if (t) t.focus({ preventScroll: true });
+      });
+      $('#book-close').addEventListener('click', () => { setOpen(false); cover.focus(); });
+      $('#page-prev').addEventListener('click', () => { bookPage--; renderPage(true); });
+      $('#page-next').addEventListener('click', () => { bookPage++; renderPage(true); });
+    }
+  }
+  /* the wall is public when /api/notes is configured, and falls back to
+     this browser's own notes when it isn't (local dev, or before setup) */
+  let wallIsPublic = false;
+  (async () => {
+    try {
+      const res = await fetch('/api/notes');
+      if (!res.ok) throw new Error('notes ' + res.status);
+      const { notes } = await res.json();
+      wallIsPublic = true;
+      // only now is it true that other people will read this
+      const privacy = $('#notes-privacy');
+      if (privacy) privacy.textContent =
+        "no name, no login, no consequences. it goes up on this wall for everyone to read, " +
+        "and lands in my spreadsheet too. still anonymous, I can't see who you are either.";
+      if (Array.isArray(notes) && notes.length) {
+        for (const n of notes) pinNote(n.text);
+      }
+    } catch {
+      // no shared book yet: show what this visitor wrote before
+      try {
+        JSON.parse(localStorage.getItem('notes') || '[]').slice(-24).forEach(pinNote);
+      } catch {}
+    }
+    updateCover();
+    renderPage(false);
+  })();
 
   $('#note-form').addEventListener('submit', async e => {
     e.preventDefault();
@@ -511,29 +802,52 @@
     const msg = box.value.trim();
     if (!msg) return;
     const btn = e.target.querySelector('.pin-btn');
-    btn.disabled = true; btn.textContent = '📌 pinning…';
+    btn.disabled = true; btn.textContent = 'signing…';
 
     pinNote(msg);
+    bookPage = pageCount() - 1;      // land on the page their signature just went to
+    renderPage(true);
     try {
       const stored = JSON.parse(localStorage.getItem('notes') || '[]');
       stored.push(msg);
-      localStorage.setItem('notes', JSON.stringify(stored.slice(-12)));
+      localStorage.setItem('notes', JSON.stringify(stored.slice(-24)));
     } catch {}
 
+    // the shared wall first, then martin's own copy in the sheet
+    let onWall = false, tooFast = false;
+    try {
+      const res = await fetch('/api/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: msg }),
+      });
+      if (res.status === 429) tooFast = true;
+      else if (res.ok) onWall = true;
+    } catch {}
+
+    let filed = false;
     try {
       const res = await fetch(NOTES_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ message: msg, when: new Date().toISOString() }),
       });
-      if (!res.ok) throw new Error('sheet ' + res.status);
+      filed = res.ok;
+    } catch {}
+
+    if (tooFast) {
+      toast('✋ easy. the book needs a second to breathe.');
+    } else if (onWall) {
+      toast('✍️ signed. it’s in the book now, where everyone can read it. no name attached.');
+      confetti(36);
+    } else if (filed) {
       toast('📬 pugyo! filed in the secret spreadsheet. martin reads it with morning chiya.');
       confetti(36);
-    } catch {
-      toast('📌 pinned on the wall. delivery gremlins are on strike though, so if it’s important: DM me.');
+    } else {
+      toast('✍️ signed the book. delivery gremlins are on strike though, so if it’s important: DM me.');
     }
     box.value = '';
-    btn.disabled = false; btn.textContent = '📌 pin it anonymously';
+    btn.disabled = false; btn.textContent = 'sign it';
   });
 
   /* ---------- yt music playlist sync: pulls from the public playlist below ---------- */
@@ -703,6 +1017,7 @@
       confetti(140);
       if (!konamiDone) {
         konamiDone = true;
+        secrets(2);
         toast('<b>secret #2.</b> the old codes still work. you absolute legend.');
       }
     }
@@ -716,6 +1031,7 @@
     if (++stars >= 5 && !starDone) {
       starDone = true;
       confetti(60);
+      secrets(3);
       toast('<b>secret #3.</b> you made the star dizzy. that’s all three. we should talk.');
     }
   });
@@ -1044,6 +1360,8 @@
         ], { duration: 620, easing: 'cubic-bezier(.2,1,.3,1)' });
       }
       if (++shuffles === 1 || shuffles % 3 === 0) toast(lines[Math.min(shuffles - 1, lines.length - 1)]);
+      // the deal changed where every print lives, so the pile offsets are stale
+      if (window.__remeasurePile) setTimeout(window.__remeasurePile, 660);
       setTimeout(() => { busy = false; }, 640);
     });
   }
