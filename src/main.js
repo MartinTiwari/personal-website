@@ -291,20 +291,51 @@
       }
     }
 
+    // cached page offsets: getBoundingClientRect on every wall on every scroll
+    // frame forces a layout each time, which is most of what made this lag
+    let tops = [];
+    const cacheTops = () => {
+      tops = walls.map(w => {
+        let y = 0, n = w;
+        while (n) { y += n.offsetTop; n = n.offsetParent; }
+        return y;
+      });
+    };
+
+    const last = new Array(walls.length).fill(-1);
+    let dealingTimer = 0;
+
     function updatePile() {
       const on = wide();
-      for (const w of walls) {
-        if (!on) { w.style.setProperty('--pile', '0'); w.classList.remove('piled'); continue; }
-        const r = w.getBoundingClientRect();
-        // stacked while the wall is still low on the screen, fully dealt by the time it's read
-        const from = innerHeight * .92, to = innerHeight * .34;
-        const p = Math.max(0, Math.min(1, (r.top - to) / (from - to)));
-        w.style.setProperty('--pile', p.toFixed(3));
-        w.classList.toggle('piled', p > .5);
+      const from = innerHeight * .92, to = innerHeight * .34;
+      for (let i = 0; i < walls.length; i++) {
+        const w = walls[i];
+        if (!on) {
+          if (last[i] !== 0) { w.style.setProperty('--pile', '0'); last[i] = 0; }
+          w.classList.remove('piled', 'dealing');
+          continue;
+        }
+        const top = tops[i] - scrollY;                 // no layout read
+        const p = Math.max(0, Math.min(1, (top - to) / (from - to)));
+        // two decimals is finer than anyone can see, and skipping the no-op
+        // writes keeps a settled wall completely off the paint path
+        const q = Math.round(p * 100) / 100;
+        if (q === last[i]) continue;
+        last[i] = q;
+        w.style.setProperty('--pile', String(q));
+        w.classList.toggle('piled', q > .5);
+        w.classList.add('dealing');                    // drop the transform transition
       }
+      // once scrolling stops, hand transform back to the transition so hover
+      // still eases, and drop will-change so the layers are released
+      clearTimeout(dealingTimer);
+      dealingTimer = setTimeout(() => {
+        for (const w of walls) w.classList.remove('dealing');
+      }, 140);
     }
 
     measurePile();
+    cacheTops();
     updatePile();
     let pileTick = 0;
     addEventListener('scroll', () => {
@@ -314,11 +345,11 @@
     let pileRt;
     addEventListener('resize', () => {
       clearTimeout(pileRt);
-      pileRt = setTimeout(() => { measurePile(); updatePile(); }, 200);
+      pileRt = setTimeout(() => { measurePile(); cacheTops(); updatePile(); }, 200);
     });
     // late-loading photos change the layout under us
-    addEventListener('load', () => { measurePile(); updatePile(); });
-    window.__remeasurePile = () => { measurePile(); updatePile(); };
+    addEventListener('load', () => { measurePile(); cacheTops(); updatePile(); });
+    window.__remeasurePile = () => { measurePile(); cacheTops(); updatePile(); };
   }
 
   /* ---------- rapid-fire strip: drag to scroll, then let it coast ---------- */
@@ -1267,18 +1298,11 @@
     requestAnimationFrame(petTick);
   }
 
-  /* ---------- paper grain drifts under the ink ---------- */
-  if (!reduced && !matchMedia('(pointer:coarse)').matches) {
-    let graining = false;
-    addEventListener('scroll', () => {
-      if (graining) return;
-      graining = true;
-      requestAnimationFrame(() => {
-        document.documentElement.style.setProperty('--grain-y', (scrollY * .06 % 13).toFixed(2) + 'px');
-        graining = false;
-      });
-    }, { passive: true });
-  }
+  /* ---------- paper grain: fixed, not drifting.
+     The grain is a full-viewport fixed layer on mix-blend-mode:multiply.
+     Moving its background-position repainted and re-blended the entire
+     screen on every scroll frame, which cost far more than a 13px drift
+     nobody can actually see. The texture stays; the drift is gone. ---------- */
 
   /* ---------- section labels: wet ink settling ---------- */
   {

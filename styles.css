@@ -246,6 +246,14 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   transform:translate(calc(var(--dx,0px) * var(--pile,0)),calc(var(--dy,0px) * var(--pile,0)));
   transition:transform .34s cubic-bezier(.2,1.4,.4,1);
 }
+/* While scroll is driving the deal, transform must not be transitioned: a .34s
+   transition restarted every frame leaves 13 prints permanently mid-interpolation
+   and nothing ever settles. Same trick .pol.tilting uses for pointer tracking.
+   will-change hands them to the compositor, so dealing moves layers, not paint. */
+.wall.dealing .pol,.wall.dealing > .note{
+  transition:box-shadow .3s,rotate .34s ease,opacity .6s ease;
+  will-change:transform;
+}
 /* while the pile is still collapsed the prints overlap, so the shadow reads as one stack */
 .wall.piled .pol{box-shadow:0 8px 18px rgba(34,30,25,.2),0 2px 5px rgba(34,30,25,.14)}
 /* the scroll reveal rides its own variable so it can't fight the tilt */
