@@ -180,6 +180,21 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   position:absolute;right:-66px;top:8px;width:70px;color:var(--ink-soft);
 }
 
+/* one small family-business sticker, not a second hero */
+.hero-sponsor{
+  position:absolute;z-index:6;right:-3%;bottom:7%;width:188px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  rotate:4deg;text-align:center;
+  animation:sponsorIn .8s 1.2s cubic-bezier(.16,1,.3,1) both;
+}
+.sponsor-sticker{display:block;width:142px;filter:drop-shadow(0 11px 12px rgba(34,30,25,.2));transition:transform .35s cubic-bezier(.16,1,.3,1),filter .35s}
+.sponsor-sticker img{display:block;width:100%;height:auto}
+.sponsor-sticker:hover,.sponsor-sticker:focus-visible{transform:translateY(-6px) rotate(-3deg) scale(1.045);filter:drop-shadow(0 17px 16px rgba(34,30,25,.24))}
+.sponsor-note{font-size:14px;line-height:1.05;color:var(--ink-soft);white-space:nowrap}
+.sponsor-site{font-size:9.5px;font-weight:800;letter-spacing:.01em;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--red);line-height:1.6;white-space:nowrap}
+.sponsor-site:hover,.sponsor-site:focus-visible{color:var(--red)}
+@keyframes sponsorIn{from{opacity:0;transform:translate(24px,22px) rotate(6deg)}to{opacity:1;transform:none}}
+
 .hero-foot{
   position:relative;z-index:4;text-align:center;font-size:clamp(19px,2.6vw,24px);
   padding:calc(5vw + 26px) 20px 26px;
@@ -747,7 +762,10 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 .escu-ad-paid{writing-mode:vertical-rl;rotate:180deg;font-size:8px;text-transform:uppercase;letter-spacing:.13em;color:var(--ink-soft)}
 .escu-ad strong{font-family:var(--serif);font-size:clamp(17px,2vw,23px);line-height:1.05}
 .escu-ad p{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
+.escu-ad-action{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center}
 .escu-ad-tag{font-size:17px;line-height:1.18;color:var(--red);rotate:1.5deg;text-align:center}
+.escu-ad-link{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--ink);line-height:1.6}
+.escu-ad-link:hover,.escu-ad-link:focus-visible{color:var(--red);border-color:var(--red)}
 .rapid-label{margin-top:0}
 
 /* ================= rapid fire strip ================= */
@@ -1101,6 +1119,8 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 
 /* ================= phone ================= */
 @media (max-width:900px){
+  .hero-sponsor{right:1%;width:176px}
+  .sponsor-sticker{width:124px}
   .classified-grid{grid-template-columns:1fr}
   .badge-scene{padding-top:26px}
   .mark-grid{grid-template-columns:1fr}
@@ -1128,6 +1148,12 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
     position:static;order:2;margin:calc(10vw + 14px) auto 0;rotate:-2deg;
     max-width:300px;text-align:center;font-size:18px;
   }
+  .hero-sponsor{
+    position:relative;right:auto;bottom:auto;order:3;width:188px;
+    margin:18px auto 2px;rotate:1.5deg;
+  }
+  .sponsor-sticker{width:132px}
+  .sponsor-note{font-size:13px}
   .note-arrow{display:none}
   .stage{padding-bottom:0}
   .hero-foot{font-size:18px;padding-top:16px}
@@ -1141,7 +1167,7 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   .project-live{min-height:370px;padding:18px}
   .escu-ad{grid-template-columns:1fr;gap:8px;text-align:center;margin:34px auto 48px;padding:16px}
   .escu-ad-paid{writing-mode:horizontal-tb;rotate:0deg}
-  .escu-ad-tag{margin-top:5px}
+  .escu-ad-action{margin-top:5px}
   .s-wide{flex-direction:column;align-items:flex-start;gap:4px}
   .s-wide .s-arrow{position:absolute;top:16px;right:18px}
   .aside{font-size:19px}
@@ -1615,7 +1641,7 @@ body.intro-hold .chip,body.intro-hold .hero-note{animation-play-state:paused}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 
   /* anything that only makes sense with a pointer stays behind */
-  .grain,#intro,#haru-pet,#chiya,#toast-root,.lightbox,.skip,
+  .grain,#intro,#haru-pet,#chiya,#toast-root,.lightbox,.skip,.hero-sponsor,
   .board-box,.shuffle-btn,.top-link,.top-dot,.peek,.down,
   .ps-env-front,.ps-env-back,.ps-posted,.ps-runway,.swipe-hint,
   .card-turn,.badge-hint,.tap-hint,.note-arrow,.chip,
