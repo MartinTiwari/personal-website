@@ -415,6 +415,52 @@
     }
   }
 
+  /* ---------- project #3: an honest live counter (of this visit, not fake progress) ---------- */
+  {
+    const clock = $('#project-clock');
+    const report = $('#project-report');
+    const excuse = $('#project-excuse');
+    if (clock) {
+      const openedAt = performance.now();
+      let timer = 0;
+      const tick = () => {
+        const seconds = Math.max(0, Math.floor((performance.now() - openedAt) / 1000));
+        const hh = String(Math.floor(seconds / 3600)).padStart(2, '0');
+        const mm = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+        const ss = String(seconds % 60).padStart(2, '0');
+        clock.textContent = `${hh}:${mm}:${ss}`;
+        clock.dateTime = `PT${seconds}S`;
+      };
+      const startClock = () => {
+        clearInterval(timer);
+        tick();
+        if (!document.hidden) timer = setInterval(tick, 1000);
+      };
+      startClock();
+      document.addEventListener('visibilitychange', startClock);
+    }
+
+    if (report && excuse) {
+      const reports = [
+        'status: building. scope: making eye contact again.',
+        'progress: real. deadline: wearing a fake moustache.',
+        'bugs found: enough to start a small wildlife reserve.',
+        'latest update: fixed one thing. introduced character development.',
+        'public details: 0. dramatic internal monologues: several.',
+        'estimated arrival: after one final feature. yes, I heard it too.',
+      ];
+      let reportIndex = 0;
+      report.addEventListener('click', () => {
+        reportIndex = (reportIndex + 1) % reports.length;
+        excuse.textContent = reports[reportIndex];
+        report.animate(
+          [{ rotate: '0deg' }, { rotate: '-1.5deg', offset: .45 }, { rotate: '0deg' }],
+          { duration: reduced ? 1 : 280, easing: 'cubic-bezier(.2,1,.3,1)' }
+        );
+      });
+    }
+  }
+
   /* ---------- lightbox: opens one print, then walks the whole wall ---------- */
   const lb = $('#lightbox'), lbImg = $('#lb-img'), lbCap = $('#lb-cap');
   const lbCount = $('#lb-count'), lbFrame = lb.querySelector('.lb-frame');

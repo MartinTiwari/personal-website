@@ -681,6 +681,75 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
 }
 .badge-hint{font-size:18px;margin-top:14px;rotate:-2deg}
 
+/* ================= project incident report ================= */
+.project-headline{max-width:850px;margin-bottom:30px;text-wrap:balance}
+.project-desk{
+  display:grid;grid-template-columns:minmax(0,1.65fr) minmax(270px,.72fr);
+  gap:clamp(22px,4vw,46px);align-items:stretch;
+}
+.project-ledger{
+  position:relative;background:#fff;border:1.5px solid rgba(34,30,25,.22);
+  border-radius:4px;padding:14px 26px 14px 42px;
+  box-shadow:0 16px 36px rgba(34,30,25,.12),0 3px 8px rgba(34,30,25,.08);
+  rotate:-.45deg;
+  background-image:linear-gradient(90deg,transparent 26px,rgba(232,83,47,.34) 27px,rgba(232,83,47,.34) 28px,transparent 29px);
+}
+.project-ledger::before{
+  content:"";position:absolute;left:10px;top:20px;bottom:20px;width:10px;
+  background:radial-gradient(circle,#D8CBB7 0 3px,transparent 3.5px) 50% 0/10px 34px repeat-y;
+}
+.project-entry{
+  position:relative;display:grid;grid-template-columns:44px minmax(0,1fr) auto;
+  gap:16px;align-items:start;padding:25px 0 23px;
+  border-bottom:1.5px dashed rgba(34,30,25,.22);
+}
+.project-entry:last-child{border-bottom:0}
+.project-no{font-family:var(--serif);font-size:26px;font-weight:640;color:var(--red);line-height:1}
+.project-copy{min-width:0}
+.project-type{display:block;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px}
+.project-copy h3{font-family:var(--serif);font-size:clamp(20px,2.2vw,27px);line-height:1.12;margin:0 0 8px;font-weight:640}
+.project-copy p{font-size:15px;line-height:1.55;color:var(--ink-soft);max-width:58ch;margin:0}
+.project-stamp{
+  align-self:center;color:var(--red);border:2px solid currentColor;border-radius:4px;
+  padding:7px 8px 5px;font-size:11px;font-weight:700;letter-spacing:.13em;
+  rotate:-7deg;opacity:.85;
+}
+.project-stamp.stamp-blue{color:var(--blue);rotate:5deg}
+.project-live{
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
+  min-height:100%;padding:20px 20px 18px;background:var(--ink);color:var(--paper);
+  border-radius:8px;box-shadow:0 16px 34px rgba(34,30,25,.2);rotate:1.2deg;
+}
+.project-live::after{
+  content:"R&D";position:absolute;right:-9px;bottom:-30px;font-family:var(--serif);
+  font-size:100px;font-weight:640;color:rgba(251,246,238,.05);rotate:-8deg;pointer-events:none;
+}
+.project-live-head{display:flex;align-items:center;gap:8px;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#D8CBB7}
+.project-live-head b{margin-left:auto;color:var(--marker);font-size:9px}
+.live-pip{width:8px;height:8px;border-radius:50%;background:var(--marker);box-shadow:0 0 0 3px rgba(255,225,90,.12);animation:livePulse 2s ease-in-out infinite}
+.project-live-number{font-family:var(--serif);font-size:clamp(76px,9vw,118px);line-height:.82;font-weight:640;color:var(--marker);margin:26px 0 14px;letter-spacing:-.03em}
+.project-live-title{font-family:var(--serif);font-size:19px;line-height:1.25;margin:0 0 20px}
+.project-clock-wrap{border-top:1px dashed rgba(251,246,238,.28);border-bottom:1px dashed rgba(251,246,238,.28);padding:14px 0;margin-top:auto}
+.project-clock-wrap span{display:block;font-size:10px;line-height:1.35;text-transform:uppercase;letter-spacing:.07em;color:#BFB29F;margin-bottom:7px}
+#project-clock{display:block;font-variant-numeric:tabular-nums;font-size:22px;letter-spacing:.08em;color:var(--paper)}
+.project-report{
+  position:relative;z-index:1;width:100%;margin:14px 0 8px;padding:8px 10px;border:1px solid rgba(251,246,238,.45);
+  border-radius:4px;background:transparent;color:var(--paper);font-size:16px;transition:background .2s,color .2s,transform .15s;
+}
+.project-report:hover{background:var(--marker);border-color:var(--marker);color:var(--ink);transform:translateY(-2px)}
+.project-report:active{transform:translateY(0)}
+.project-excuse{position:relative;z-index:1;min-height:40px;margin:0;text-align:center;font-size:15px;line-height:1.25;color:#D8CBB7}
+.escu-ad{
+  display:grid;grid-template-columns:auto 1fr minmax(190px,.55fr);align-items:center;gap:18px;
+  margin:42px auto 58px;padding:14px 18px;background:#E9F0E5;border:1.5px solid var(--ink);
+  border-radius:4px;box-shadow:0 9px 20px rgba(34,30,25,.1);rotate:-.4deg;
+}
+.escu-ad-paid{writing-mode:vertical-rl;rotate:180deg;font-size:8px;text-transform:uppercase;letter-spacing:.13em;color:var(--ink-soft)}
+.escu-ad strong{font-family:var(--serif);font-size:clamp(17px,2vw,23px);line-height:1.05}
+.escu-ad p{margin:4px 0 0;font-size:13px;color:var(--ink-soft)}
+.escu-ad-tag{font-size:17px;line-height:1.18;color:var(--red);rotate:1.5deg;text-align:center}
+.rapid-label{margin-top:0}
+
 /* ================= rapid fire strip ================= */
 .strip-wrap{position:relative}
 .strip{
@@ -1035,6 +1104,9 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   .classified-grid{grid-template-columns:1fr}
   .badge-scene{padding-top:26px}
   .mark-grid{grid-template-columns:1fr}
+  .project-desk{grid-template-columns:1fr}
+  .project-live{width:min(100%,520px);justify-self:center;min-height:390px;rotate:.7deg}
+  .project-live-number{font-size:96px}
   .sighting-stage{
     grid-template-columns:1fr;justify-items:center;text-align:center;
     gap:28px;min-height:56vh;
@@ -1060,6 +1132,16 @@ h1{font-family:var(--serif);font-weight:640;line-height:.84;letter-spacing:-.03e
   .stage{padding-bottom:0}
   .hero-foot{font-size:18px;padding-top:16px}
   .social-grid{grid-template-columns:1fr}
+  .project-ledger{padding:10px 16px 10px 30px;background-position:-8px 0}
+  .project-ledger::before{left:5px}
+  .project-entry{grid-template-columns:34px minmax(0,1fr);gap:10px;padding:22px 0}
+  .project-stamp{grid-column:2;justify-self:start;margin-top:2px;rotate:-4deg}
+  .project-stamp.stamp-blue{rotate:3deg}
+  .project-copy p{font-size:14px}
+  .project-live{min-height:370px;padding:18px}
+  .escu-ad{grid-template-columns:1fr;gap:8px;text-align:center;margin:34px auto 48px;padding:16px}
+  .escu-ad-paid{writing-mode:horizontal-tb;rotate:0deg}
+  .escu-ad-tag{margin-top:5px}
   .s-wide{flex-direction:column;align-items:flex-start;gap:4px}
   .s-wide .s-arrow{position:absolute;top:16px;right:18px}
   .aside{font-size:19px}

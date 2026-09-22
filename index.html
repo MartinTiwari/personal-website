@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=44" />
+  <link rel="stylesheet" href="styles.css?v=45" />
 </head>
 <body>
 
@@ -305,7 +305,7 @@
           <div class="row"><span class="k">phone number</span><button class="v redacted" data-key="phone">██████████ <span class="tap-hint">(tap)</span></button></div>
           <div class="row"><span class="k">home address</span><button class="v redacted" data-key="addr">████████████ <span class="tap-hint">(tap)</span></button></div>
           <div class="row"><span class="k">boss</span><span class="v">HARU. complaints go through her. she ignores them.</span></div>
-          <div class="row"><span class="k">family business</span><span class="v">the water you drink, the bag you carry, the chemicals you can't pronounce. we're everywhere. you're welcome.</span></div>
+          <div class="row"><span class="k">family business</span><span class="v"><b>Everest Super Chemical Udhyog.</b> serious chemicals, proper website, deeply unserious owner's son. subtle advertisement complete.</span></div>
           <div class="row"><span class="k">location</span><span class="v">earth, probably. good momos within walking distance.</span></div>
         </div>
       </div>
@@ -332,9 +332,60 @@
     </div>
   </section>
 
-  <!-- ================= RAPID FIRE ================= -->
-  <section class="sec sec-wide">
-    <p class="label">rapid fire, no context</p>
+  <!-- ================= PROJECTS + RAPID FIRE ================= -->
+  <section class="sec sec-wide" id="projects">
+    <p class="label">office software department (unfortunately, me)</p>
+    <h2 class="h2 project-headline">two shipped. one has started paying rent in my head.</h2>
+
+    <div class="project-desk">
+      <div class="project-ledger" aria-label="Completed projects">
+        <article class="project-entry">
+          <span class="project-no" aria-hidden="true">01</span>
+          <div class="project-copy">
+            <span class="project-type">family business, now internet-compatible</span>
+            <h3>Everest Super Chemical Udhyog website</h3>
+            <p>gave the chemical empire a proper front door online. dad can now say “check the website” instead of forwarding six photos on WhatsApp.</p>
+          </div>
+          <span class="project-stamp">SHIPPED</span>
+        </article>
+        <article class="project-entry">
+          <span class="project-no" aria-hidden="true">02</span>
+          <div class="project-copy">
+            <span class="project-type">built for the office</span>
+            <h3>the accounting app</h3>
+            <p>the numbers now have assigned seats. invoices enter, ledgers behave, and my ctrl+z has been promoted to senior management.</p>
+          </div>
+          <span class="project-stamp stamp-blue">DEPLOYED</span>
+        </article>
+      </div>
+
+      <aside class="project-live" aria-label="Live counter for project three">
+        <div class="project-live-head">
+          <span class="live-pip" aria-hidden="true"></span>
+          <span>project currently cooking</span>
+          <b>LIVE</b>
+        </div>
+        <div class="project-live-number" aria-hidden="true">03</div>
+        <p class="project-live-title">name: above your clearance level.</p>
+        <div class="project-clock-wrap">
+          <span>time since you opened this page and I called it “one last feature”</span>
+          <time id="project-clock" datetime="PT0S">00:00:00</time>
+        </div>
+        <button class="project-report hand" id="project-report" type="button">request honest progress report</button>
+        <p class="project-excuse hand" id="project-excuse" aria-live="polite">status: building. scope: making eye contact again.</p>
+      </aside>
+    </div>
+
+    <aside class="escu-ad" aria-label="Advertisement for Everest Super Chemical Udhyog">
+      <span class="escu-ad-paid">paid for by family obligations</span>
+      <div>
+        <strong>EVEREST SUPER CHEMICAL UDHYOG</strong>
+        <p>serious chemicals. proper website. same family WhatsApp group.</p>
+      </div>
+      <span class="escu-ad-tag hand">now online because “beta” stopped being a valid excuse.</span>
+    </aside>
+
+    <p class="label rapid-label">rapid fire, no further context</p>
     <div class="strip-wrap">
       <div class="strip" id="strip">
         <!-- each answer landed on whatever paper was nearest. flip any of them. -->
@@ -354,13 +405,13 @@
           </div>
           <div class="card-face card-back"><span class="card-b">nine are the same stack overflow question. I keep hoping for a better answer.</span></div>
         </div>
-        <div class="card c-sticky" tabindex="0" role="button" aria-label="currently building. tap to flip"><!-- EDIT ME -->
+        <div class="card c-sticky" tabindex="0" role="button" aria-label="project three. tap to flip">
           <div class="card-face card-front">
             <span class="card-k">currently building</span>
-            <span class="card-v">project #2. it's a secret 🤫</span>
+            <span class="card-v">project #3. scope says hello. sleep says goodbye. 🤫</span>
             <span class="card-turn" aria-hidden="true">↻</span>
           </div>
-          <div class="card-face card-back"><span class="card-b">a secret because it's 40% finished and I'd like to keep my options open.</span></div>
+          <div class="card-face card-back"><span class="card-b">official progress: yes. public details: absolutely not. the counter nearby is the only witness.</span></div>
         </div>
         <div class="card c-receipt" tabindex="0" role="button" aria-label="sleep schedule. tap to flip">
           <div class="card-face card-front">
@@ -627,7 +678,7 @@
     <div class="foot-row">
       <span class="foot-signed">
         <img src="assets/signature.png?v=2" alt="signed, Martin" width="46" height="43" />
-        <span>© <span id="year">2026</span> · martintiwari.com.np · made in nepal 🇳🇵 · fueled by momos and one specific playlist</span>
+        <span>© <span id="year">2026</span> · martintiwari.com.np · made in nepal 🇳🇵 · fueled by momos and one specific playlist · suspiciously clean surfaces by ESCU</span>
       </span>
       <span class="hand foot-hint">psst… ↑↑↓↓←→←→BA</span>
     </div>
@@ -797,6 +848,6 @@
 
   <div id="toast-root"></div>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=44" defer></script>
+  <script src="src/main.js?v=45" defer></script>
 </body>
 </html>
