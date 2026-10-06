@@ -65,6 +65,7 @@ body.desk-mode { font-size:16px; }
 .desk-contact .hand { font-size:21px; }
 .desk-contact h2 { font-family:var(--serif);font-size:34px;font-weight:640;letter-spacing:-.03em;line-height:1.1;margin-bottom:9px; }
 .desk-contact a { color:var(--red);text-underline-offset:4px; }
+.desk-contact .intro-replay { display:block;margin:14px auto 0;background:none;border:0;border-bottom:1px solid var(--ink-soft);padding:3px 0;color:var(--ink-soft);font-family:var(--hand);font-size:18px; }
 .desk-contact p { max-width:530px;margin:9px auto;color:var(--ink-soft);font-size:14px; }
 .desk-mode footer { min-height:0;padding:12px 24px 20px; }
 .desk-mode footer .dispatch,.desk-mode footer .secrets,.desk-mode footer .ps-stage,.desk-mode footer .peek,.desk-mode footer .runway { display:none !important; }
