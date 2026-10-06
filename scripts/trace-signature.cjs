@@ -9,7 +9,7 @@ const strokes = [
   'M228 475 C220 480 227 462 240 445 L383 248',
   'M307 375 L339 354'
 ];
-const durations = [350, 650, 1150, 330, 110];
+const durations = [350, 430, 1550, 330, 110];
 function samples(d) {
   const tokens=d.match(/[MCL]|-?\d+(?:\.\d+)?/g), points=[];
   let i=0,x=0,y=0;

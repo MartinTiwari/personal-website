@@ -52,12 +52,22 @@
       path.style.strokeDashoffset = '1';
       path.style.opacity = '0';
       const duration = Number(path.dataset.duration) || 500;
+      // Sweep through the B quickly, then linger over the connected lettering.
+      // The silhouette and pen order stay unchanged; only the hand's pace varies.
+      const keyframes = index === 2 ? [
+        { strokeDashoffset: '1', opacity: 1, offset: 0 },
+        { strokeDashoffset: '.52', opacity: 1, offset: .22 },
+        { strokeDashoffset: '.36', opacity: 1, offset: .55 },
+        { strokeDashoffset: '.16', opacity: 1, offset: .80 },
+        { strokeDashoffset: '0', opacity: 1, offset: 1 }
+      ] : [{ strokeDashoffset: '1', opacity: 1 }, { strokeDashoffset: '0', opacity: 1 }];
       animations.push(path.animate(
-        [{ strokeDashoffset: '1', opacity: 1 }, { strokeDashoffset: '0', opacity: 1 }],
-        { duration, delay, easing: 'linear', fill: 'forwards' }
+        keyframes,
+        { duration, delay, easing: index === 2 ? 'linear' : 'cubic-bezier(.25,.05,.55,1)', fill: 'forwards' }
       ));
       delay += duration + 70; // a brief pen lift between the five parts
     });
+    return delay - 70;
   }
   function open(replay = false) {
     if (active) return;
@@ -79,8 +89,8 @@
     paths.forEach(path => { path.style.strokeDasharray = ''; path.style.strokeDashoffset = ''; path.style.opacity = ''; });
     if (!reducedMotion.matches) {
       intro.classList.add('is-drawing');
-      draw();
-      closeTimer = setTimeout(finish, 3500);
+      const drawingEnds = draw();
+      closeTimer = setTimeout(finish, drawingEnds + 450);
     } else if (!replay) {
       finish();
     }

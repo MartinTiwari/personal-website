@@ -8,7 +8,7 @@ try{for(const [name,width,height] of [['desktop',1440,900],['phone',390,844]]){
  await page.route('**/anime.min.js',r=>r.fulfill({status:200,body:''}));
  await page.goto('http://127.0.0.1:4174',{waitUntil:'domcontentloaded'});
  await page.locator('.intro-photo,.intro-type').evaluateAll(nodes=>nodes.forEach(node=>node.getAnimations().forEach(a=>a.finish())));
- for(const [time,stage] of [[400,0],[1000,1],[1800,2],[2650,3],[2950,4],[3100,5]]){
+ for(const [time,stage] of [[300,0],[750,1],[1800,2],[2850,3],[3120,4],[3300,5]]){
   await page.locator('.intro-stroke').evaluateAll((paths,time)=>paths.forEach(p=>p.getAnimations().forEach(a=>{a.pause();a.currentTime=time;})),time);
   const offsets=await page.locator('.intro-stroke').evaluateAll(paths=>paths.map(p=>({offset:parseFloat(getComputedStyle(p).strokeDashoffset),opacity:parseFloat(getComputedStyle(p).opacity)})));
   if(offsets.length!==5)throw Error('Wrong number of strokes');
