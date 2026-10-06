@@ -466,7 +466,7 @@
   const lbCount = $('#lb-count'), lbFrame = lb.querySelector('.lb-frame');
   // every hangable print, in the order they sit on the page
   const gallery = $$('.pol:not(.pol-empty):not(.pol-gf)');
-  let lbIndex = -1;
+  let lbIndex = -1, lbOrigin = null;
   const lbOpen = () => !lb.classList.contains('hidden');
 
   function showAt(i, dir = 0) {
@@ -490,6 +490,7 @@
     }
   }
   function openLightbox(i) {
+    lbOrigin = gallery[i];
     showAt(i);
     lb.classList.remove('hidden');
     lb.setAttribute('aria-modal', 'true');
@@ -512,9 +513,9 @@
     lb.classList.add('hidden');
     lb.removeAttribute('aria-modal');
     lbImg.src = '';
-    document.body.style.overflow = '';
+    document.body.style.overflow = document.querySelector('#desk-view')?.open ? 'hidden' : '';
     // hand focus back to whichever print you ended up on
-    const back = gallery[lbIndex];
+    const back = lbOrigin || gallery[lbIndex];
     if (back && back.focus) back.focus();
   }
   const step = d => showAt(lbIndex + d, d);
@@ -544,7 +545,7 @@
     stops[(at + (e.shiftKey ? -1 : 1) + stops.length) % stops.length].focus();
   });
   addEventListener('keydown', e => {
-    if (e.key === 'Escape') return closeLightbox();
+    if (e.key === 'Escape' && lbOpen()) { e.preventDefault(); return closeLightbox(); }
     if (!lbOpen()) return;
     if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
     if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
@@ -671,8 +672,9 @@
     let color = '#221E19', drawing = false, last = null, dirty = false;
 
     function sizeBoard() {
-      const snap = dirty ? ctx.getImageData(0, 0, board.width, board.height) : null;
       const r = board.getBoundingClientRect();
+      if (!r.width || !r.height) return; // closed desk files keep their canvas intact
+      const snap = dirty ? ctx.getImageData(0, 0, board.width, board.height) : null;
       const dpr = Math.min(devicePixelRatio || 1, 2);
       board.width = Math.round(r.width * dpr);
       board.height = Math.round(r.height * dpr);
@@ -1118,7 +1120,7 @@
   const sightingPhoto = $('#sighting-photo');
   const sightingHeadline = $('#sighting-headline');
   if (sightingStage && sightingPhoto && sightingHeadline) {
-    if (reduced) {
+    if (reduced || document.body.classList.contains('desk-mode')) {
       sightingStage.style.setProperty('--p', 1);
     } else {
       let shift = 0;

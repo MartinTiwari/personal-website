@@ -6,7 +6,7 @@
   <title>More Than Just Code.</title>
   <meta name="description" content="Martin's corner of the internet. Not a CV. Me, my cat HARU, my family, my music, and a wall you can write on." />
   <meta property="og:title" content="Martin Tiwari, hi internet" />
-  <meta property="og:description" content="My corner of the internet. Scroll, it's fun down there." />
+  <meta property="og:description" content="Martin's desk, currently unsupervised. Open a folder, meet the family, play something, leave a note." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://martintiwari.com.np" />
   <meta property="og:image" content="assets/martin.jpg" />
@@ -16,29 +16,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=48" />
+  <link rel="stylesheet" href="desk.css?v=1" />
 </head>
-<body>
+<body class="desk-mode">
 
   <a class="skip" href="#top">skip to the good part</a>
 
   <!-- paper grain: drifts with the scroll so the page feels like a physical sheet -->
   <div class="grain" aria-hidden="true"></div>
-
-  <!-- the envelope: the site arrives as mail, once per session -->
-  <div id="intro" aria-hidden="true">
-    <div class="env">
-      <div class="env-back"></div>
-      <div class="env-letter">
-        <span class="env-to hand">for: whoever found the link</span>
-        <img class="env-sig" src="assets/signature.png?v=2" alt="" width="54" height="50" />
-      </div>
-      <div class="env-pocket"></div>
-      <div class="env-flap"></div>
-      <div class="env-seal">🐾</div>
-    </div>
-    <p class="env-hint hand">tap to open faster</p>
-  </div>
-  <script>try{if(sessionStorage.getItem('intro-done')||matchMedia('(prefers-reduced-motion: reduce)').matches)document.getElementById('intro').remove()}catch(e){}</script>
 
   <!-- letterhead -->
   <header class="top">
@@ -49,46 +34,74 @@
         <span class="brand-domain">.com.np</span>
       </span>
     </a>
-    <span class="top-dot" id="dizzy-star" aria-hidden="true">✳</span>
-    <a class="top-link" href="#internet">find me ↓</a>
+    <button class="top-dot" id="dizzy-star" type="button" aria-label="Make the star dizzy">✳</button>
+    <a class="top-link" href="#internet">find me ↗</a>
   </header>
 
   <!-- ================= HERO ================= -->
-  <section class="hero" id="top">
-    <div class="stage">
-      <span class="chip c1" data-speed="-.12">🏔️ kathmandu, +5:45</span>
-      <span class="chip c2" data-speed=".18">😾 HARU's human</span>
-      <span class="chip c3" data-speed="-.22">🌙 2am is a personality</span>
-      <span class="chip c4" data-speed=".1">🎧 yeat on loop</span>
-
-      <div class="hero-note hand">
-        <svg class="note-arrow" viewBox="0 0 90 60" aria-hidden="true">
-          <path d="M6 8 C 30 14, 52 26, 74 46" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-          <path d="M74 46 l-13 -3 M74 46 l1 -13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-        this photo goes <em>wayyy</em> back.<br>
-        current version has 20% more of me.<br>
-        rollback in progress: protein up, sugar gone.
-      </div>
-
-      <h1 aria-label="Martin Tiwari">
-        <span class="line line1">MARTIN</span>
-        <img class="hero-cutout" id="me" src="assets/martin-cutout.webp"
-             alt="Martin, hoodie up, mid-smile" width="560" height="735" fetchpriority="high" />
-        <span class="line line2">TIWARI</span>
-      </h1>
-
+  <main class="desk-home" id="top">
+    <div class="desk-heading">
+      <p class="desk-kicker">Kathmandu · personal effects of Martin Tiwari</p>
+      <h1 class="desk-title">Martin,<br><em>after hours.</em></h1>
+      <p class="desk-description">A few things I made. A few people I love.<br>A cat who owns all of this. Pick something up.</p>
     </div>
-      <aside class="hero-sponsor" aria-label="A small advertisement for Everest Super Chemical Udhyog">
-        <a class="sponsor-card" href="https://www.everestsuperchemical.com.np/" target="_blank" rel="noopener"
-           aria-label="Visit the Everest Super Chemical Udhyog website">
-          <img src="assets/escu-logo.png" alt="Everest Super Chemical Udhyog" width="320" height="151" />
-        </a>
-        <span class="sponsor-note hand">family ad. bias fully disclosed.</span>
-        <a class="sponsor-site" href="https://www.everestsuperchemical.com.np/" target="_blank" rel="noopener">everestsuperchemical.com.np ↗</a>
-      </aside>
-    <p class="hero-foot hand">my corner of the internet. chappal off at the door, mind the cat hair <span class="down">↓</span></p>
-  </section>
+    <nav class="desk-scene" aria-label="Explore Martin's desk">
+      <figure class="desk-portrait">
+        <img id="me" src="assets/martin-cutout.webp" alt="Martin, hoodie up, mid-smile. Poke me if you must." width="560" height="735" fetchpriority="high" tabindex="0" role="button" />
+        <figcaption class="desk-portrait-note hand">owner of the desk.<br>tenant of the cat.</figcaption>
+      </figure>
+      <a class="desk-object desk-folder" href="#projects">
+        <span class="folder-tab">WORK / OPEN FILE</span>
+        <strong>things I've<br>actually shipped.</strong>
+        <span class="folder-status">2 shipped · 1 cooking</span>
+        <span class="object-caption">open the project folder →</span>
+      </a>
+      <a class="desk-object desk-photos" href="#photos">
+        <img src="assets/chiya.webp" alt="Roadside tea in Kathmandu" width="640" height="853" />
+        <img src="assets/martin-rain.webp" alt="Martin out in the rain" width="640" height="640" />
+        <strong>evidence of a life.</strong>
+        <span class="object-caption">Kathmandu, family &amp; questionable poses →</span>
+      </a>
+      <a class="desk-object desk-player" href="#music">
+        <span class="record-disc" aria-hidden="true"></span>
+        <span class="player-label"><strong>on repeat.</strong><span>the soundtrack to poor sleep</span></span>
+        <span class="player-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="object-caption">open the music player →</span>
+      </a>
+      <a class="desk-object desk-book" href="#mark">
+        <span class="book-spine" aria-hidden="true"></span>
+        <strong>you were<br>here.</strong>
+        <span class="object-caption">sign the guestbook.<br>or draw a terrible cat. →</span>
+      </a>
+      <a class="desk-object desk-business" href="https://www.everestsuperchemical.com.np/" target="_blank" rel="noopener">
+        <img src="assets/escu-logo.png" alt="Everest Super Chemical Udhyog" width="320" height="151" />
+        <span class="object-caption hand">family ad. bias fully disclosed.</span>
+        <span class="business-url">everestsuperchemical.com.np ↗</span>
+      </a>
+      <button class="desk-cat" type="button" aria-label="Ask HARU to move">
+        <img src="assets/haru.webp" alt="HARU wearing a birthday hat, looking unimpressed" width="640" height="853" />
+        <span class="cat-message hand" aria-live="polite">management is watching.</span>
+      </button>
+      <p class="desk-note hand">chappal off at the door.<br>curiosity very much allowed.</p>
+    </nav>
+    <div class="desk-bottom">
+      <a href="#about">the person behind the tabs →</a>
+      <span class="hand">three secrets. still hiding.</span>
+      <a href="#internet">find me on the internet ↗</a>
+    </div>
+    <section class="desk-contact" aria-label="A brief introduction">
+      <p>Namaste. I'm Martin. I build things, negotiate with them at 2am, and act like nothing happened by morning.</p>
+      <a href="mailto:martintiwari0@gmail.com">say hello ↗</a>
+    </section>
+  </main>
+  <dialog class="desk-view" id="desk-view" aria-labelledby="desk-view-title">
+    <div class="desk-view-bar">
+      <button class="desk-back" type="button">← back to desk</button>
+      <h2 class="desk-view-title" id="desk-view-title">open file</h2>
+      <button class="desk-close" type="button" aria-label="Close and return to desk">×</button>
+    </div>
+    <div class="desk-view-body" id="desk-view-body"></div>
+  </dialog>
 
   <!-- ================= HELLO ================= -->
   <section class="sec hello-sec">
@@ -354,6 +367,7 @@
             <span class="project-type">family business, now internet-compatible</span>
             <h3>Everest Super Chemical Udhyog website</h3>
             <p>gave the chemical empire a proper front door online. dad can now say “check the website” instead of forwarding six photos on WhatsApp.</p>
+            <a href="https://www.everestsuperchemical.com.np/" target="_blank" rel="noopener">visit the website ↗</a>
           </div>
           <span class="project-stamp">SHIPPED</span>
         </article>
@@ -381,7 +395,7 @@
           <time id="project-clock" datetime="PT0S">00:00:00</time>
         </div>
         <button class="project-report hand" id="project-report" type="button">request honest progress report</button>
-        <p class="project-excuse hand" id="project-excuse" aria-live="polite">status: building. scope: making eye contact again.</p>
+        <p class="project-excuse hand" id="project-excuse" aria-live="polite">currently negotiating with reality.</p>
       </aside>
     </div>
 
@@ -668,7 +682,7 @@
       <div class="ps-env-back" aria-hidden="true"></div>
       <div class="ps-note" id="ps-note">
         <span class="tape" aria-hidden="true"></span>
-        <p class="hand">p.s. you just scrolled through a stranger's entire life and stayed till the end. that's rare. respect.</p>
+        <p class="hand">p.s. you opened a stranger's desk and stayed for the letter. this one's yours.</p>
         <p class="hand">whatever you're carrying today, set it down for a minute. drink some water. text the person you just thought of. saachi, they thought of you first. they're just slower at this.</p>
         <p class="hand">and if nobody has said it yet today: the internet is better with you in it. glad you exist.</p>
         <p class="hand ps-sign">, martin (HARU agrees, off the record)</p>
@@ -859,7 +873,8 @@
   </div>
 
   <div id="toast-root"></div>
+  <script src="src/desk.js?v=1"></script>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=46" defer></script>
+  <script src="src/main.js?v=49" defer></script>
 </body>
 </html>
