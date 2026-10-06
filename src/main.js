@@ -1168,7 +1168,7 @@
 
   /* ---------- HARU.exe: roams the page on nepal time ---------- */
   const pet = $('#haru-pet');
-  if (pet && !reduced) {
+  if (pet && !reduced && !document.body.classList.contains('desk-mode')) {
     const petSvg = $('#pet-svg'), petBubble = $('#pet-bubble');
     const roam = () => Math.max(10, innerWidth - 96);
     const petMode = () => {

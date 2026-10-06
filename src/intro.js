@@ -14,6 +14,21 @@
   let closeTimer = null;
   let hideTimer = null;
   let animations = [];
+  let penFrame = null;
+  const svg = intro.querySelector('.intro-autograph svg');
+  const pen = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  pen.classList.add('intro-pen');
+  pen.setAttribute('aria-hidden', 'true');
+  const nib = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  nib.setAttribute('d', 'M0 0 L3 -20 L13 -15 Z');
+  nib.setAttribute('fill', '#bd9160');
+  const barrel = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  barrel.setAttribute('d', 'M8 -17 L32 -74');
+  barrel.setAttribute('stroke', '#221e19');
+  barrel.setAttribute('stroke-width', '12');
+  barrel.setAttribute('stroke-linecap', 'round');
+  pen.append(barrel, nib);
+  svg?.append(pen);
   const inertBefore = new Map();
 
   function rememberVisit() {
@@ -25,6 +40,8 @@
   function finish() {
     if (!active || closing) return;
     closing = true;
+    cancelAnimationFrame(penFrame);
+    pen.style.opacity = '0';
     clearTimeout(closeTimer);
     intro.classList.add('is-closing');
     const hide = () => {
@@ -67,6 +84,24 @@
       ));
       delay += duration + 70; // a brief pen lift between the five parts
     });
+    // Follow the actual reveal, including the quicker B and slower lettering.
+    const followPen = () => {
+      if (!active || closing || document.hidden) { pen.style.opacity = '0'; return; }
+      const current = paths.find(path => {
+        const animation = path.getAnimations()[0];
+        return animation?.effect.getComputedTiming().phase === 'active' ||
+          (animation && animation.currentTime >= animation.effect.getTiming().delay &&
+           animation.currentTime < animation.effect.getTiming().delay + animation.effect.getTiming().duration);
+      });
+      if (current) {
+        const progress = 1 - parseFloat(getComputedStyle(current).strokeDashoffset);
+        const point = current.getPointAtLength(current.getTotalLength() * Math.max(0, Math.min(1, progress)));
+        pen.setAttribute('transform', `translate(${point.x} ${point.y})`);
+        pen.style.opacity = '1';
+      } else pen.style.opacity = '0';
+      penFrame = requestAnimationFrame(followPen);
+    };
+    penFrame = requestAnimationFrame(followPen);
     return delay - 70;
   }
   function open(replay = false) {
@@ -114,5 +149,8 @@
   });
   document.querySelectorAll('.intro-replay').forEach(button => button.addEventListener('click', () => open(true)));
   reducedMotion.addEventListener('change', () => { if (active && reducedMotion.matches) finish(); });
+  document.addEventListener('visibilitychange', () => {
+    if (active && document.hidden) finish();
+  });
   if (!wasSeen() && (!location.hash || location.hash === '#top') && !reducedMotion.matches) open();
 })();

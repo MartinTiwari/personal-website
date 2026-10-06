@@ -1,80 +1,53 @@
-/* Martin's real autograph is the opening gesture. */
+/* A signed invitation: the autograph belongs to paper, not across a face. */
 .signature-intro[hidden]{display:none!important}
-.signature-intro{
-  position:fixed;inset:0;z-index:1000;isolation:isolate;
-  display:grid;grid-template-rows:auto minmax(0,1fr) auto;
-  padding:clamp(20px,3.5vw,52px);padding-top:max(22px,env(safe-area-inset-top));
-  padding-bottom:max(22px,env(safe-area-inset-bottom));
-  background:var(--paper,#fbf6ee);color:var(--ink,#221e19);
-  overflow:hidden;opacity:1;transition:opacity .45s ease,visibility .45s;
-}
-.signature-intro::before{
-  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background-image:radial-gradient(rgba(34,30,25,.075) .65px,transparent .65px);
-  background-size:7px 7px;
-}
+.signature-intro{position:fixed;inset:0;z-index:1000;isolation:isolate;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:clamp(20px,3.5vw,52px);padding-top:max(22px,env(safe-area-inset-top));padding-bottom:max(22px,env(safe-area-inset-bottom));background:#ded3bf;color:var(--ink,#221e19);overflow:hidden;opacity:1;transition:opacity .35s ease,visibility .35s}
 .signature-intro.is-closing{opacity:0;visibility:hidden;pointer-events:none}
 .intro-meta,.intro-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px;position:relative;z-index:4}
-.intro-meta{font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
-.intro-skip,.intro-enter{
-  border:0;border-bottom:1px solid currentColor;background:transparent;color:inherit;
-  border-radius:0;line-height:1.4;padding:8px 0;font-weight:650;
-}
-.intro-skip{font-size:12px;white-space:nowrap}
-.intro-enter{font-size:clamp(15px,1.5vw,20px);white-space:nowrap}
-.intro-skip:hover,.intro-enter:hover{color:var(--red,#e8532f)}
+.intro-meta{font-size:11px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+.intro-skip,.intro-enter{border:0;border-bottom:1px solid currentColor;background:transparent;color:inherit;border-radius:0;line-height:1.4;padding:8px 0;font-weight:650}
+.intro-skip{font-size:12px;white-space:nowrap}.intro-enter{font-size:18px;white-space:nowrap}
+.intro-skip:hover,.intro-enter:hover{color:var(--red)}
 .intro-composition{position:relative;min-height:0;display:grid;place-items:center;margin:24px 0}
-.intro-type{
-  position:absolute;inset:0;display:flex;justify-content:center;flex-direction:column;
-  gap:.02em;overflow:visible;text-align:center;white-space:nowrap;
-  font-size:clamp(65px,13.6vw,220px);font-weight:850;line-height:.87;
-  letter-spacing:-.065em;text-transform:uppercase;color:var(--ink,#221e19);
-}
-.intro-type span:first-child{font-family:var(--serif,Georgia,serif);font-weight:600;letter-spacing:-.055em}
-.intro-type span:last-child{font-family:var(--sans,system-ui,sans-serif);font-size:.72em;color:var(--red,#e8532f)}
-.intro-photo{
-  position:relative;z-index:1;width:min(42vw,49vh,520px);height:min(42vw,49vh,520px);
-  object-fit:cover;object-position:center 38%;filter:grayscale(1);opacity:.96;
-  transform:rotate(-2deg);box-shadow:0 14px 42px rgba(34,30,25,.1);
-}
-.intro-autograph{
-  position:absolute;inset:-8% 0;z-index:3;display:grid;place-items:center;
-  pointer-events:none;transform:rotate(20deg);color:var(--red,#e8532f);
-}
-.intro-autograph svg{display:block;width:auto;max-width:none;height:min(72svh,780px);aspect-ratio:395/681;overflow:visible}
+.intro-letter{position:relative;width:min(760px,100%);height:min(480px,100%);min-height:350px;padding:44px 50px;background:#fffdf7;box-shadow:8px 22px 45px rgba(64,43,20,.16);rotate:-2deg;isolation:isolate}
+.intro-letter::before{content:'';position:absolute;inset:8px -8px -8px 8px;background:#f3eddf;z-index:-1;rotate:1.2deg;box-shadow:3px 8px 14px rgba(64,43,20,.07)}
+.intro-letter::after{content:'';position:absolute;right:0;top:0;width:29px;height:29px;background:linear-gradient(225deg,#ded3bf 49%,#e7decb 50%,#fffdf7 90%)}
+.intro-letter-copy{position:relative;z-index:2;max-width:560px}
+.intro-letter h2{font-family:var(--serif);font-size:clamp(36px,5.2vw,62px);font-weight:640;line-height:1.02;letter-spacing:-.035em;max-width:570px;margin:0}
+.intro-letter-copy p{font-size:15px;line-height:1.6;margin:22px 0 0;color:var(--ink-soft)}
+.intro-autograph{position:absolute;right:47px;bottom:36px;width:255px;height:195px;display:grid;place-items:center;pointer-events:none;color:var(--red);transform:rotate(48deg)}
+.intro-autograph svg{display:block;width:auto;max-width:none;height:270px;aspect-ratio:395/681;overflow:visible}
 .intro-autograph .intro-stroke{fill:none;stroke:white!important;stroke-linecap:round;stroke-linejoin:round}
 .intro-autograph .intro-ink{fill:currentColor}
-.intro-bottom .hand{font-size:clamp(21px,2.5vw,32px);line-height:1.1;margin:0}
-.signature-intro.is-drawing .intro-photo{animation:intro-photo-arrive .45s ease both}
-.signature-intro.is-drawing .intro-type{animation:intro-type-arrive .9s ease both}
-@keyframes intro-photo-arrive{from{opacity:0;transform:translateY(12px) rotate(-2deg)}to{opacity:.96;transform:rotate(-2deg)}}
-@keyframes intro-type-arrive{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.intro-pen{color:var(--ink);opacity:0}
+.intro-signoff{position:absolute;right:89px;bottom:27px;font-size:12px;letter-spacing:.035em;color:var(--ink-soft);margin:0}
+.intro-postscript{position:absolute;left:50px;bottom:39px;font-size:23px;max-width:225px;line-height:1.1;rotate:-3deg;margin:0;color:var(--ink-soft)}
+.intro-bottom .hand{font-size:24px;line-height:1.1;margin:0}
+.signature-intro.is-drawing .intro-letter{animation:letter-unfold .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes letter-unfold{from{transform:translateY(18px) rotate(2deg)}to{transform:translateY(0) rotate(0)}}
 .intro-replay{cursor:pointer}
+/* The same signature remains as a personal sign-off at the end of the desk. */
+.desk-contact .desk-invitation{display:grid;grid-template-columns:minmax(0,1fr) 195px;gap:24px;align-items:center;text-align:left;padding:27px 32px;background:#fffdf7;box-shadow:3px 8px 22px rgba(64,43,20,.08);rotate:-1deg}
+.desk-contact .desk-invitation h2{font-size:29px;line-height:1.1;margin:0 0 10px;letter-spacing:-.03em}
+.desk-contact .desk-invitation p{margin:0 0 14px;font-size:14px;line-height:1.6;max-width:420px}
+.desk-contact .desk-invitation a{font-size:13px}
+.desk-contact .desk-signature{position:relative;width:195px;height:170px;margin:0;padding:0;border:0;background:none;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;color:var(--ink);font-family:var(--sans);rotate:0}
+.desk-signature img{position:absolute;height:130px;width:auto;max-width:none;top:-5px;left:65px;rotate:48deg;transition:transform .25s ease}
+.desk-signature:hover img{transform:translateY(-3px)}
+.desk-signature>span{font-size:12px;line-height:1.4;position:relative}.desk-signature small{display:block;font-family:var(--hand);font-size:17px;color:var(--ink-soft)}
 @media(max-width:600px){
-  .signature-intro{padding-inline:20px}
-  .intro-meta{font-size:9px;letter-spacing:.055em;gap:12px}
-  .intro-skip{font-size:11px}
-  .intro-composition{margin:20px -10px}
-  .intro-type{font-size:clamp(52px,17vw,100px);gap:.09em}
-  .intro-type span:last-child{font-size:.55em;letter-spacing:-.05em}
-  .intro-photo{width:min(69vw,42vh);height:min(78vw,47vh)}
-  .intro-autograph{inset:0 -4%;transform:rotate(17deg)}
-  .intro-autograph svg{height:min(62svh,105vw)}
-  .intro-bottom{gap:12px;align-items:flex-end}
-  .intro-bottom .hand{font-size:22px;max-width:150px}
-  .intro-enter{font-size:14px}
+ .signature-intro{padding-inline:20px}.intro-meta{font-size:9px;letter-spacing:.035em;gap:12px}.intro-skip{font-size:11px}
+ .intro-composition{margin:22px 0}.intro-letter{height:min(500px,100%);min-height:355px;padding:30px 25px;rotate:-1.5deg}
+ .intro-letter h2{font-size:clamp(34px,9vw,48px)}.intro-letter-copy p{font-size:13px;margin-top:17px}
+ .intro-autograph{right:16px;bottom:54px;width:195px;height:158px}.intro-autograph svg{height:222px}
+ .intro-signoff{right:43px;bottom:35px;font-size:11px}.intro-postscript{left:25px;bottom:32px;font-size:18px;max-width:115px}
+ .intro-bottom{gap:16px;align-items:flex-end}.intro-bottom .hand{font-size:20px;max-width:160px}.intro-enter{font-size:14px}
+ .desk-contact .desk-invitation{grid-template-columns:1fr;gap:8px;padding:25px 23px}.desk-contact .desk-invitation h2{font-size:28px}.desk-contact .desk-invitation p{font-size:13px}
+ .desk-contact .desk-signature{justify-self:end;height:160px}.desk-signature img{height:120px;top:-8px;left:70px}
 }
-@media(max-height:480px) and (orientation:landscape){
-  .signature-intro{padding:14px 24px}
-  .intro-composition{margin:8px 0}
-  .intro-photo{width:49vh;height:49vh}
-  .intro-type{font-size:clamp(50px,12vw,120px)}
-  .intro-bottom .hand{font-size:21px}
-  .intro-autograph{inset:-6% 7%;transform:rotate(20deg)}
-  .intro-autograph svg{height:60svh}
+@media(max-height:520px) and (orientation:landscape){
+ .signature-intro{padding:12px 24px}.intro-composition{margin:10px 0}.intro-letter{width:min(700px,100%);height:100%;min-height:0;padding:20px 30px}
+ .intro-letter h2{font-size:32px;max-width:340px}.intro-letter-copy p{font-size:12px;margin-top:12px}.intro-autograph{right:30px;bottom:50px;width:180px;height:140px}.intro-autograph svg{height:190px}
+ .intro-signoff{right:59px;bottom:15px}.intro-postscript{left:30px;bottom:15px;font-size:17px;max-width:230px}.intro-bottom .hand{font-size:19px}.intro-enter{font-size:14px}
 }
-@media(prefers-reduced-motion:reduce){
-  .signature-intro{transition:none}
-  .signature-intro .intro-photo,.signature-intro .intro-type{animation:none!important}
-}
-@media print{.signature-intro,.intro-replay{display:none!important}}
+@media(prefers-reduced-motion:reduce){.signature-intro{transition:none}.signature-intro .intro-letter{animation:none!important}.desk-signature img{transition:none}}
+@media print{.signature-intro,.intro-replay small{display:none!important}}

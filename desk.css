@@ -51,11 +51,17 @@ body.desk-mode { font-size:16px; }
 .desk-business img { display:block;max-width:115px;height:55px;object-fit:contain;margin:0 auto; }
 .desk-business .object-caption { font-size:16px;margin-top:6px; }
 .business-url { display:block;font-size:9px;font-weight:700;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px;margin-top:5px;white-space:nowrap; }
-.desk-cat { position:absolute;left:30%;top:422px;width:145px;background:none;border:0;z-index:5;rotate:-4deg;transition:rotate .2s,translate .2s; }
-.desk-cat img { display:block;width:100%;height:116px;object-fit:contain;filter:drop-shadow(3px 4px 2px rgba(34,30,25,.14)); }
-.desk-cat:hover { rotate:3deg;translate:0 -4px; }
-.desk-cat.cat-shifted { translate:22px -12px;rotate:9deg; }
-.cat-message { display:block;font-family:var(--hand);font-size:17px;line-height:1.1;color:var(--ink-soft); }
+.desk-cat { position:absolute;width:128px;padding:0;background:none;border:0;z-index:5;rotate:var(--perch-angle,-7deg);cursor:pointer;transition:translate .22s ease; }
+.desk-cat:focus-visible { outline:2px dashed var(--red);outline-offset:5px;border-radius:14px; }
+.desk-scene:has(.desk-folder:hover) .desk-cat,.desk-scene:has(.desk-folder:focus-visible) .desk-cat { translate:0 -7px; }
+.desk-mode .desk-cat #haru-pet { display:block!important;position:relative;left:auto;bottom:auto;width:100%;z-index:auto;transform:none;will-change:auto;pointer-events:none;filter:drop-shadow(1px 3px 1px rgba(34,30,25,.12)); }
+.desk-cat #pet-svg { overflow:visible;pointer-events:none; }
+.desk-cat .pet-eye { transform-origin:96px 18px;animation:desk-cat-blink 7.7s infinite; }
+.desk-cat .cat-message { position:absolute;left:50%;bottom:calc(100% + 7px);translate:-50% 0;display:block;width:max-content;max-width:170px;padding:7px 10px;border:1px solid #C9BFAF;border-radius:9px;background:var(--paper);box-shadow:2px 3px 0 rgba(34,30,25,.07);font-family:var(--hand);font-size:16px;line-height:1.15;color:var(--ink-soft);opacity:0;transition:opacity .18s;pointer-events:none; }
+.desk-cat .cat-message::after { content:"";position:absolute;left:50%;bottom:-5px;width:8px;height:8px;rotate:45deg;border-right:1px solid #C9BFAF;border-bottom:1px solid #C9BFAF;background:var(--paper); }
+.desk-cat:hover .cat-message,.desk-cat:focus-visible .cat-message,.desk-cat.cat-speaking .cat-message { opacity:1; }
+.desk-cat.cat-paused *, .desk-cat.cat-paused #haru-pet .pet-tail { animation-play-state:paused!important; }
+@keyframes desk-cat-blink { 0%,43%,47%,100% { transform:scaleY(1); }45% { transform:scaleY(.08); } }
 .desk-note { position:absolute;left:35%;top:16px;max-width:260px;font-family:var(--hand);font-size:21px;line-height:1.15;rotate:-4deg;color:var(--ink-soft);text-align:center; }
 .desk-bottom { display:flex;justify-content:center;align-items:center;gap:28px;padding:12px 0 26px;border-bottom:1px solid #D9CDBB; }
 .desk-bottom a { font-size:12px;font-weight:700;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--red);padding:3px 0; }
@@ -150,7 +156,7 @@ body.desk-mode { font-size:16px; }
   .record-disc::after { inset:36px; }
   .desk-book { left:3%;width:184px; }
   .desk-business { left:44%;width:190px;top:540px; }
-  .desk-cat { left:28%;width:127px;top:410px; }
+  .desk-cat { width:116px; }
 }
 @media (max-width:700px) {
   .desk-mode .top { padding:14px 20px 0; }
@@ -191,9 +197,8 @@ body.desk-mode { font-size:16px; }
   .desk-business { padding:12px 10px;rotate:2deg; }
   .desk-business img { height:48px;max-width:105px; }
   .desk-business .object-caption { font-size:15px; }
-  .desk-cat { position:relative;left:auto;top:auto;grid-column:2;width:100%;max-width:132px;margin:auto; }
-  .desk-cat img { height:95px; }
-  .cat-message { font-size:15px; }
+  .desk-cat { position:absolute;width:105px;margin:0; }
+  .desk-cat .cat-message { font-size:15px;max-width:145px; }
   .desk-bottom { gap:21px;padding:4px 0 20px; }
   .desk-bottom>span { display:none; }
   .desk-bottom a { font-size:11px; }
@@ -244,5 +249,6 @@ body.desk-mode { font-size:16px; }
   .desk-object,.desk-cat { transition:none; }
   .desk-player:hover .record-disc { animation:none; }
   .desk-object:hover,.desk-object:focus-visible,.desk-cat:hover { translate:none; }
-  .desk-cat.cat-shifted { translate:none;rotate:-4deg; }
+  .desk-cat *, .desk-cat #haru-pet .pet-tail { animation:none!important;transition:none; }
+  .desk-scene:has(.desk-folder:hover) .desk-cat,.desk-scene:has(.desk-folder:focus-visible) .desk-cat { translate:none; }
 }

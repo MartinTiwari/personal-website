@@ -129,12 +129,92 @@
     } else if (hash === '#top' && dialog.open) { event.preventDefault(); close(); }
   });
   const cat = home.querySelector('.desk-cat');
-  const replies = ['request denied.', 'this desk is under new management.', 'I moved. emotionally.', 'fine. one folder.'];
-  let asks = 0;
-  cat.addEventListener('click', () => {
-    cat.classList.toggle('cat-shifted');
-    cat.querySelector('.cat-message').textContent = replies[asks++ % replies.length];
-  });
+  const pet = document.querySelector('#haru-pet');
+  const folder = home.querySelector('.desk-folder');
+  if (cat && pet && folder) {
+    // The original page cat has a permanent job now. No viewport roaming.
+    cat.querySelector('img')?.remove();
+    cat.prepend(pet);
+    pet.removeAttribute('aria-hidden');
+    pet.className = 'sitting';
+    const petSvg = pet.querySelector('svg');
+    petSvg.setAttribute('aria-hidden', 'true');
+    petSvg.removeAttribute('role');
+    petSvg.removeAttribute('aria-label');
+    pet.querySelector('#pet-bubble')?.remove();
+    cat.setAttribute('aria-label', 'Pet HARU, the project folder supervisor');
+    const message = cat.querySelector('.cat-message');
+    message.textContent = 'HARU · quality control';
+    const replies = [
+      'two shipped. one sat on.',
+      'this folder is now a warm laptop.',
+      'approved. needs more treats.',
+      'he ships the work. I keep it warm.',
+      'no bugs. only a cat.'
+    ];
+    let asks = 0, idleTimer, settleTimer, replyTimer;
+    let onScreen = false;
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const intro = document.querySelector('#signature-intro');
+    function placeCat() {
+      // Anchor the paws to the folder's rotated top edge, not the viewport.
+      const angle = (parseFloat(getComputedStyle(folder).rotate) || 0) * Math.PI / 180;
+      const w = folder.offsetWidth, h = folder.offsetHeight;
+      const along = w * .22;
+      const pawX = folder.offsetLeft + w / 2 + along * Math.cos(angle) + h / 2 * Math.sin(angle);
+      const pawY = folder.offsetTop + h / 2 + along * Math.sin(angle) - h / 2 * Math.cos(angle);
+      cat.style.left = `${pawX - cat.offsetWidth * .57}px`;
+      cat.style.top = `${pawY - pet.offsetHeight * .94}px`;
+      cat.style.setProperty('--perch-angle', `${angle * 180 / Math.PI}deg`);
+    }
+    function groom() {
+      pet.classList.add('grooming');
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => pet.classList.remove('grooming'), 2300);
+    }
+    function scheduleIdle() {
+      idleTimer = setTimeout(() => {
+        groom();
+        scheduleIdle();
+      }, 12000 + Math.random() * 8000);
+    }
+    function syncLife() {
+      const active = onScreen && !document.hidden && !dialog.open && (!intro || intro.hidden);
+      cat.classList.toggle('cat-paused', !active || motion.matches);
+      clearTimeout(idleTimer);
+      clearTimeout(settleTimer);
+      pet.classList.remove('grooming');
+      if (active && !motion.matches) scheduleIdle();
+      if (!active) {
+        clearTimeout(replyTimer);
+        cat.classList.remove('cat-speaking');
+      }
+    }
+    cat.addEventListener('click', () => {
+      message.textContent = replies[asks++ % replies.length];
+      cat.classList.add('cat-speaking');
+      clearTimeout(replyTimer);
+      if (!motion.matches && !cat.classList.contains('cat-paused')) groom();
+      replyTimer = setTimeout(() => {
+        cat.classList.remove('cat-speaking');
+        message.textContent = 'HARU · quality control';
+      }, 4200);
+    });
+    new ResizeObserver(placeCat).observe(home.querySelector('.desk-scene'));
+    new ResizeObserver(placeCat).observe(folder);
+    window.addEventListener('resize', placeCat, { passive: true });
+    new IntersectionObserver(entries => {
+      onScreen = entries[0].isIntersecting;
+      syncLife();
+    }).observe(cat);
+    const lifeObserver = new MutationObserver(syncLife);
+    lifeObserver.observe(dialog, { attributes: true, attributeFilter: ['open'] });
+    if (intro) lifeObserver.observe(intro, { attributes: true, attributeFilter: ['hidden'] });
+    document.addEventListener('visibilitychange', syncLife);
+    motion.addEventListener('change', syncLife);
+    placeCat();
+    syncLife();
+  }
   document.querySelector('#me').addEventListener('keydown', event => {
     if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.currentTarget.click(); }
   });
