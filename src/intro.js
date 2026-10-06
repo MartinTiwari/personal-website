@@ -44,22 +44,19 @@
     hideTimer = setTimeout(hide, reducedMotion.matches ? 0 : 460);
   }
   function draw() {
-    const lengths = paths.map(path => {
-      try { return Math.max(path.getTotalLength(), 1); } catch { return 1; }
-    });
-    const total = lengths.reduce((sum, length) => sum + length, 0) || 1;
-    let delay = 230;
+    let delay = 140;
     paths.forEach((path, index) => {
       // pathLength=1 normalizes the CSS dash values independently of SVG size.
       path.setAttribute('pathLength', '1');
       path.style.strokeDasharray = '1';
       path.style.strokeDashoffset = '1';
-      const duration = 1700 * lengths[index] / total;
+      path.style.opacity = '0';
+      const duration = Number(path.dataset.duration) || 500;
       animations.push(path.animate(
-        [{ strokeDashoffset: '1' }, { strokeDashoffset: '0' }],
+        [{ strokeDashoffset: '1', opacity: 1 }, { strokeDashoffset: '0', opacity: 1 }],
         { duration, delay, easing: 'linear', fill: 'forwards' }
       ));
-      delay += duration;
+      delay += duration + 70; // a brief pen lift between the five parts
     });
   }
   function open(replay = false) {
@@ -79,11 +76,11 @@
     intro.hidden = false;
     intro.classList.remove('is-closing');
     document.body.style.overflow = 'hidden';
-    paths.forEach(path => { path.style.strokeDasharray = ''; path.style.strokeDashoffset = ''; });
+    paths.forEach(path => { path.style.strokeDasharray = ''; path.style.strokeDashoffset = ''; path.style.opacity = ''; });
     if (!reducedMotion.matches) {
       intro.classList.add('is-drawing');
       draw();
-      closeTimer = setTimeout(finish, 2700);
+      closeTimer = setTimeout(finish, 3500);
     } else if (!replay) {
       finish();
     }
