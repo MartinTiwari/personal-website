@@ -238,9 +238,11 @@
   const me = $('#me');
   let pokes = 0, pokeDone = false;
   me.addEventListener('click', () => {
-    me.classList.remove('boing');
-    void me.offsetWidth;
-    me.classList.add('boing');
+    if (!document.body.classList.contains('desk-mode')) {
+      me.classList.remove('boing');
+      void me.offsetWidth;
+      me.classList.add('boing');
+    }
     if (++pokes === 5 && !pokeDone) {
       pokeDone = true;
       confetti(50);

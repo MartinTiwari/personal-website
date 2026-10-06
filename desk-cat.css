@@ -1,0 +1,19 @@
+/* A real perch, a small crouch, one clean leap. The rest of the desk stays usable. */
+.desk-cat { transform-origin:50% 50%; transition:translate .22s ease; }
+.desk-scene:has(.desk-folder:hover) .desk-cat,
+.desk-scene:has(.desk-folder:focus-visible) .desk-cat { translate:none; }
+.desk-scene:has(.desk-folder:hover) .desk-cat[data-perch="projects"],
+.desk-scene:has(.desk-folder:focus-visible) .desk-cat[data-perch="projects"],
+.desk-scene:has(.desk-book:hover) .desk-cat[data-perch="mark"],
+.desk-scene:has(.desk-book:focus-visible) .desk-cat[data-perch="mark"],
+.desk-scene:has(.desk-player:hover) .desk-cat[data-perch="music"],
+.desk-scene:has(.desk-player:focus-visible) .desk-cat[data-perch="music"] { translate:0 -7px; }
+.desk-cat.cat-jumping { z-index:8; translate:none!important; pointer-events:none; }
+.desk-cat.cat-jumping .cat-message { opacity:0; }
+.desk-cat.cat-jumping .pet-legs-a,.desk-cat.cat-jumping .pet-legs-b { transform:translateY(-3px) scaleY(.84); transform-origin:center 36px; }
+.desk-cat.cat-jumping .pet-tail { animation-play-state:paused; }
+.desk-cat[data-perch="martin"] { z-index:6; }
+.desk-cat .cat-message { max-width:min(180px,45vw); white-space:normal; text-align:center; }
+@media (prefers-reduced-motion:reduce) {
+  .desk-scene .desk-cat { translate:none!important; transition:none; }
+}

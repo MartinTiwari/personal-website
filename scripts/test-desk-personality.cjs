@@ -19,14 +19,37 @@ const output='C:/Users/Asus/.codex/visualizations/2026/09/22/01a0c894-15ee-7bb0-
   if((await page.locator('.desk-contact').innerText()).includes('negotiate'))throw Error('Old intro copy remains');
   if(!await page.locator('.desk-cat #haru-pet').isVisible())throw Error('HARU hidden');
   if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))throw Error(`${name}: horizontal overflow`);
+  const adBounds=await page.locator('.desk-business').boundingBox(), links=await page.locator('.desk-bottom').boundingBox();
+  if(adBounds.y+adBounds.height>links.y)throw Error(`${name}: ad overlaps desk links ${JSON.stringify({adBounds,links})}`);
+  const controls=await page.locator('.portrait-controls').boundingBox();
+  if(adBounds.y-12<controls.y+controls.height)throw Error(`${name}: ad tape overlaps portrait controls`);
   await page.screenshot({path:`${output}/desk-${name}.png`,fullPage:true});
-  await page.locator('.desk-cat').click();if(!await page.locator('.desk-cat').evaluate(el=>el.classList.contains('cat-speaking')))throw Error('Cat click no response');
+  await page.locator('#me').click();if(!(await page.locator('.portrait-dialogue').innerText()).includes('Two projects shipped'))throw Error('Portrait tour failed');
+  if(!await page.locator('.portrait-route').isVisible())throw Error('Portrait route missing');
+  if((await page.locator('.desk-business').getAttribute('href'))!=='https://www.everestsuperchemical.com.np/')throw Error('Ad link wrong');
+  for(let stop=0;stop<4;stop++)await page.locator('#me').click();
+  const speech=await page.locator('.portrait-dialogue').boundingBox(), heading=await page.locator('.desk-heading').boundingBox(), face=await page.locator('#me').boundingBox();
+  if(speech.y<heading.y+heading.height||speech.y+speech.height>face.y)throw Error(`${name}: longest tour reply overlaps introduction or portrait ${JSON.stringify({speech,heading,face})}`);
+  await page.screenshot({path:`${output}/desk-tour-${name}.png`,fullPage:true});
+  if(name==='desktop'){
+   await page.locator('.desk-cat').click();await page.waitForFunction(()=>document.querySelector('.desk-cat').dataset.perch==='mark'&&!document.querySelector('.desk-cat').classList.contains('cat-jumping'));
+   await page.locator('.portrait-call').click();await page.waitForFunction(()=>document.querySelector('.desk-cat').dataset.perch==='martin'&&!document.querySelector('.desk-cat').classList.contains('cat-jumping'));
+   if(!(await page.locator('.portrait-dialogue').innerText()).includes('hoodie'))throw Error('Portrait does not respond to landing');
+   await page.screenshot({path:`${output}/desk-active-${name}.png`,fullPage:true});
+  }else{
+   await page.evaluate(()=>{const folder=document.querySelector('.desk-folder');scrollTo({top:folder.getBoundingClientRect().top+scrollY-100,behavior:'instant'})});
+   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+   await page.locator('.desk-cat').click();
+   if(name==='mobile')await page.waitForFunction(()=>document.querySelector('.desk-cat').dataset.perch==='mark'&&!document.querySelector('.desk-cat').classList.contains('cat-jumping'));
+   else await page.waitForFunction(()=>!document.querySelector('.desk-cat').classList.contains('cat-jumping'));
+   if(name==='mobile'&&(await page.locator('.desk-cat').getAttribute('data-perch'))!=='mark')throw Error('Mobile cat did not hop between visible objects');
+  }
   await page.locator('.desk-folder').click();if(!await page.locator('#desk-view').evaluate(el=>el.open))throw Error('Folder failed');
   if(!await page.locator('.desk-cat').evaluate(el=>el.classList.contains('cat-paused')))throw Error('Cat animation running behind folder');
   await page.locator('.desk-back').click();
   await page.locator('.desk-signature').click();if(!await page.locator('#signature-intro').isVisible())throw Error('Signature replay failed');
   await page.keyboard.press('Escape');await page.waitForSelector('#signature-intro[hidden]',{state:'attached'});
-  if(errors.length)throw Error(errors.join(','));console.log(`${name}: intro bounds, header, copy, cat, folder, replay and overflow passed`);await page.close();
+  if(errors.length)throw Error(errors.join(','));console.log(`${name}: portrait tour, ad link, cat perch, folder, replay and overflow passed`);await page.close();
  }
  const reduced=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});await reduced.route('**/anime.min.js',r=>r.fulfill({status:200,body:''}));await reduced.goto('http://127.0.0.1:4175');
  if(await reduced.locator('#signature-intro').isVisible())throw Error('Reduced-motion auto intro');
