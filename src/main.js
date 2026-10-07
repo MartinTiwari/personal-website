@@ -113,7 +113,7 @@
         h < 17 ? "post-lunch fog. send chiya." :
         h === 17 ? "gym. (theoretical.)" :
         h < 21 ? "prime coding hours. or doom-scrolling. 50/50." :
-        '"two more minutes" - narrator: it was not two minutes.';
+        '"two more minutes." narrator: it was not two minutes.';
       const tick = () => { el.textContent = statusFor(nptNow().getHours()); };
       tick();
       setInterval(tick, 60000);
