@@ -128,6 +128,16 @@ body.desk-mode { font-size:16px; }
 .album-controls button { width:auto;min-height:38px;padding:7px 13px;border:1px solid #BCAF9B;background:var(--paper);color:var(--ink);border-radius:4px;font-size:14px; }
 .album-controls button:hover { background:var(--ink);color:var(--paper); }
 .album-count { min-width:70px;text-align:center;font-family:var(--hand);font-size:20px; }
+.album-group .haru-album .pol.album-selected { width:min(320px,100%); }
+.album-group .haru-album .pol.album-selected img { height:330px;object-fit:contain;background:#211F1B; }
+.haru-album-note { font-size:19px;margin:18px auto 0;max-width:32ch;line-height:1.2;color:var(--ink-soft); }
+.album-group:has(.haru-album) .album-controls { gap:10px;flex-wrap:wrap; }
+.album-group:has(.haru-album) .album-controls button { font-size:12px; }
+@media (max-width:680px) {
+  .album-group .haru-album .pol.album-selected img { height:280px; }
+  .album-group:has(.haru-album) .album-controls { gap:8px; }
+  .album-group:has(.haru-album) .album-count { min-width:40px; }
+}
 .album-group .sighting-stage { --p:1!important;--shift:0px!important;min-height:0;padding:8px 0;gap:30px;grid-template-columns:minmax(180px,280px) minmax(0,1fr);max-width:800px; }
 .album-group .sighting-photo { transform:rotate(-2deg)!important;width:100%; }
 .album-group .sighting-photo figcaption,.album-group .sighting-copy { opacity:1; }

@@ -39,7 +39,10 @@
   tabs.setAttribute('aria-label', 'Choose a photo album');
   photos.append(tabs);
   const albums = [];
-  [['Kathmandu', sections[1]], ['the family', sections[2]], ['dad, confirmed', sections[3]]].forEach(([label, section], index) => {
+  const haruTemplate = document.querySelector('#haru-album-template');
+  const haruAlbum = haruTemplate.content.firstElementChild.cloneNode(true);
+  haruTemplate.remove();
+  [['Kathmandu', sections[1]], ['the family', sections[2]], ['dad, confirmed', sections[3]], ['HARU, the actual owner', haruAlbum]].forEach(([label, section], index) => {
     const button = document.createElement('button');
     button.type = 'button'; button.textContent = label;
     button.setAttribute('aria-pressed', String(index === 0));
@@ -66,6 +69,10 @@
           if (n === current && figure.querySelector('img')) figure.querySelector('img').loading = 'eager';
         });
         count.textContent = `${current + 1} / ${figures.length}`;
+        if (section === haruAlbum) {
+          prev.textContent = current === 0 ? '← inspect the camera' : '← back to management';
+          next.textContent = current === 0 ? 'inspect the camera →' : 'back to management →';
+        }
         window.dispatchEvent(new Event('resize'));
       }
       prev.addEventListener('click', () => { current = (current - 1 + figures.length) % figures.length; paint(); });
