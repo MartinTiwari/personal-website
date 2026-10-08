@@ -3,7 +3,7 @@ body.desk-mode { font-size:16px; }
 .desk-mode .top-dot { background:none;border:0;padding:3px; }
 .desk-mode .foot { margin-top:16px; }
 .desk-mode #intro,.desk-mode .hero,.desk-mode .scroll-cue { display:none !important; }
-.desk-mode .grain { opacity:.26; }
+.desk-mode .grain { display:none; }
 .desk-mode .top { max-width:1200px;padding-top:18px; }
 .desk-mode main { position:relative;z-index:2; }
 .desk-home { max-width:1200px;margin:auto;padding:34px 40px 0; }
@@ -56,17 +56,14 @@ body.desk-mode { font-size:16px; }
 .book-spine { position:absolute;left:9px;top:0;bottom:0;width:1px;background:rgba(0,0,0,.3);box-shadow:2px 0 rgba(255,255,255,.15); }
 .desk-book strong { font-size:32px; }
 .desk-book .object-caption { color:#EEE8DA;font-size:19px; }
-.desk-business { left:33%;top:530px;width:380px;padding:15px 20px 12px;display:grid;grid-template-columns:87px minmax(0,1fr);gap:7px 16px;align-items:center;background:#fffdf7;rotate:-2deg;box-shadow:3px 8px 16px rgba(34,30,25,.11);z-index:3;text-align:left; }
+.desk-business { left:33%;top:530px;width:380px;padding:15px 20px 12px;display:grid;gap:7px;background:#fffdf7;rotate:-2deg;box-shadow:3px 8px 16px rgba(34,30,25,.11);z-index:3;text-align:left; }
 .desk-business::before { content:"";position:absolute;top:-11px;left:38%;width:76px;height:23px;background:rgba(222,199,149,.55);rotate:6deg;pointer-events:none; }
-.desk-business img { display:block;width:87px;height:48px;object-fit:contain;margin:0; }
-.business-main { display:grid;grid-template-columns:subgrid;grid-column:1/-1;gap:7px 16px;align-items:center;color:inherit;text-decoration:none; }
-.business-sister { grid-column:1/-1;display:block;padding-top:8px;border-top:1px solid #D9CDBB;color:var(--ink);text-decoration:none; }
-.business-sister strong { font-family:inherit;font-size:11px;font-weight:700;line-height:1.4;letter-spacing:0;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px; }
-.business-sister span { display:block;margin-top:3px;color:var(--ink-soft);font-size:10px;line-height:1.4; }
+.business-heading strong { font-size:23px;line-height:1.02;letter-spacing:-.035em; }
+.business-main,.business-sister { display:grid;grid-template-columns:minmax(0,1fr);align-items:center;padding-top:7px;border-top:1px solid #D9CDBB;color:inherit;text-decoration:none; }
+.business-main strong,.business-sister strong { font-family:inherit;font-size:12px;font-weight:700;line-height:1.3;letter-spacing:0;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px; }
+.business-main small,.business-sister small { display:block;margin-top:2px;color:var(--ink-soft);font-size:9px;line-height:1.3; }
 .business-main:focus-visible,.business-sister:focus-visible { outline:2px solid var(--red);outline-offset:4px; }
-.business-copy strong { font-size:20px;line-height:1.08;letter-spacing:-.025em; }
-.business-disclosure { display:block;font-size:10px;line-height:1.35;color:var(--ink-soft);margin-top:7px; }
-.business-url { grid-column:1/-1;display:block;font-size:10px;font-weight:700;text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px;padding-top:8px;border-top:1px dashed #cbbca7;white-space:nowrap; }
+.business-disclosure { display:block;font-size:9px;line-height:1.35;color:var(--ink-soft);margin:0; }
 .desk-cat { position:absolute;width:128px;padding:0;background:none;border:0;z-index:5;rotate:var(--perch-angle,-7deg);cursor:pointer;transition:translate .22s ease; }
 .desk-cat:focus-visible { outline:2px dashed var(--red);outline-offset:5px;border-radius:14px; }
 .desk-scene:has(.desk-folder:hover) .desk-cat,.desk-scene:has(.desk-folder:focus-visible) .desk-cat { translate:0 -7px; }
@@ -96,7 +93,7 @@ body.desk-mode { font-size:16px; }
 
 /* Drawers open as a roomy sheet, with one clear route back to the desk. */
 .desk-view { width:min(1100px,calc(100% - 40px));max-width:none;height:90svh;max-height:90svh;margin:auto;padding:0;background:var(--paper);color:var(--ink);border:1px solid #BCAF9B;border-radius:10px;box-shadow:0 28px 100px rgba(34,30,25,.27);overflow-y:auto;overscroll-behavior:contain; }
-.desk-view::backdrop { background:rgba(34,30,25,.56);backdrop-filter:blur(5px); }
+.desk-view::backdrop { background:rgba(34,30,25,.56); }
 .desk-view-bar { position:sticky;top:0;z-index:20;display:flex;gap:16px;align-items:center;min-height:65px;padding:12px 22px;background:var(--paper);border-bottom:1px solid #D9CDBB; }
 .desk-back,.desk-close { background:none;color:var(--ink);border:1px solid #C9BFAF;border-radius:4px;padding:7px 12px;font-size:12px;font-weight:650; }
 .desk-back:hover,.desk-close:hover { background:var(--ink);color:var(--paper);border-color:var(--ink); }
@@ -181,9 +178,7 @@ body.desk-mode { font-size:16px; }
   .record-disc::before { inset:25px;border-width:6px; }
   .record-disc::after { inset:36px; }
   .desk-book { left:3%;width:184px; }
-  .desk-business { left:34%;width:300px;top:530px;grid-template-columns:72px minmax(0,1fr);gap:10px 12px;padding:18px 16px 13px; }
-  .desk-business img { width:72px; }
-  .business-copy strong { font-size:19px; }
+  .desk-business { left:34%;width:300px;top:530px;padding:15px 16px 12px; }
   .desk-cat { width:116px; }
 }
 @media (max-width:700px) {
@@ -226,9 +221,7 @@ body.desk-mode { font-size:16px; }
   .desk-book { min-height:155px;padding:23px 13px 15px 25px;rotate:-4deg; }
   .desk-book strong { font-size:27px; }
   .desk-book .object-caption { font-size:17px; }
-  .desk-business { grid-column:1/-1;grid-template-columns:80px minmax(0,1fr);gap:11px 15px;padding:19px 18px 14px;rotate:-2deg;margin-top:6px; }
-  .desk-business img { width:80px;height:48px; }
-  .business-copy strong { font-size:23px; }
+  .desk-business { grid-column:1/-1;padding:17px 18px 14px;rotate:-2deg;margin-top:6px; }
   .business-disclosure { font-size:10px; }
   .desk-cat { position:absolute;width:105px;margin:0; }
   .desk-cat .cat-message { font-size:15px;max-width:145px; }
@@ -276,7 +269,6 @@ body.desk-mode { font-size:16px; }
 }
 @media (max-width:360px) {
   .desk-note { display:none; }
-  .business-url { font-size:8px;white-space:normal;overflow-wrap:anywhere; }
 }
 @media (prefers-reduced-motion:reduce) {
   .desk-object,.desk-cat { transition:none; }

@@ -66,7 +66,7 @@
         figures.forEach((figure, n) => {
           figure.hidden = n !== current;
           figure.classList.toggle('album-selected', n === current);
-          if (n === current && figure.querySelector('img')) figure.querySelector('img').loading = 'eager';
+          if (n === current && !figure.closest('[hidden]') && figure.querySelector('img')) figure.querySelector('img').loading = 'eager';
         });
         count.textContent = `${current + 1} / ${figures.length}`;
         if (section === haruAlbum) {

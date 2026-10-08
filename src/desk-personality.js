@@ -9,11 +9,11 @@
   const reset = portrait.querySelector('.portrait-reset');
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const tour = [
-    { text: 'Two projects shipped. The third is still negotiating its release date.', href: '#projects', link: 'open the work folder →', focus: '.desk-folder' },
+    { text: 'Three projects shipped. The fourth is still negotiating its release date.', href: '#projects', link: 'open the work folder →', focus: '.desk-folder' },
     { text: 'These are my people. They did not approve every photo choice.', href: '#photos', link: 'meet the people →', focus: '.desk-photos' },
     { text: 'The playlist is public. My singing remains a private matter.', href: '#music', link: 'put something on →', focus: '.desk-player' },
     { text: 'Leave a note or a drawing. Artistic ability is not a visa requirement.', href: '#mark', link: 'leave evidence →', focus: '.desk-book' },
-    { text: 'That little ad? The family business. My conflict of interest comes with a logo.', href: 'https://www.everestsuperchemical.com.np/', link: 'visit Everest Super Chemical ↗', focus: '.desk-business' }
+    { text: 'That little notice? Two family businesses. I built both websites. The advertising budget is still just me.', href: '#projects', link: 'see both websites in the work folder →', focus: '.desk-business' }
   ];
   let index = 0, reaction = null;
   function clearSpotlight() { document.querySelectorAll('.desk-spotlight').forEach(el => el.classList.remove('desk-spotlight')); }

@@ -24,7 +24,7 @@ const output='C:/Users/Asus/.codex/visualizations/2026/09/22/01a0c894-15ee-7bb0-
   const controls=await page.locator('.portrait-controls').boundingBox();
   if(adBounds.y-12<controls.y+controls.height)throw Error(`${name}: ad tape overlaps portrait controls`);
   await page.screenshot({path:`${output}/desk-${name}.png`,fullPage:true});
-  await page.locator('#me').click();if(!(await page.locator('.portrait-dialogue').innerText()).includes('Two projects shipped'))throw Error('Portrait tour failed');
+  await page.locator('#me').click();if(!(await page.locator('.portrait-dialogue').innerText()).includes('Three projects shipped'))throw Error('Portrait tour failed');
   if(!await page.locator('.portrait-route').isVisible())throw Error('Portrait route missing');
   if((await page.locator('.business-main').getAttribute('href'))!=='https://www.everestsuperchemical.com.np/')throw Error('Ad link wrong');
   if((await page.locator('.business-sister').getAttribute('href'))!=='https://everestbeverage.com.np/')throw Error('Sister company link wrong');

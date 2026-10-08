@@ -9,7 +9,7 @@
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const message = cat.querySelector('.cat-message');
   const perches = [
-    { key: 'projects', node: scene.querySelector('.desk-folder'), along: .72, reply: 'two shipped. this one is mine.' },
+    { key: 'projects', node: scene.querySelector('.desk-folder'), along: .72, reply: 'three shipped. this one is mine.' },
     { key: 'mark', node: scene.querySelector('.desk-book'), along: .70, reply: 'left a pawprint. legally a signature.' },
     { key: 'music', node: scene.querySelector('.desk-player'), along: .78, reply: 'put on something with a good purr.' },
     { key: 'martin', node: scene.querySelector('.desk-portrait'), along: .76, reply: 'human summoned. lap acquired.' }

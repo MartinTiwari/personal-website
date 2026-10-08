@@ -3,6 +3,20 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
+  const deskMode = document.body.classList.contains('desk-mode');
+
+  // Closed desk files should not compete with the landing page for network or work.
+  // IntersectionObserver follows a file when desk.js moves it into the dialog.
+  function whenVisible(element, run) {
+    if (!element) return;
+    if (!deskMode) { run(); return; }
+    const observer = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      observer.disconnect();
+      run();
+    });
+    observer.observe(element);
+  }
 
   /* ---------- the envelope: opens itself, once per session ---------- */
   {
@@ -121,7 +135,7 @@
   }
 
   /* ---------- kathmandu, live: actual weather (open-meteo, no key) ---------- */
-  (async () => {
+  whenVisible($('#disp-sky')?.closest('.sec'), async () => {
     const el = $('#disp-sky');
     if (!el) return;
     try {
@@ -146,10 +160,10 @@
         c >= 1 ? `${deg} and cloudy-ish in kathmandu. certified chiya weather.` :
         `clear skies over kathmandu, ${deg}. suspicious. it never lasts.`;
     } catch { /* the "no comment" line stays */ }
-  })();
+  });
 
   /* ---------- clash royale: live arena card ---------- */
-  (async () => {
+  whenVisible($('#cr-card')?.closest('.sec'), async () => {
     const card = $('#cr-card');
     if (!card) return;
     try {
@@ -201,7 +215,7 @@
       let crTaps = 0;
       card.addEventListener('click', () => toast('🏆 ' + comebacks[Math.min(crTaps++, comebacks.length - 1)]));
     } catch { /* stays hidden; the card never shows */ }
-  })();
+  });
 
   /* ---------- dispatch: HARU, same clock as the roaming cat widget ---------- */
   {
@@ -219,7 +233,7 @@
 
   /* ---------- hero chip parallax ---------- */
   const chips = $$('.chip');
-  if (!reduced && chips.length) {
+  if (!reduced && !deskMode && chips.length) {
     let raf = false;
     addEventListener('scroll', () => {
       if (raf) return;
@@ -267,7 +281,7 @@
      dealt out across the wall as you scroll past. --pile 1 = stacked,
      0 = laid out where the layout actually put them. ---------- */
   const walls = $$('.wall');
-  if (walls.length && !reduced) {
+  if (walls.length && !reduced && !deskMode) {
     // a vertical column of prints collapsing into one point reads as a glitch,
     // not a pile, so the effect only runs where the wall is genuinely multi-column
     const wide = () => innerWidth > 760;
@@ -436,10 +450,11 @@
       const startClock = () => {
         clearInterval(timer);
         tick();
-        if (!document.hidden) timer = setInterval(tick, 1000);
+        if (!document.hidden && (!deskMode || clock.getClientRects().length)) timer = setInterval(tick, 1000);
       };
       startClock();
       document.addEventListener('visibilitychange', startClock);
+      if (deskMode) new IntersectionObserver(startClock).observe(clock);
     }
 
     if (report && excuse) {
@@ -852,9 +867,14 @@
   /* the wall is public when /api/notes is configured, and falls back to
      this browser's own notes when it isn't (local dev, or before setup) */
   let wallIsPublic = false;
-  (async () => {
+  let notesReady;
+  function loadNotes() {
+    if (notesReady) return notesReady;
+    notesReady = (async () => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
     try {
-      const res = await fetch('/api/notes');
+      const res = await fetch('/api/notes', { signal: controller.signal });
       if (!res.ok) throw new Error('notes ' + res.status);
       const { notes } = await res.json();
       wallIsPublic = true;
@@ -871,10 +891,13 @@
       try {
         JSON.parse(localStorage.getItem('notes') || '[]').slice(-24).forEach(pinNote);
       } catch {}
-    }
+    } finally { clearTimeout(timeout); }
     updateCover();
     renderPage(false);
-  })();
+    })();
+    return notesReady;
+  }
+  whenVisible($('#book-open')?.closest('.sec'), loadNotes);
 
   $('#note-form').addEventListener('submit', async e => {
     e.preventDefault();
@@ -885,6 +908,8 @@
     const btn = e.target.querySelector('.pin-btn');
     btn.disabled = true; btn.textContent = 'signing…';
 
+    // A quick signature must not race the initial public/offline book contents.
+    await loadNotes();
     pinNote(msg);
     bookPage = pageCount() - 1;      // land on the page their signature just went to
     renderPage(true);
@@ -1021,7 +1046,7 @@
       box.appendChild(a);
     });
   }
-  syncMusic();
+  whenVisible($('#tracks'), syncMusic);
 
   /* ---------- track 00: the anthem, played on-site ---------- */
   const anthemBtn = $('#anthem-btn');
@@ -1458,7 +1483,7 @@
   /* ---------- the letter folds itself back up (scroll-scrubbed, reversible) ---------- */
   {
     const psStage = $('#ps-stage'), psNote = $('#ps-note');
-    if (psStage && psNote && !reduced) {
+    if (psStage && psNote && !reduced && !deskMode) {
       let psTick = false;
       const psUpdate = () => {
         psTick = false;

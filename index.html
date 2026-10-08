@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,640;1,9..144,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=48" />
-  <link rel="stylesheet" href="desk.css?v=6" />
+  <link rel="stylesheet" href="desk.css?v=7" />
   <link rel="stylesheet" href="clothing-archive.css?v=1" />
   <link rel="stylesheet" href="intro.css?v=2" />
   <link rel="stylesheet" href="desk-cat.css?v=1" />
@@ -77,19 +77,19 @@
     <nav class="desk-scene" aria-label="Explore Martin's desk">
       <figure class="desk-portrait">
         <div class="portrait-dialogue" aria-live="polite"><p>I brought the projects.<br>HARU brought the supervision.</p><a class="portrait-route" href="#projects" hidden>show me the work →</a></div>
-        <img id="me" src="assets/martin-cutout.webp" alt="Martin, hoodie up, mid-smile." aria-label="Ask Martin for the unofficial tour" width="560" height="735" fetchpriority="high" tabindex="0" role="button" />
+        <img id="me" src="assets/martin-cutout.webp" alt="Martin, hoodie up, mid-smile." aria-label="Ask Martin for the unofficial tour" width="560" height="735" fetchpriority="high" decoding="async" tabindex="0" role="button" />
         <figcaption class="desk-portrait-note hand">tap me for the unofficial tour.</figcaption>
         <div class="portrait-controls"><button class="portrait-call" type="button">call HARU over</button><button class="portrait-reset" type="button" hidden>start the tour again ↺</button></div>
       </figure>
       <a class="desk-object desk-folder" href="#projects">
         <span class="folder-tab">WORK / OPEN FILE</span>
         <strong>things I've<br>actually shipped.</strong>
-        <span class="folder-status">2 shipped · 1 cooking</span>
+        <span class="folder-status">3 shipped · 1 cooking</span>
         <span class="object-caption">projects &amp; the Poshak archive →</span>
       </a>
       <a class="desk-object desk-photos" href="#photos">
-        <img src="assets/chiya.webp" alt="Roadside tea in Kathmandu" width="640" height="853" />
-        <img src="assets/martin-rain.webp" alt="Martin out in the rain" width="640" height="640" />
+        <img src="assets/chiya.webp" alt="Roadside tea in Kathmandu" width="640" height="853" decoding="async" />
+        <img src="assets/martin-rain.webp" alt="Martin out in the rain" width="640" height="640" decoding="async" />
         <strong>evidence of a life.</strong>
         <span class="object-caption">Kathmandu, family &amp; questionable poses →</span>
       </a>
@@ -105,18 +105,16 @@
         <span class="object-caption">sign the guestbook.<br>or draw a terrible cat. →</span>
       </a>
       <div class="desk-object desk-business" role="group" aria-label="The family businesses">
+        <div class="business-heading"><strong>Family business.<br>Plural, apparently.</strong></div>
         <a class="business-main" href="https://www.everestsuperchemical.com.np/" target="_blank" rel="noopener">
-        <img src="assets/escu-logo.png" alt="Everest Super Chemical Udhyog" width="320" height="151" />
-        <span class="business-copy"><strong>Serious chemicals.<br>Unserious ad department.</strong><span class="business-disclosure">the family business. yes, this is an ad.</span></span>
-        <span class="business-url">everestsuperchemical.com.np ↗</span>
+          <span><strong>Everest Super Chemical ↗</strong><small>everestsuperchemical.com.np</small></span>
         </a>
         <a class="business-sister" href="https://everestbeverage.com.np/" target="_blank" rel="noopener">
-          <strong>Meet the sister: Everest Beverage ↗</strong>
-          <span>Sister company. Same shameless family plug.</span>
+          <span><strong>Everest Beverage ↗</strong><small>everestbeverage.com.np</small></span>
         </a>
+        <p class="business-disclosure">Two websites. One very biased recommendation.</p>
       </div>
       <button class="desk-cat" type="button" aria-label="Ask HARU to move">
-        <img src="assets/haru.webp" alt="HARU wearing a birthday hat, looking unimpressed" width="640" height="853" />
         <span class="cat-message hand" aria-live="polite">management is watching.</span>
       </button>
     </nav>
@@ -133,7 +131,7 @@
           <a href="mailto:martintiwari0@gmail.com">pull up a chair. say hello ↗</a>
         </div>
         <button class="intro-replay desk-signature" type="button" aria-label="Replay Martin's handwritten welcome note">
-          <img src="assets/signature.png" alt="Martin's signature" width="395" height="681" />
+          <img src="assets/signature.png" alt="Martin's signature" width="395" height="681" loading="lazy" decoding="async" />
           <span>signed, Martin <small>watch me sign ↺</small></span>
         </button>
       </div>
@@ -421,7 +419,7 @@
   <!-- ================= PROJECTS + RAPID FIRE ================= -->
   <section class="sec sec-wide" id="projects">
     <p class="label">office software department (unfortunately, me)</p>
-    <h2 class="h2 project-headline">two shipped. one has started paying rent in my head.</h2>
+    <h2 class="h2 project-headline">three shipped. one has started paying rent in my head.</h2>
 
     <div class="project-desk">
       <div class="project-ledger" aria-label="Completed projects">
@@ -444,15 +442,25 @@
           </div>
           <span class="project-stamp stamp-blue">DEPLOYED</span>
         </article>
+        <article class="project-entry">
+          <span class="project-no" aria-hidden="true">03</span>
+          <div class="project-copy">
+            <span class="project-type">the sister company gets its own front door</span>
+            <h3>Everest Beverage website</h3>
+            <p>built the website for Everest Super Chemical’s sister company. separate company, separate website. apparently being the family tech department is not a part time position.</p>
+            <a href="https://everestbeverage.com.np/" target="_blank" rel="noopener">visit the website ↗</a>
+          </div>
+          <span class="project-stamp">SHIPPED</span>
+        </article>
       </div>
 
-      <aside class="project-live" aria-label="Live counter for project three">
+      <aside class="project-live" aria-label="Live counter for project four">
         <div class="project-live-head">
           <span class="live-pip" aria-hidden="true"></span>
           <span>project currently cooking</span>
           <b>LIVE</b>
         </div>
-        <div class="project-live-number" aria-hidden="true">03</div>
+        <div class="project-live-number" aria-hidden="true">04</div>
         <p class="project-live-title">name: above your clearance level.</p>
         <div class="project-clock-wrap">
           <span>time since you opened this page and I called it “one last feature”</span>
@@ -951,10 +959,10 @@
 
   <div id="toast-root"></div>
   <script src="src/intro.js?v=5"></script>
-  <script src="src/desk.js?v=4"></script>
-  <script src="src/desk-cat.js?v=1"></script>
-  <script src="src/desk-personality.js?v=1"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
-  <script src="src/main.js?v=52" defer></script>
+  <script src="src/desk.js?v=5"></script>
+  <script src="src/desk-cat.js?v=2"></script>
+  <script src="src/desk-personality.js?v=2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" async></script>
+  <script src="src/main.js?v=53" defer></script>
 </body>
 </html>
