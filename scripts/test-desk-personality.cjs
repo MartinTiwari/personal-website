@@ -26,7 +26,9 @@ const output='C:/Users/Asus/.codex/visualizations/2026/09/22/01a0c894-15ee-7bb0-
   await page.screenshot({path:`${output}/desk-${name}.png`,fullPage:true});
   await page.locator('#me').click();if(!(await page.locator('.portrait-dialogue').innerText()).includes('Two projects shipped'))throw Error('Portrait tour failed');
   if(!await page.locator('.portrait-route').isVisible())throw Error('Portrait route missing');
-  if((await page.locator('.desk-business').getAttribute('href'))!=='https://www.everestsuperchemical.com.np/')throw Error('Ad link wrong');
+  if((await page.locator('.business-main').getAttribute('href'))!=='https://www.everestsuperchemical.com.np/')throw Error('Ad link wrong');
+  if((await page.locator('.business-sister').getAttribute('href'))!=='https://everestbeverage.com.np/')throw Error('Sister company link wrong');
+  if(!await page.locator('.desk-business').evaluate(el=>{const main=el.querySelector('.business-main'),sister=el.querySelector('.business-sister');return main.offsetTop+main.offsetHeight<=sister.offsetTop}))throw Error('Family business links overlap');
   for(let stop=0;stop<4;stop++)await page.locator('#me').click();
   const speech=await page.locator('.portrait-dialogue').boundingBox(), heading=await page.locator('.desk-heading').boundingBox(), face=await page.locator('#me').boundingBox();
   if(speech.y<heading.y+heading.height||speech.y+speech.height>face.y)throw Error(`${name}: longest tour reply overlaps introduction or portrait ${JSON.stringify({speech,heading,face})}`);
