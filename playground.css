@@ -1,0 +1,279 @@
+/* The internet corner: a small collection of things passed across a desk. */
+#internet {
+  color:var(--ink);
+  isolation:isolate;
+}
+#internet > .label { margin-bottom:10px; }
+#internet .h2 {
+  width:fit-content;
+  margin-bottom:9px;
+  letter-spacing:-.04em;
+}
+#internet .social-title-mark {
+  position:relative;
+  z-index:0;
+  white-space:nowrap;
+}
+#internet .social-title-mark::after {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  left:-3px;
+  right:-5px;
+  bottom:2px;
+  height:.24em;
+  background:#F2C64E;
+  rotate:-2deg;
+}
+#internet .social-intro {
+  margin:0 0 31px;
+  font-family:var(--hand);
+  font-size:clamp(22px,2.5vw,27px);
+  line-height:1.25;
+  color:#635746;
+}
+#internet .social-grid {
+  display:grid;
+  grid-template-columns:1.06fr 1fr .96fr;
+  align-items:start;
+  gap:25px 24px;
+  padding:9px 8px 0;
+}
+#internet .social {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:0;
+  min-height:205px;
+  padding:27px 22px 20px;
+  overflow:visible;
+  border:1px solid #7D6D5B;
+  border-radius:1px;
+  color:#2B2620;
+  box-shadow:3px 5px 0 #D7CEBE;
+  transform:none;
+  will-change:auto;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+#internet .social:hover {
+  transform:translateY(-4px);
+  box-shadow:4px 9px 0 #D7CEBE;
+}
+#internet .social:active { transform:translateY(1px); }
+#internet .social:focus-visible {
+  outline:3px solid #175984;
+  outline-offset:6px;
+}
+#internet .s-name {
+  position:relative;
+  z-index:1;
+  padding-right:23px;
+  font-family:var(--serif);
+  font-weight:640;
+  font-size:clamp(25px,3vw,32px);
+  letter-spacing:-.04em;
+  line-height:1.1;
+}
+#internet .s-handle {
+  position:relative;
+  z-index:1;
+  font-size:14px;
+  line-height:1.4;
+  font-weight:650;
+  overflow-wrap:anywhere;
+  word-break:normal;
+  opacity:1;
+}
+#internet .s-note {
+  position:relative;
+  z-index:1;
+  margin-top:auto;
+  padding-top:20px;
+  font-family:var(--hand);
+  font-size:22px;
+  line-height:1.1;
+  opacity:1;
+}
+#internet .s-arrow {
+  position:absolute;
+  top:23px;
+  right:17px;
+  display:grid;
+  place-items:center;
+  width:28px;
+  height:28px;
+  font-size:24px;
+  line-height:1;
+}
+#internet .social:hover .s-arrow { transform:translate(2px,-2px); }
+
+/* A pink photo note, held down with a slightly badly placed strip of tape. */
+#internet .s-ig {
+  background:#F7C7CD;
+  rotate:-2deg;
+  margin-top:5px;
+  border:8px solid #FFFBF3;
+  padding:20px 15px 17px;
+  outline:1px solid #B5A28D;
+}
+#internet .s-ig::before {
+  content:"";
+  position:absolute;
+  width:79px;
+  height:23px;
+  top:-20px;
+  left:calc(50% - 40px);
+  background:#E9D6A3;
+  border-inline:1px dashed #B8A373;
+  rotate:6deg;
+  opacity:.94;
+}
+#internet .s-ig .s-arrow { top:16px;right:10px; }
+#internet .s-ig .s-note { padding-top:22px; }
+
+/* A leaf from the exercise book, including the margin everyone drew in. */
+#internet .s-gh {
+  background:repeating-linear-gradient(to bottom,transparent 0 27px,#D3C78C 27px 28px),#F5E8AA;
+  background-position:0 8px;
+  padding-left:32px;
+  border-color:#B6A76C;
+  border-top:0;
+  border-radius:0 0 8px 1px;
+  rotate:1deg;
+  margin-top:19px;
+}
+#internet .s-gh::before {
+  content:"";
+  position:absolute;
+  top:-4px;
+  left:0;
+  right:0;
+  height:7px;
+  background:radial-gradient(circle at 7px 0,transparent 0 4px,#F5E8AA 4.5px) 0 0 / 14px 7px repeat-x;
+}
+#internet .s-gh::after {
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:21px;
+  border-left:1px solid #C88579;
+}
+
+/* The family address card. A punched hole, not another platform logo. */
+#internet .s-fb {
+  min-height:186px;
+  margin-top:4px;
+  padding-top:31px;
+  background:#C6DEED;
+  border-color:#648397;
+  border-radius:1px 18px 1px 1px;
+  rotate:-.5deg;
+}
+#internet .s-fb::before {
+  content:"";
+  position:absolute;
+  left:15px;
+  top:11px;
+  width:8px;
+  height:8px;
+  border:1px solid #7894A4;
+  border-radius:50%;
+  background:var(--paper);
+}
+#internet .s-fb::after {
+  content:"";
+  position:absolute;
+  left:22px;
+  right:22px;
+  top:80px;
+  border-bottom:1px solid #87AABC;
+}
+#internet .s-fb .s-handle { padding-top:5px; }
+
+/* The sensible route gets an actual piece of correspondence. */
+#internet .s-mail {
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:minmax(110px,.7fr) minmax(0,2fr) 38px;
+  align-items:center;
+  gap:24px;
+  min-height:116px;
+  margin:1px 9px 0;
+  padding:24px 25px 26px;
+  background:#FFFCF3;
+  border-color:#A79B86;
+  border-radius:1px;
+  rotate:-.5deg;
+  box-shadow:3px 4px 0 #D7CEBE;
+}
+#internet .s-mail::before {
+  content:"";
+  position:absolute;
+  inset:7px;
+  border:1px dashed #B9AB92;
+  pointer-events:none;
+}
+#internet .s-mail .s-name { padding-right:0; }
+#internet .s-mail .s-mid {
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  min-width:0;
+  padding-left:23px;
+  border-left:1px solid #CFC1A8;
+}
+#internet .s-mail .s-note { margin:0;padding:0;font-size:21px; }
+#internet .s-mail .s-arrow {
+  position:static;
+  justify-self:end;
+  margin:0;
+  border:1px solid #BAA58A;
+  border-radius:50%;
+  width:34px;
+  height:34px;
+}
+#internet .social-signoff {
+  margin:22px 15px 0;
+  text-align:right;
+  font-family:var(--hand);
+  font-size:23px;
+  line-height:1.2;
+  color:#635746;
+  rotate:-1deg;
+}
+@media (max-width:760px) {
+  #internet .social-grid { grid-template-columns:1fr 1fr;gap:27px 22px; }
+  #internet .s-fb { margin-top:0;min-height:180px; }
+  #internet .s-mail {
+    grid-column:auto;
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+    margin:0;
+    min-height:200px;
+    padding:23px 20px;
+    rotate:1deg;
+  }
+  #internet .s-mail .s-mid { gap:12px;padding-left:0;border-left:0; }
+  #internet .s-mail .s-arrow { position:absolute;top:16px;right:15px; }
+  #internet .s-mail .s-name { padding-right:30px; }
+  #internet .s-mail .s-handle { font-size:14px; }
+}
+@media (max-width:480px) {
+  #internet .social-grid { grid-template-columns:minmax(0,1fr);gap:26px;padding:9px 4px 0; }
+  #internet .social { min-height:174px;rotate:0deg; }
+  #internet .s-ig { margin:0 5px 0 1px;rotate:-1deg; }
+  #internet .s-gh { margin:0 0 0 8px;rotate:1deg; }
+  #internet .s-fb { margin:0 8px 0 0; }
+  #internet .s-mail { min-height:196px;margin:0 2px; }
+  #internet .s-name { font-size:29px; }
+  #internet .s-note { padding-top:15px; }
+  #internet .social-intro { margin-bottom:25px; }
+  #internet .social-signoff { margin-right:4px;text-align:center; }
+}
+@media (prefers-reduced-motion:reduce) {
+  #internet .social,#internet .s-arrow { transition:none; }
+  #internet .social:hover,#internet .social:active,#internet .social:hover .s-arrow { transform:none; }
+}
