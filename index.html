@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="playground.css?v=1" />
   <link rel="stylesheet" href="classified.css?v=2" />
   <link rel="stylesheet" href="signature-entry.css?v=1" />
+  <link rel="stylesheet" href="about-pocket.css?v=1" />
 </head>
 <body class="desk-mode">
 
@@ -330,7 +331,7 @@
 
   <!-- ================= THE ROLLBACK ================= -->
   <!-- pays off the hero note: "rollback in progress: protein up, sugar gone" -->
-  <section class="sec sec-wide">
+  <section class="sec sec-wide about-rollback">
     <p class="label">the rollback, in progress</p>
     <h2 class="h2">protein up. sugar gone. allegedly.</h2>
     <div class="wall">
@@ -344,7 +345,7 @@
         <img src="assets/flex-hands.webp" alt="Martin flexing in a mirror selfie while an unidentified hand throws a peace sign in the foreground" width="640" height="640" loading="lazy" />
         <figcaption class="hand">flexing in the mirror. that second hand in frame is not mine. I have questions too.</figcaption>
       </figure>
-      <div class="note lore-note" style="--r:-2deg">no before photo.<br>no after photo.<br>just a during, indefinitely. 📍</div>
+      <div class="note lore-note" style="--r:-2deg">no before photo. no after photo. just a during, indefinitely. 📍</div>
     </div>
   </section>
 
@@ -493,9 +494,9 @@
       </div>
     </aside>
 
-    <p class="label rapid-label">rapid fire, no further context</p>
+    <h2 class="h2 rapid-label">things the CV left out.</h2>
     <div class="strip-wrap">
-      <div class="strip" id="strip">
+      <div class="strip" id="strip" data-pocket>
         <!-- each answer landed on whatever paper was nearest. flip any of them. -->
         <div class="card c-index" tabindex="0" role="button" aria-label="reply speed. tap to flip">
           <div class="card-face card-front">
@@ -610,7 +611,7 @@
           <div class="card-face card-back"><span class="card-b">every misaligned pixel is a personal decision I stand behind.</span></div>
         </div>
       </div>
-      <p class="hand swipe-hint">flick it, it keeps going. turn one over, there's more on the back →</p>
+      <p class="hand swipe-hint">small facts. unnecessarily detailed backs.</p>
     </div>
   </section>
 
@@ -723,7 +724,6 @@
 
   <!-- ================= OUTRO ================= -->
   <section class="sec outro">
-    <p class="label">ok, that's me</p>
     <h2 class="outro-big">k chaa?</h2>
     <p class="hand aside center">that's "what's up" for the non Nepali crowd. this is not a CV, so here's what's actually happening right now, no "allegedly" about it:</p>
 
@@ -742,6 +742,8 @@
       <p class="dispatch-foot hand">signal ends here. HARU has muted further notifications.</p>
     </div>
 
+    <details class="about-postscript">
+      <summary><span class="hand">something tucked in the envelope</span><span aria-hidden="true">↗</span></summary>
     <!-- the three secrets get a stamp card, so the promise upstairs has a scoreboard -->
     <div class="secrets" id="secrets">
       <p class="secrets-head">the secrets, officially</p>
@@ -779,6 +781,7 @@
       <p class="hand ps-posted">sealed. scroll back up if you want it open again. it's your letter now.</p>
     </div>
     <div class="ps-runway" aria-hidden="true"></div>
+    </details>
   </section>
 
   <footer class="foot">
@@ -961,6 +964,7 @@
   <script src="src/desk-cat.js?v=2"></script>
   <script src="src/desk-personality.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" async></script>
-  <script src="src/main.js?v=53" defer></script>
+  <script src="src/main.js?v=54" defer></script>
+  <script src="src/about-pocket.js?v=1" defer></script>
 </body>
 </html>

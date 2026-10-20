@@ -370,7 +370,7 @@
 
   /* ---------- rapid-fire strip: drag to scroll, then let it coast ---------- */
   const strip = $('#strip');
-  if (strip) {
+  if (strip && !strip.hasAttribute('data-pocket')) {
     let down = false, startX = 0, startL = 0, vel = 0, lastX = 0, lastT = 0, glide = 0, moved = 0;
     strip.addEventListener('pointerdown', e => {
       if (e.pointerType !== 'mouse') return;
