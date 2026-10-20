@@ -8,7 +8,7 @@ const output='C:/Users/Asus/.codex/visualizations/2026/09/22/01a0c894-15ee-7bb0-
   for(const [name,width,height] of [['desktop',1440,900],['mobile',390,844],['small',320,740]]){
    const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce'}),errors=[];
    page.on('pageerror',e=>errors.push(e.message));
-   await page.addInitScript(()=>sessionStorage.setItem('signature-intro-seen-v1','1'));
+   await page.addInitScript(()=>sessionStorage.setItem('signature-intro-seen-v2','1'));
    await page.route('**/*',r=>{const url=new URL(r.request().url());return url.hostname==='127.0.0.1'||url.hostname==='fonts.googleapis.com'||url.hostname==='fonts.gstatic.com'?r.continue():r.fulfill({status:200,body:''})});
    await page.goto('http://127.0.0.1:4183/#internet',{waitUntil:'load'});await page.evaluate(()=>document.fonts.ready);
    await page.waitForSelector('#desk-view[open]');

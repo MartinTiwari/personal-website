@@ -6,7 +6,7 @@
   const enter = intro.querySelector('.intro-enter');
   const paths = [...intro.querySelectorAll('.intro-stroke')];
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const storageKey = 'signature-intro-seen-v1';
+  const storageKey = 'signature-intro-seen-v2';
   let active = false;
   let closing = false;
   let returnFocus = null;
@@ -14,21 +14,6 @@
   let closeTimer = null;
   let hideTimer = null;
   let animations = [];
-  let penFrame = null;
-  const svg = intro.querySelector('.intro-autograph svg');
-  const pen = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  pen.classList.add('intro-pen');
-  pen.setAttribute('aria-hidden', 'true');
-  const nib = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  nib.setAttribute('d', 'M0 0 L3 -20 L13 -15 Z');
-  nib.setAttribute('fill', '#bd9160');
-  const barrel = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  barrel.setAttribute('d', 'M8 -17 L32 -74');
-  barrel.setAttribute('stroke', '#221e19');
-  barrel.setAttribute('stroke-width', '12');
-  barrel.setAttribute('stroke-linecap', 'round');
-  pen.append(barrel, nib);
-  svg?.append(pen);
   const inertBefore = new Map();
 
   function rememberVisit() {
@@ -40,8 +25,6 @@
   function finish() {
     if (!active || closing) return;
     closing = true;
-    cancelAnimationFrame(penFrame);
-    pen.style.opacity = '0';
     clearTimeout(closeTimer);
     intro.classList.add('is-closing');
     const hide = () => {
@@ -58,7 +41,7 @@
       const target = returnFocus?.isConnected && returnFocus !== document.body ? returnFocus : fallback;
       if (target && !target.closest('[inert]')) target.focus({ preventScroll: true });
     };
-    hideTimer = setTimeout(hide, reducedMotion.matches ? 0 : 460);
+    hideTimer = setTimeout(hide, reducedMotion.matches ? 0 : 320);
   }
   function draw() {
     let delay = 140;
@@ -68,7 +51,7 @@
       path.style.strokeDasharray = '1';
       path.style.strokeDashoffset = '1';
       path.style.opacity = '0';
-      const duration = Number(path.dataset.duration) || 500;
+      const duration = (Number(path.dataset.duration) || 500) + (index === 2 ? 300 : 0);
       // Sweep through the B quickly, then linger over the connected lettering.
       // The silhouette and pen order stay unchanged; only the hand's pace varies.
       const keyframes = index === 2 ? [
@@ -84,24 +67,6 @@
       ));
       delay += duration + 70; // a brief pen lift between the five parts
     });
-    // Follow the actual reveal, including the quicker B and slower lettering.
-    const followPen = () => {
-      if (!active || closing || document.hidden) { pen.style.opacity = '0'; return; }
-      const current = paths.find(path => {
-        const animation = path.getAnimations()[0];
-        return animation?.effect.getComputedTiming().phase === 'active' ||
-          (animation && animation.currentTime >= animation.effect.getTiming().delay &&
-           animation.currentTime < animation.effect.getTiming().delay + animation.effect.getTiming().duration);
-      });
-      if (current) {
-        const progress = 1 - parseFloat(getComputedStyle(current).strokeDashoffset);
-        const point = current.getPointAtLength(current.getTotalLength() * Math.max(0, Math.min(1, progress)));
-        pen.setAttribute('transform', `translate(${point.x} ${point.y})`);
-        pen.style.opacity = '1';
-      } else pen.style.opacity = '0';
-      penFrame = requestAnimationFrame(followPen);
-    };
-    penFrame = requestAnimationFrame(followPen);
     return delay - 70;
   }
   function open(replay = false) {
@@ -125,7 +90,7 @@
     if (!reducedMotion.matches) {
       intro.classList.add('is-drawing');
       const drawingEnds = draw();
-      closeTimer = setTimeout(finish, drawingEnds + 450);
+      closeTimer = setTimeout(finish, drawingEnds + 650);
     } else if (!replay) {
       finish();
     }
@@ -152,5 +117,12 @@
   document.addEventListener('visibilitychange', () => {
     if (active && document.hidden) finish();
   });
-  if (!wasSeen() && (!location.hash || location.hash === '#top') && !reducedMotion.matches) open();
+  const entryUrl = new URL(location.href);
+  const forceIntro = entryUrl.searchParams.get('intro') === '1';
+  if (forceIntro) {
+    entryUrl.searchParams.delete('intro');
+    entryUrl.hash = '';
+    history.replaceState(history.state, '', entryUrl.pathname + entryUrl.search);
+    open(true);
+  } else if (!wasSeen() && (!location.hash || location.hash === '#top') && !reducedMotion.matches) open();
 })();

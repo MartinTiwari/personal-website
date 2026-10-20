@@ -12,7 +12,7 @@ for(const name of ['index.html','styles.css','desk.css','intro.css','desk-cat.cs
  try{
   for(const lean of [false,true]){
    const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:2});
-   await page.addInitScript(()=>sessionStorage.setItem('signature-intro-seen-v1','1'));
+   await page.addInitScript(()=>sessionStorage.setItem('signature-intro-seen-v2','1'));
    await page.route('**/*',r=>r.request().url().startsWith('http://127.0.0.1:4179')?r.continue():r.fulfill({status:200,contentType:'application/json',body:'{}'}));
    await page.goto('http://127.0.0.1:4179',{waitUntil:'load'});
    if(lean)await page.addStyleTag({content:'.desk-mode .grain{display:none!important}.desk-view::backdrop{backdrop-filter:none!important}'});

@@ -8,7 +8,7 @@ const output='C:/Users/Asus/.codex/visualizations/2026/09/22/01a0c894-15ee-7bb0-
   for(const [name,width,height] of [['desktop',1440,900],['mobile',390,844],['tablet',701,900],['small',320,740]]){
    const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce'}),errors=[];
    page.on('pageerror',e=>errors.push(e.message));
-   await page.addInitScript(()=>sessionStorage.setItem('signature-intro-seen-v1','1'));
+   await page.addInitScript(()=>sessionStorage.setItem('signature-intro-seen-v2','1'));
    await page.route('**/*',r=>r.request().url().startsWith('http://127.0.0.1:4182')?r.continue():r.fulfill({status:200,body:''}));
    await page.goto('http://127.0.0.1:4182',{waitUntil:'load'});await page.evaluate(()=>document.fonts.ready);
    if(!/^Kathmandu \d{2}:\d{2}$/.test(await page.locator('.desk-local-time').innerText()))throw Error('Local clock absent');

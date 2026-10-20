@@ -5,7 +5,7 @@ const {chromium}=require('C:/Users/Asus/.cache/codex-runtimes/codex-primary-runt
  const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
  try{
   const page=await browser.newPage({viewport:{width:390,height:844}}),images=[];
-  await page.addInitScript(()=>sessionStorage.setItem('signature-intro-seen-v1','1'));
+  await page.addInitScript(()=>sessionStorage.setItem('signature-intro-seen-v2','1'));
   page.on('request',r=>{if(r.resourceType()==='image'&&r.url().includes('/assets/'))images.push(new URL(r.url()).pathname.split('/').pop())});
   await page.route('**/*',r=>r.request().url().startsWith('http://127.0.0.1:4181')?r.continue():r.fulfill({status:200,body:''}));
   await page.goto('http://127.0.0.1:4181',{waitUntil:'load'});await page.waitForTimeout(500);

@@ -9,7 +9,7 @@ const output='C:/Users/Asus/.codex/visualizations/2026/09/22/01a0c894-15ee-7bb0-
   const page=await browser.newPage({viewport:{width,height}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/anime.min.js',r=>r.fulfill({status:200,body:''}));
   await page.goto('http://127.0.0.1:4175',{waitUntil:'domcontentloaded'});
-  await page.locator('.intro-stroke').evaluateAll(paths=>paths.forEach(p=>p.getAnimations().forEach(a=>{a.pause();a.currentTime=3300;})));
+  await page.locator('.intro-stroke').evaluateAll(paths=>paths.forEach(p=>p.getAnimations().forEach(a=>{a.pause();a.currentTime=3550;})));
   await page.locator('.intro-letter').evaluate(el=>el.getAnimations().forEach(a=>a.finish()));
   await page.screenshot({path:`${output}/welcome-${name}.png`});
   const letter=await page.locator('.intro-letter').boundingBox();if(letter.x<0||letter.x+letter.width>width+5||letter.y<0||letter.y+letter.height>height)throw Error(`${name}: note outside screen`);

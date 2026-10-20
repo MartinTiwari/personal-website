@@ -39,7 +39,7 @@ const { chromium } = require('C:/Users/Asus/.cache/codex-runtimes/codex-primary-
       return route.continue();
     });
     await page.addInitScript(() => {
-      sessionStorage.setItem('signature-intro-seen-v1', '1');
+      sessionStorage.setItem('signature-intro-seen-v2', '1');
       window.__perf = { scrollFrames: 0, hiddenRectReads: 0 };
       const raf = window.requestAnimationFrame;
       window.requestAnimationFrame = callback => {
