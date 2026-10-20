@@ -1,266 +1,113 @@
-/* A personal file left open on the desk. The private bits stay private. */
-.desk-view-body #classified-file {
-  padding-top: 34px;
-  padding-bottom: 35px;
-  scroll-margin-top: 80px;
-}
+/* A little disclosure, not an employee file. Nothing outside this section changes. */
 .desk-view-body .classified-open {
-  min-height: 44px;
-  max-width: 100%;
-  margin-top: 14px;
-  padding: 9px 0;
-  border: 0;
-  border-bottom: 1px solid #A52F1A;
-  border-radius: 0;
-  background: none;
-  color: #A52F1A;
-  font-family: var(--hand);
-  font-size: 23px;
-  line-height: 1.2;
-  text-align: left;
-  cursor: pointer;
+  min-height:44px;max-width:100%;margin-top:14px;padding:9px 0;
+  border:0;border-bottom:1px solid #A52F1A;border-radius:0;background:none;
+  color:#A52F1A;font-family:var(--hand);font-size:23px;line-height:1.2;text-align:left;cursor:pointer;
 }
+.desk-view-body #classified-file { padding-top:30px;padding-bottom:35px;scroll-margin-top:80px; }
 .desk-view-body #classified-file > .h2 {
-  max-width: 21ch;
-  margin-bottom: 14px;
-  font-size: clamp(33px,4vw,46px);
-  line-height: 1.08;
-  letter-spacing: -.035em;
+  margin-bottom:10px;font-size:clamp(31px,4vw,45px);line-height:1.12;letter-spacing:-.03em;
 }
 .desk-view-body #classified-file .clearance-intro {
-  max-width: 44ch;
-  margin: 0 0 30px;
-  color: var(--ink-soft);
-  font-size: 23px;
-  line-height: 1.2;
+  margin:0 0 26px;color:var(--ink-soft);font-size:23px;line-height:1.25;
 }
-.desk-view-body #classified-file .classified-grid {
-  grid-template-columns: minmax(0,1fr) 275px;
-  gap: 35px;
-  align-items: start;
+.desk-view-body #classified-file .personal-disclosure {
+  display:grid;grid-template-columns:210px minmax(0,1fr);align-items:start;gap:16px 39px;
+  padding:29px 0 22px;border-top:1px solid #C9BFAF;border-bottom:1px solid #C9BFAF;
 }
-.desk-view-body #classified-file .dossier-wrap {
-  position: relative;
-  min-width: 0;
-  margin-top: 24px;
-  padding: 38px 19px 21px;
-  border: 1px solid #AD834E;
-  border-radius: 0 4px 3px 3px;
-  background: #E5B870;
-  box-shadow: 4px 10px 22px rgba(70,47,19,.14);
+.desk-view-body #classified-file .profile-column { min-width:0;padding-top:5px; }
+.desk-view-body #classified-file #badge.profile-print {
+  position:relative;display:block;width:200px;max-width:100%;margin:0;padding:8px 8px 17px;
+  background:#FFFDF7;box-shadow:3px 8px 18px rgba(34,30,25,.13);rotate:-3deg;
+  transform-origin:50% 15%;animation:none;will-change:auto;user-select:none;touch-action:none;cursor:grab;
 }
-.desk-view-body #classified-file .dossier-wrap::before {
-  content: "the person on file.";
-  position: absolute;
-  top: -25px;
-  left: -1px;
-  width: min(68%,224px);
-  height: 25px;
-  padding: 2px 17px 0;
-  border: 1px solid #AD834E;
-  border-bottom: 0;
-  border-radius: 6px 15px 0 0;
-  background: #E5B870;
-  color: var(--ink);
-  font-family: var(--hand);
-  font-size: 20px;
-  line-height: 1.1;
+.desk-view-body #classified-file #badge.held { cursor:grabbing; }
+.desk-view-body #classified-file .profile-picture {
+  display:block;width:100%;height:214px;object-fit:cover;object-position:50% 35%;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%);
 }
-.desk-view-body #classified-file .dossier-wrap::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 22px;
-  height: 22px;
-  background: #C89753;
-  clip-path: polygon(100% 0,100% 100%,0 100%);
-  pointer-events: none;
+.desk-view-body #classified-file .profile-print figcaption {
+  max-width:18ch;margin:15px auto 0;color:var(--ink-soft);font-size:20px;line-height:1.1;text-align:center;
 }
-.desk-view-body #classified-file .dossier-wrap > .stamp {
-  top: 6px;
-  right: 18px;
-  z-index: 2;
-  padding: 4px 9px;
-  border-width: 3px;
-  border-radius: 1px;
-  background: transparent;
-  color: #8A2D1B;
-  font-size: 13px;
-  letter-spacing: .12em;
-  opacity: .9;
-  rotate: 5deg;
-}
-.desk-view-body #classified-file .paperclip {
-  top: 13px;
-  left: 29px;
-  height: 45px;
-  width: 15px;
-  border-width: 2px;
-  border-color: #68717D;
-  rotate: -7deg;
-}
-.desk-view-body #classified-file .dossier {
-  position: relative;
-  min-width: 0;
-  overflow: visible;
-  border: 0;
-  border-radius: 0;
-  background: #FFFDF7;
-  box-shadow: 2px 5px 12px rgba(70,47,19,.12);
-}
-.desk-view-body #classified-file .dossier .row {
-  grid-template-columns: 104px minmax(0,1fr);
-  align-items: baseline;
-  gap: 17px;
-  padding: 15px 19px;
-  border-bottom: 1px solid #DFD5C3;
-}
-.desk-view-body #classified-file .dossier .row:first-child { padding-top: 22px; }
-.desk-view-body #classified-file .dossier .row:last-child { border-bottom: 0; padding-bottom: 21px; }
-.desk-view-body #classified-file .dossier .k {
-  font-size: 10px;
-  line-height: 1.5;
-  letter-spacing: .075em;
-  color: #695C4B;
-}
-.desk-view-body #classified-file .dossier .v {
-  min-width: 0;
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
-}
-.desk-view-body #classified-file .dossier .redacted {
-  min-height: 32px;
-  max-width: 100%;
-  padding: 0;
-  font-size: 14px;
-  letter-spacing: -.025em;
-  line-height: 1.7;
-  cursor: pointer;
-}
-.desk-view-body #classified-file .redacted .tap-hint {
-  display: inline-block;
-  margin-left: 3px;
-  font-size: 17px;
-  letter-spacing: 0;
-}
-.desk-view-body #classified-file .redacted:hover { transform: none; color: #A52F1A; }
-.desk-view-body #classified-file .clearance-desk {
-  position: relative;
-  margin-top: 17px;
-  padding: 0 1px;
-}
-.desk-view-body #classified-file .clearance-request {
-  min-height: 44px;
-  max-width: 100%;
-  padding: 9px 13px;
-  border: 1px solid #715026;
-  border-radius: 1px;
-  background: #F7E4BF;
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: 650;
-  line-height: 1.3;
-  text-align: left;
-}
-.desk-view-body #classified-file .clearance-request:hover {
-  border-color: #8A2D1B;
-  color: #8A2D1B;
-  background: #FFF1D8;
-}
-.desk-view-body #classified-file #clearance-reply {
-  max-width: 36ch;
-  min-height: 2.4em;
-  margin: 11px 0 0;
-  color: #574225;
-  font-size: 21px;
-  line-height: 1.15;
-}
-.desk-view-body #classified-file .clearance-desk[data-result="denied"] #clearance-reply {
-  color: #8A2D1B;
-}
-.desk-view-body #classified-file .badge-scene {
-  min-width: 0;
-  padding: 0 5px;
-}
-.desk-view-body #classified-file #badge {
-  max-width: 100%;
-  animation: none;
-  will-change: auto;
-}
-.desk-view-body #classified-file .strap {
-  width: 22px;
-  height: 75px;
-  background: var(--red);
-  box-shadow: inset 1px 0 rgba(34,30,25,.2),inset -1px 0 rgba(34,30,25,.2);
-}
-.desk-view-body #classified-file .badge-card {
-  width: min(238px,100%);
-  padding: 27px 18px 16px;
-  border: 1px solid #BCAF9B;
-  border-radius: 4px;
-  background: #FFFDF7;
-  box-shadow: 4px 10px 21px rgba(34,30,25,.15);
-}
-.desk-view-body #classified-file .badge-head {
-  margin-bottom: 15px;
-  letter-spacing: .15em;
-  font-size: 10px;
-}
-.desk-view-body #classified-file .badge-head span { font-size: 17px; }
-.desk-view-body #classified-file .badge-photo {
-  width: 100px;
-  height: 111px;
-  margin-bottom: 12px;
-  border: 0;
-  border-radius: 0;
-}
-.desk-view-body #classified-file .badge-name { font-size: 21px; letter-spacing: -.025em; }
-.desk-view-body #classified-file .badge-role { margin-bottom: 13px; font-size: 22px; }
-.desk-view-body #classified-file .badge-meta { gap: 5px; font-size: 9px; line-height: 1.4; letter-spacing: .045em; }
-.desk-view-body #classified-file .badge-sig { width: 67px; }
-.desk-view-body #classified-file .badge-bar { height: 22px; border-radius: 0; }
-.desk-view-body #classified-file .badge-hint {
-  max-width: 24ch;
-  margin: 15px 0 2px;
-  color: var(--ink-soft);
-  font-size: 20px;
-  line-height: 1.15;
-  text-align: center;
-  rotate: -2deg;
+.desk-view-body #classified-file .profile-signature {
+  position:absolute;top:154px;right:-22px;width:105px;height:79px;object-fit:contain;
+  mix-blend-mode:multiply;rotate:7deg;pointer-events:none;
 }
 .desk-view-body #classified-file .badge-reset {
-  min-height: 44px;
-  margin-top: 4px;
-  padding: 8px 1px;
-  border: 0;
-  border-bottom: 1px solid #BCAF9B;
-  border-radius: 0;
-  background: transparent;
-  color: var(--ink-soft);
-  font-size: 12px;
+  display:block;width:fit-content;min-height:44px;max-width:100%;margin:15px auto 0;padding:8px 0;
+  border:0;border-bottom:1px solid #BCAF9B;border-radius:0;background:none;color:var(--ink-soft);
+  font-family:var(--hand);font-size:19px;line-height:1.1;
 }
-.desk-view-body #classified-file .badge-reset:hover { border-color: var(--red); color: var(--red); }
-@media (max-width: 900px) {
-  .desk-view-body #classified-file .classified-grid { grid-template-columns: minmax(0,1fr) 225px; gap: 25px; }
-  .desk-view-body #classified-file .dossier .row { grid-template-columns: minmax(0,1fr); gap: 5px; }
+.desk-view-body #classified-file .badge-reset:hover { color:#A52F1A;border-color:currentColor; }
+.desk-view-body #classified-file .personal-disclosure > .profile-print { grid-column:1;grid-row:1; }
+.desk-view-body #classified-file .personal-disclosure > .badge-reset { grid-column:1;grid-row:2;margin-top:0; }
+.desk-view-body #classified-file .disclosure-copy { grid-column:2;grid-row:1 / 3;min-width:0; }
+.desk-view-body #classified-file .disclosure-copy h3 {
+  max-width:20ch;margin:0 0 15px;font-family:var(--serif);font-size:clamp(28px,3.4vw,40px);
+  font-weight:640;line-height:1.08;letter-spacing:-.035em;text-wrap:balance;
 }
-@media (max-width: 620px) {
-  .desk-view-body #classified-file { padding-top: 28px; padding-bottom: 29px; }
-  .desk-view-body #classified-file > .h2 { font-size: 34px; }
-  .desk-view-body #classified-file .clearance-intro { margin-bottom: 24px; font-size: 22px; }
-  .desk-view-body #classified-file .classified-grid { grid-template-columns: minmax(0,1fr); gap: 22px; }
-  .desk-view-body #classified-file .dossier-wrap { padding: 38px 12px 17px; }
-  .desk-view-body #classified-file .dossier .row { padding: 13px 15px; gap: 4px; }
-  .desk-view-body #classified-file .dossier .row:first-child { padding-top: 19px; }
-  .desk-view-body #classified-file .dossier .k { font-size: 10px; }
-  .desk-view-body #classified-file .dossier .v { font-size: 16px; }
-  .desk-view-body #classified-file .dossier-wrap > .stamp { right: 13px; font-size: 12px; }
-  .desk-view-body #classified-file .dossier-wrap::before { font-size: 19px; padding-left: 14px; }
-  .desk-view-body #classified-file .clearance-request { width: 100%; font-size: 12px; text-align: center; }
-  .desk-view-body #classified-file #clearance-reply { font-size: 20px; }
-  .desk-view-body #classified-file .badge-scene { padding: 0 25px; }
-  .desk-view-body #classified-file .strap { height: 40px; }
+.desk-view-body #classified-file .public-intro {
+  max-width:43ch;margin:0;color:var(--ink-soft);font-size:15px;line-height:1.55;
+}
+.desk-view-body #classified-file .public-facts { display:flex;flex-wrap:wrap;gap:15px 24px;margin:25px 0 27px; }
+.desk-view-body #classified-file .public-facts p { flex:1 1 110px;min-width:0;margin:0; }
+.desk-view-body #classified-file .public-facts b {
+  display:block;margin-bottom:5px;color:var(--ink);font-family:var(--serif);font-size:19px;font-weight:640;line-height:1.2;
+}
+.desk-view-body #classified-file .public-facts span { display:block;color:var(--ink-soft);font-size:14px;line-height:1.45; }
+.desk-view-body #classified-file .privacy-corner { padding-top:20px;border-top:1px solid #D9CDBB; }
+.desk-view-body #classified-file .privacy-corner > .hand:first-child {
+  margin:0 0 16px;color:#A52F1A;font-size:23px;line-height:1.15;
+}
+.desk-view-body #classified-file .privacy-switches { display:flex;flex-wrap:wrap;gap:14px 24px; }
+.desk-view-body #classified-file .private-probe {
+  display:flex;flex:0 1 170px;flex-direction:column;align-items:flex-start;gap:8px;
+  min-width:0;min-height:57px;padding:2px 0 4px;border:0;border-radius:0;background:transparent;
+  color:var(--ink);font-size:12px;font-weight:650;line-height:1.3;text-align:left;
+}
+.desk-view-body #classified-file .probe-ink {
+  display:block;max-width:100%;overflow:hidden;color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.1;letter-spacing:-.04em;rotate:-2deg;white-space:nowrap;
+}
+.desk-view-body #classified-file .private-probe:nth-child(2) .probe-ink { rotate:1deg; }
+.desk-view-body #classified-file .private-probe:hover,
+.desk-view-body #classified-file .private-probe:hover .probe-ink { color:#A52F1A; }
+.desk-view-body #classified-file #clearance-reply {
+  max-width:39ch;min-height:2.3em;margin:14px 0 7px;color:var(--ink-soft);font-size:21px;line-height:1.15;
+}
+.desk-view-body #classified-file .clearance-contact {
+  display:inline-block;min-height:36px;padding:7px 0;color:#A52F1A;font-size:13px;font-weight:650;line-height:1.4;text-underline-offset:4px;
+}
+@media (max-width:700px) {
+  .desk-view-body #classified-file .personal-disclosure { grid-template-columns:175px minmax(0,1fr);gap:16px 25px; }
+  .desk-view-body #classified-file #badge.profile-print { width:165px; }
+  .desk-view-body #classified-file .profile-picture { height:183px; }
+  .desk-view-body #classified-file .profile-signature { top:125px;right:-17px;width:94px;height:72px; }
+  .desk-view-body #classified-file .profile-print figcaption { font-size:19px; }
+  .desk-view-body #classified-file .public-facts { gap:14px 19px; }
+}
+@media (max-width:560px) {
+  .desk-view-body #classified-file { padding-top:26px;padding-bottom:25px; }
+  .desk-view-body #classified-file > .h2 { font-size:31px; }
+  .desk-view-body #classified-file .clearance-intro { margin-bottom:20px;font-size:21px; }
+  .desk-view-body #classified-file .personal-disclosure { grid-template-columns:minmax(0,1fr);gap:23px;padding-top:23px; }
+  .desk-view-body #classified-file .profile-column { width:185px;justify-self:center;padding-top:0; }
+  .desk-view-body #classified-file #badge.profile-print { width:175px;justify-self:center;margin:0 auto; }
+  .desk-view-body #classified-file .profile-picture { height:181px; }
+  .desk-view-body #classified-file .profile-signature { top:123px;right:-16px; }
+  .desk-view-body #classified-file .profile-print figcaption { margin-top:15px;font-size:19px; }
+  .desk-view-body #classified-file .badge-reset { margin-top:9px;font-size:18px; }
+  .desk-view-body #classified-file .personal-disclosure > .profile-print { grid-column:1;grid-row:1; }
+  .desk-view-body #classified-file .personal-disclosure > .badge-reset { grid-column:1;grid-row:2;margin-top:-12px; }
+  .desk-view-body #classified-file .disclosure-copy { grid-column:1;grid-row:auto; }
+  .desk-view-body #classified-file .disclosure-copy h3 { font-size:31px; }
+  .desk-view-body #classified-file .public-intro { font-size:14px; }
+  .desk-view-body #classified-file .public-facts { margin:22px 0 24px;gap:17px 19px; }
+  .desk-view-body #classified-file .public-facts p { flex:1 1 100px; }
+  .desk-view-body #classified-file .public-facts b { font-size:18px; }
+  .desk-view-body #classified-file .privacy-corner > .hand:first-child { font-size:22px; }
+  .desk-view-body #classified-file .privacy-switches { gap:10px 19px; }
+  .desk-view-body #classified-file .private-probe { flex:1 1 105px;font-size:12px; }
+  .desk-view-body #classified-file .probe-ink { font-size:14px; }
+  .desk-view-body #classified-file #clearance-reply { font-size:20px; }
 }

@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="afterhours.css?v=1" />
   <link rel="stylesheet" href="field-notes.css?v=2" />
   <link rel="stylesheet" href="playground.css?v=1" />
-  <link rel="stylesheet" href="classified.css?v=1" />
+  <link rel="stylesheet" href="classified.css?v=2" />
 </head>
 <body class="desk-mode">
 
@@ -384,48 +384,36 @@
   <!-- ================= CLASSIFIED + ID ================= -->
   <section class="sec sec-wide" id="classified-file">
     <p class="label">the classified file</p>
-    <h2 class="h2">need to know.<br>nice try, though.</h2>
-    <p class="hand clearance-intro">Some details are public. The rest have a very small, very furry security team.</p>
-    <div class="classified-grid">
-      <div class="dossier-wrap">
-        <span class="stamp" aria-hidden="true">CLASSIFIED</span>
-        <span class="paperclip" aria-hidden="true"></span>
-        <div class="dossier">
-          <div class="row"><span class="k">full name</span><span class="v">Martin Tiwari. that one's free.</span></div>
-          <div class="row"><span class="k">annual event</span><span class="v">ships every december. the whole world puts up lights for the launch. you do the math.</span></div>
-          <div class="row"><span class="k">phone number</span><button class="v redacted" data-key="phone">██████████ <span class="tap-hint">(tap)</span></button></div>
-          <div class="row"><span class="k">home address</span><button class="v redacted" data-key="addr">████████████ <span class="tap-hint">(tap)</span></button></div>
-          <div class="row"><span class="k">boss</span><span class="v">HARU. complaints go through her. she ignores them.</span></div>
-          <div class="row"><span class="k">family business</span><span class="v"><b>Everest Super Chemical + Everest Beverage.</b> apparently one family website wasn't enough.</span></div>
-          <div class="row"><span class="k">location</span><span class="v">earth, probably. good momos within walking distance.</span></div>
-        </div>
-        <div class="clearance-desk">
-          <button class="clearance-request" type="button" aria-controls="clearance-reply">request unnecessary clearance</button>
-          <p class="hand" id="clearance-reply" role="status">No forms. No approval. Very efficient department.</p>
-        </div>
+    <h2 class="h2">need to know basis.</h2>
+    <p class="hand clearance-intro">A little context. A few boundaries. Zero OTPs.</p>
+    <article class="personal-disclosure">
+      <div class="disclosure-portrait profile-column">
+        <figure class="profile-print" id="badge">
+          <img class="profile-picture" src="assets/martin-rain.webp" alt="Martin in the rain, throwing a peace sign" width="640" height="640" loading="lazy" decoding="async" />
+          <figcaption class="hand">the person responsible. allegedly.</figcaption>
+          <img class="profile-signature" src="assets/signature.png" alt="Martin's signature" width="395" height="681" loading="lazy" decoding="async" />
+        </figure>
+        <button class="badge-reset" type="button">straighten the photo</button>
       </div>
-
-      <div class="badge-scene" aria-label="Martin's ID card, hanging like a lanyard badge">
-        <div class="badge-swing" id="badge">
-          <div class="strap"></div>
-          <div class="badge-card">
-            <div class="badge-clip"></div>
-            <div class="badge-head">TIWARI CORP.<span>visitor? no. resident.</span></div>
-            <img class="badge-photo" src="assets/martin-rain.webp" alt="" width="640" height="640" />
-            <div class="badge-name">MARTIN TIWARI</div>
-            <div class="badge-role">director of ctrl+z</div>
-            <div class="badge-meta">
-              <span>ACCESS LEVEL: largely unsupervised</span>
-              <span>ISSUED: at birth · renews late dec</span>
-            </div>
-            <img class="badge-sig" src="assets/signature.png?v=2" alt="Martin's signature" width="120" height="113" />
-            <div class="badge-bar" aria-hidden="true"></div>
+      <div class="disclosure-copy">
+        <h3>Martin Tiwari.<br>Mostly unsupervised.</h3>
+        <p class="public-intro">I build websites, make office software, and answer to a cat.</p>
+        <div class="public-facts">
+          <p><b>Kathmandu</b><span>close to good momos.</span></p>
+          <p><b>December</b><span>the lights are obviously for me.</span></p>
+          <p><b>HARU</b><span>head of absolutely everything.</span></p>
+        </div>
+        <div class="privacy-corner">
+          <p class="hand">and this is where the oversharing stops.</p>
+          <div class="privacy-switches">
+            <button class="private-probe" type="button" data-key="phone" aria-controls="clearance-reply"><span>phone number</span><span class="probe-ink" aria-hidden="true">██████</span></button>
+            <button class="private-probe" type="button" data-key="addr" aria-controls="clearance-reply"><span>home address</span><span class="probe-ink" aria-hidden="true">██████</span></button>
           </div>
+          <p class="hand" id="clearance-reply" role="status">nice try is a perfectly valid answer.</p>
+          <a class="clearance-contact" href="https://ig.me/m/martin_tiwari" target="_blank" rel="noopener">Instagram is the front door ↗</a>
         </div>
-        <p class="hand badge-hint">real id. definitely legal. tug it.</p>
-        <button class="badge-reset" type="button">straighten my ID</button>
       </div>
-    </div>
+    </article>
   </section>
 
   <!-- ================= PROJECTS + RAPID FIRE ================= -->
@@ -973,7 +961,7 @@
   <script src="src/intro.js?v=5"></script>
   <script src="src/desk.js?v=6"></script>
   <script src="src/desk-extras.js?v=1"></script>
-  <script src="src/clearance.js?v=1"></script>
+  <script src="src/clearance.js?v=2"></script>
   <script src="src/desk-cat.js?v=2"></script>
   <script src="src/desk-personality.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" async></script>
