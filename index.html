@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="classified.css?v=2" />
   <link rel="stylesheet" href="signature-entry.css?v=1" />
   <link rel="stylesheet" href="about-pocket.css?v=1" />
+  <link rel="stylesheet" href="family-album.css?v=1" />
 </head>
 <body class="desk-mode">
 
@@ -152,6 +153,11 @@
           <img src="assets/haru-camera-inspection.webp" width="1000" height="1000" loading="lazy" alt="An extremely close view of HARU’s pink nose, sleepy eyes and white whiskers" />
           <figcaption class="hand">camera inspected. personal space not found.</figcaption>
         </figure>
+        <figure class="pol" data-cap="HARU. head of security. wears my birthday hat better than me.">
+          <span class="tape" aria-hidden="true"></span>
+          <img src="assets/haru.webp" alt="HARU the cat wearing a shiny birthday hat, deeply unimpressed" width="640" height="853" loading="lazy" />
+          <figcaption class="hand">HARU. head of security. wears my birthday hat better than me.</figcaption>
+        </figure>
       </div>
       <p class="hand haru-album-note">all complaints will be slept on.</p>
     </section>
@@ -217,20 +223,9 @@
   <div class="tear" aria-hidden="true"></div>
 
   <!-- ================= FAMILY ================= -->
-  <section class="sec sec-wide">
-    <p class="label">the family unit</p>
-    <h2 class="h2">shipped with the full cast.</h2>
-    <p class="big cat-line" id="cat-line">first, the cat. HARU is a
-      <span class="scratch-target" id="scratch-target">calm, polite, extremely well behaved</span>
-      young lady.<span class="hand cat-edit hidden" id="cat-edit"> menace. she scratched out the lie herself, as you just saw.</span>
-    </p>
+  <section class="sec sec-wide family-album" aria-labelledby="family-album-title">
+    <h2 class="h2" id="family-album-title">meet the household.</h2>
     <div class="wall">
-      <!-- the cat opens the wall, since the line above is about her -->
-      <figure class="pol f6" data-cap="HARU. head of security. wears my birthday hat better than me.">
-        <span class="tape" aria-hidden="true"></span>
-        <img src="assets/haru.webp" alt="HARU the cat wearing a shiny birthday hat, deeply unimpressed" width="640" height="853" loading="lazy" />
-        <figcaption class="hand">HARU. head of security. wears my birthday hat better than me.</figcaption>
-      </figure>
       <figure class="pol f7" data-cap="graduation day. mom blinked. we're framing it anyway.">
         <span class="tape" aria-hidden="true"></span>
         <img src="assets/graduation.webp" alt="Martin at graduation with his mom, who is blinking" width="640" height="880" loading="lazy" />
@@ -257,23 +252,7 @@
         <figcaption class="hand">saili maiju. on the job since before I could hold my own head up. still is.</figcaption>
       </figure>
     </div>
-    <p class="hand aside center">the cat is first because she'd have made a scene otherwise.</p>
-
-    <!-- the two with no photo on file pair off into their own row -->
-    <p class="label">no photo on file</p>
     <div class="wall wall-pair">
-      <figure class="pol f3 pol-empty" data-cap="dad. zero confirmed photos. too busy running the empire: chemicals, drinking water, and probably the plastic bag in your kitchen. bigfoot has better paparazzi coverage.">
-        <span class="tape" aria-hidden="true"></span>
-        <div class="ghost-frame" aria-hidden="true">
-          <svg viewBox="0 0 200 240">
-            <circle cx="100" cy="78" r="42" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="8 8"/>
-            <path d="M30 225 C 30 160, 170 160, 170 225" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="8 8"/>
-            <text x="100" y="94" text-anchor="middle" font-size="44" fill="currentColor" font-family="Caveat, cursive">?</text>
-          </svg>
-        </div>
-        <figcaption class="hand">dad. zero confirmed photos. too busy running the empire: chemicals, drinking water, and probably the plastic bag in your kitchen. bigfoot has better paparazzi coverage.</figcaption>
-      </figure>
-
       <figure class="pol f4 pol-gf" id="gf-card" tabindex="0" role="button"
               aria-label="A permanently blurred photo labelled: the girlfriend file. Tapping it is futile.">
         <span class="tape" aria-hidden="true"></span>
@@ -305,29 +284,25 @@
         </div>
         <figcaption class="hand" id="gf-cap">the girlfriend file. above your clearance level.</figcaption>
       </figure>
+      <figure class="pol f3 pol-empty family-dad">
+        <span class="tape" aria-hidden="true"></span>
+        <div class="dad-frame">
+          <div class="dad-missing">
+            <span class="dad-photo-corners" aria-hidden="true"></span>
+            <p class="hand">dad.<br>runs two companies.<br>somehow avoids one camera.</p>
+            <button class="dad-reveal" type="button" aria-controls="dad-found-photo" aria-expanded="false">wait. found one.</button>
+          </div>
+          <img id="dad-found-photo" data-src="assets/dad-topi.webp" alt="Martin's father placing a traditional topi on Martin's head during Tihar, both wearing marigold garlands" width="720" height="1234" hidden />
+        </div>
+        <figcaption class="hand dad-caption" aria-live="polite">one photo short of a full house.</figcaption>
+        <p class="hand dad-afterword" hidden>the photographer has been removed from the family group.</p>
+      </figure>
     </div>
-    <p class="hand aside center">one is genuinely camera shy. one is classified. I'll let you guess which.</p>
   </section>
 
   <!-- ================= THE SIGHTING ================= -->
-  <section class="sec sec-wide sighting-sec">
-    <p class="label">cryptid update</p>
-    <div class="sighting-stage" id="sighting-stage">
-      <figure class="sighting-photo" id="sighting-photo">
-        <img src="assets/dad-topi.webp" alt="Martin's father placing a traditional topi on Martin's head during Tihar, both wearing marigold garlands" width="720" height="1234" loading="lazy" />
-        <span class="tape" aria-hidden="true"></span>
-        <span class="stamp" aria-hidden="true">CASE CLOSED</span>
-        <figcaption class="hand">the topi ceremony. he put it on himself.</figcaption>
-      </figure>
-      <div class="sighting-copy" id="sighting-copy">
-        <p class="label">correction filed</p>
-        <h3 class="h2 sighting-headline" id="sighting-headline">one <span class="hl">(1)</span> confirmed sighting.</h3>
-        <p class="sighting-body">turns out bigfoot slipped up. dad, caught in the wild: crowning me with the topi, both of us buried in marigolds, whole of Kathmandu behind us.</p>
-        <p class="sighting-small">the empire runs itself for exactly one afternoon a year. this was the afternoon.</p>
-        <p class="hand sighting-log">evidence log: case closed. 👣</p>
-      </div>
-    </div>
-  </section>
+  <!-- Reserved archive slot for the existing drawer order. Dad now lives in the family album. -->
+  <section class="sec" hidden aria-hidden="true"></section>
 
   <!-- ================= THE ROLLBACK ================= -->
   <!-- pays off the hero note: "rollback in progress: protein up, sugar gone" -->
@@ -958,7 +933,7 @@
 
   <div id="toast-root"></div>
   <script src="src/intro.js?v=6"></script>
-  <script src="src/desk.js?v=6"></script>
+  <script src="src/desk.js?v=7"></script>
   <script src="src/desk-extras.js?v=1"></script>
   <script src="src/clearance.js?v=2"></script>
   <script src="src/desk-cat.js?v=2"></script>

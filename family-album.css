@@ -1,0 +1,89 @@
+/* One household, one print at a time. The final missing print has a payoff. */
+.desk-view-body .family-album .h2 {
+  margin: 0 auto 25px;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.08;
+}
+.desk-view-body .family-album .pol.album-selected { rotate: -.8deg; }
+.desk-view-body .family-album .pol img { object-position: center 35%; }
+.desk-view-body .family-album .pol-gf .gf-frame { height: min(39svh, 340px); }
+.desk-view-body .family-album .pol-gf .gf-art { width: 100%; height: 100%; object-fit: cover; }
+.dad-frame {
+  position: relative;
+  height: min(39svh, 340px);
+  overflow: hidden;
+  background: var(--paper-2);
+}
+.dad-missing {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 24px 18px;
+}
+.dad-photo-corners {
+  position: absolute;
+  inset: 17px;
+  border: 1px solid #BDB09B;
+}
+.dad-photo-corners::after {
+  content: '';
+  position: absolute;
+  inset: 14px -2px;
+  background: var(--paper-2);
+}
+.dad-missing p {
+  z-index: 1;
+  margin: 0 0 20px;
+  font-size: clamp(24px, 3vw, 31px);
+  line-height: 1.17;
+}
+.dad-reveal {
+  z-index: 1;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--hand);
+  font-size: 22px;
+  line-height: 1.1;
+}
+.dad-reveal:hover { background: var(--paper); color: var(--ink); }
+.dad-reveal:disabled { cursor: wait; opacity: .7; }
+.dad-reveal:focus-visible, .family-dad:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+.desk-view-body .family-album .family-dad img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 65%;
+  background: #211F1B;
+}
+.family-dad.is-found .dad-missing { visibility: hidden; }
+.family-dad.is-found img {
+  animation: dad-print-found 500ms cubic-bezier(.16, 1, .3, 1) both;
+}
+.desk-view-body .family-dad .dad-afterword {
+  color: var(--red);
+  font-size: 19px;
+  line-height: 1.15;
+  margin: 11px 4px 0;
+}
+@keyframes dad-print-found {
+  from { opacity: 0; transform: translateY(12px) rotate(2deg) scale(.97); }
+  to { opacity: 1; transform: none; }
+}
+@media (max-width: 640px) {
+  .desk-view-body .family-album .h2 { margin-bottom: 22px; }
+  .dad-frame, .desk-view-body .family-album .pol-gf .gf-frame { height: min(36svh, 290px); }
+  .dad-missing { padding: 20px 14px; }
+  .dad-missing p { margin-bottom: 15px; }
+  .desk-view-body .family-dad .dad-afterword { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .family-dad.is-found img { animation: none; }
+}

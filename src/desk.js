@@ -72,13 +72,15 @@
   const haruTemplate = document.querySelector('#haru-album-template');
   const haruAlbum = haruTemplate.content.firstElementChild.cloneNode(true);
   haruTemplate.remove();
-  [['Kathmandu', sections[1]], ['the family', sections[2]], ['dad, confirmed', sections[3]], ['HARU, the actual owner', haruAlbum]].forEach(([label, section], index) => {
+  sections[3].remove();
+  [['Kathmandu', sections[1], 'kathmandu'], ['the family', sections[2], 'family'], ['HARU, the actual owner', haruAlbum, 'haru']].forEach(([label, section, albumKey], index) => {
     const button = document.createElement('button');
     button.type = 'button'; button.textContent = label;
     button.setAttribute('aria-pressed', String(index === 0));
     tabs.append(button);
     const group = document.createElement('div');
     group.className = 'album-group'; group.hidden = index !== 0;
+    group.dataset.album = albumKey;
     group.append(section); photos.append(group);
     const figures = [...section.querySelectorAll('.pol')];
     let current = 0;
@@ -100,8 +102,9 @@
         });
         count.textContent = `${current + 1} / ${figures.length}`;
         if (section === haruAlbum) {
-          prev.textContent = current === 0 ? '← inspect the camera' : '← back to management';
-          next.textContent = current === 0 ? 'inspect the camera →' : 'back to management →';
+          const haruStops = ['management', 'camera inspection', 'birthday security'];
+          prev.textContent = `← ${haruStops[(current - 1 + figures.length) % figures.length]}`;
+          next.textContent = `${haruStops[(current + 1) % figures.length]} →`;
         }
         window.dispatchEvent(new Event('resize'));
       }
@@ -116,6 +119,39 @@
       group.querySelectorAll('img').forEach(img => { if (!img.closest('[hidden]')) img.loading = 'eager'; });
       window.dispatchEvent(new Event('resize'));
     });
+  });
+  // The last family print pays off the missing photo without a second page.
+  const dad = photos.querySelector('.family-dad');
+  const dadReveal = dad?.querySelector('.dad-reveal');
+  dadReveal?.addEventListener('click', async () => {
+    const img = dad.querySelector('img');
+    if (dad.classList.contains('is-found') || dadReveal.disabled) return;
+    dadReveal.disabled = true;
+    dadReveal.textContent = 'opening the camera roll…';
+    dad.setAttribute('aria-busy', 'true');
+    try {
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = img.dataset.src;
+        if (img.complete && img.naturalWidth) resolve();
+      });
+      if (img.decode) await img.decode();
+      img.hidden = false;
+      dad.classList.add('is-found');
+      dad.querySelector('.dad-caption').textContent = 'caught. putting a topi on me instead of posing.';
+      dad.querySelector('.dad-afterword').hidden = false;
+      dadReveal.setAttribute('aria-expanded', 'true');
+      dadReveal.textContent = 'found him.';
+      // Keep a keyboard visitor on the revealed print rather than a hidden button.
+      dad.tabIndex = -1;
+      dad.focus({ preventScroll: true });
+    } catch {
+      dadReveal.disabled = false;
+      dadReveal.textContent = 'photo did not load. try again.';
+    } finally {
+      dad.removeAttribute('aria-busy');
+    }
   });
   // Keep the photo viewer in the same top layer as its parent file.
   dialog.append(document.querySelector('#lightbox'));
