@@ -32,6 +32,36 @@
   rapid.append(sections[7].querySelector('.rapid-label'), sections[7].querySelector('.strip-wrap'));
   about.insertBefore(rapid, sections[10]);
   sections[7].querySelector('.escu-ad')?.remove();
+  // The discontinued label gets its own divider, not another long scroll.
+  const workbench = sections[7].querySelector('.project-desk');
+  const clothing = sections[7].querySelector('.clothing-archive');
+  if (workbench && clothing) {
+    const dividers = document.createElement('div');
+    dividers.className = 'project-file-tabs';
+    dividers.setAttribute('role', 'group');
+    dividers.setAttribute('aria-label', 'Choose a project file');
+    const files = [[workbench, 'the workbench'], [clothing, 'Poshak archive']];
+    const buttons = files.map(([file, label], index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      file.id ||= `project-file-${index}`;
+      button.setAttribute('aria-controls', file.id);
+      button.setAttribute('aria-pressed', String(index === 0));
+      file.hidden = index !== 0;
+      button.addEventListener('click', () => {
+        files.forEach(([content], i) => {
+          content.hidden = content !== file;
+          buttons[i].setAttribute('aria-pressed', String(content === file));
+        });
+        file.querySelectorAll('img').forEach(img => { if (!img.closest('[hidden]')) img.loading = 'eager'; });
+        window.dispatchEvent(new Event('resize'));
+      });
+      dividers.append(button);
+      return button;
+    });
+    sections[7].querySelector('.project-headline').after(dividers);
+  }
   const photos = panel('photos', 'evidence of a life', []);
   const tabs = document.createElement('div');
   tabs.className = 'album-tabs';
@@ -89,6 +119,16 @@
   });
   // Keep the photo viewer in the same top layer as its parent file.
   dialog.append(document.querySelector('#lightbox'));
+  const fileNav = document.createElement('nav');
+  fileNav.className = 'desk-file-nav';
+  fileNav.setAttribute('aria-label', 'Switch files');
+  for (const [key, label] of [['projects', 'work'], ['photos', 'photos'], ['music', 'music'], ['mark', 'guestbook'], ['about', 'about me'], ['internet', 'elsewhere']]) {
+    const link = document.createElement('a');
+    link.href = `#${key}`;
+    link.textContent = label;
+    fileNav.append(link);
+  }
+  dialog.querySelector('.desk-view-bar').after(fileNav);
   let returnFocus = null;
   let opened = null;
   function restore() {
@@ -103,11 +143,17 @@
     const key = location.hash.slice(1);
     const entry = panels.get(key);
     if (!entry) { if (dialog.open) dialog.close(); return; }
+    // A hash navigation can emit both popstate and hashchange.
+    if (opened === entry.node && dialog.open) return;
     if (opened) archive.append(opened);
     opened = entry.node;
     body.replaceChildren(opened);
     opened.querySelectorAll('img').forEach(img => { if (!img.closest('[hidden]')) img.loading = 'eager'; });
     document.querySelector('#desk-view-title').textContent = entry.title;
+    fileNav.querySelectorAll('a').forEach(link => {
+      if (link.hash === `#${key}`) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
     opened.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
     if (!dialog.open) {
       returnFocus = document.activeElement;
@@ -117,6 +163,7 @@
     }
     dialog.scrollTop = 0;
     requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+    document.dispatchEvent(new CustomEvent('desk:opened', { detail: { key, title: entry.title } }));
   }
   function close() { history.pushState(null, '', location.pathname + location.search + '#top'); dialog.close(); }
   dialog.querySelector('.desk-back').addEventListener('click', close);

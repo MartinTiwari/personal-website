@@ -14,6 +14,7 @@ const output='C:/Users/Asus/.codex/visualizations/2026/09/22/01a0c894-15ee-7bb0-
    await page.route('**/anime.min.js',r=>r.fulfill({status:200,body:''}));
    await page.goto('http://127.0.0.1:4176',{waitUntil:'domcontentloaded'});
    await page.locator('.desk-folder').click();
+   await page.getByRole('button',{name:'Poshak archive',exact:true}).click();
    await page.locator('.clothing-archive').scrollIntoViewIfNeeded();
    await page.evaluate(()=>document.fonts.ready);
    await page.locator('.clothing-archive img').evaluateAll(async images=>{await Promise.all(images.map(img=>img.decode()))});
