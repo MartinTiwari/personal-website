@@ -27,8 +27,9 @@
   <link rel="stylesheet" href="signature-entry.css?v=1" />
   <link rel="stylesheet" href="about-pocket.css?v=1" />
   <link rel="stylesheet" href="family-album.css?v=1" />
+  <link rel="stylesheet" href="interrupted-desk.css?v=1" />
 </head>
-<body class="desk-mode">
+<body class="desk-mode interrupted-desk">
 
   <a class="skip" href="#top">skip to the good part</a>
 
@@ -72,42 +73,50 @@
 
   <!-- ================= HERO ================= -->
   <main class="desk-home" id="top">
-    <div class="desk-heading">
-      <h1 class="desk-title">Martin, <em>after hours.</em></h1>
-      <p class="desk-description">A desk full of things I care about. Nothing here requires a professional opinion. <br>Pick something up. HARU will pretend this was the plan.</p>
-    </div>
+    <!-- THESIS: A desk interrupted, not a collage. Real Martin is behind four file spines.
+         OWN WORLD: Existing cream, ink, Fraunces and Caveat; ochre, coral, blue and green files.
+         STORY: Meet the person, pull a file, find the relatives' note only when invited.
+         FIRST VIEWPORT: Portrait left, type right, four horizontal spines anchored below.
+         FORM: User approved code native working preview. No generated scenery. -->
     <nav class="desk-scene" aria-label="Explore Martin's desk">
       <figure class="desk-portrait">
-        <div class="portrait-dialogue" aria-live="polite"><p>I brought the projects.<br>HARU brought the supervision.</p><a class="portrait-route" href="#projects" hidden>show me the work →</a></div>
         <img id="me" src="assets/martin-cutout.webp" alt="Martin, hoodie up, mid-smile." aria-label="Ask Martin for the unofficial tour" width="560" height="735" fetchpriority="high" decoding="async" tabindex="0" role="button" />
-        <figcaption class="desk-portrait-note hand">tap me for the unofficial tour.</figcaption>
+        <div class="desk-conversation">
+          <div class="desk-heading">
+            <h1 class="desk-title">Martin, <em>after hours.</em></h1>
+            <p class="desk-description hand">You caught me between things.<br>Pull a file. I'll make room.</p>
+          </div>
+          <div class="portrait-dialogue" aria-live="polite"><p>I brought the projects.<br>HARU brought the supervision.</p><a class="portrait-route" href="#projects" hidden>show me the work →</a></div>
+        <p class="desk-portrait-note hand">tap me for the unofficial tour.</p>
         <div class="portrait-controls"><button class="portrait-call" type="button">call HARU over</button><button class="portrait-reset" type="button" hidden>start the tour again ↺</button></div>
+        </div>
       </figure>
       <a class="desk-object desk-folder" href="#projects">
         <span class="folder-tab">WORK / OPEN FILE</span>
-        <strong>made it.<br>shipped it.</strong>
+        <strong>the things I made.</strong>
         <span class="folder-status">3 shipped · 1 cooking</span>
-        <span class="object-caption">projects &amp; the Poshak archive →</span>
+        <span class="object-caption">work &amp; the Poshak archive</span><span class="spine-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="desk-object desk-photos" href="#photos">
-        <img src="assets/chiya.webp" alt="Roadside tea in Kathmandu" width="640" height="853" decoding="async" />
-        <img src="assets/martin-rain.webp" alt="Martin out in the rain" width="640" height="640" decoding="async" />
-        <strong>proof I go outside.</strong>
-        <span class="object-caption">Kathmandu, family &amp; questionable poses →</span>
+        <span class="spine-name">PHOTOS</span><strong>proof of a life.</strong>
+        <span class="object-caption">my people. my city. my cat.</span><span class="spine-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="desk-object desk-player" href="#music">
-        <span class="record-disc" aria-hidden="true"></span>
-        <span class="player-label"><strong>do not skip.</strong><span>my sleep schedule did.</span></span>
-        <span class="player-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        <span class="object-caption">open the music player →</span>
+        <span class="spine-name">MUSIC</span><strong>currently in my head.</strong>
+        <span class="object-caption">the playlist. not the thoughts.</span><span class="spine-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="desk-object desk-book" href="#mark">
-        <span class="book-spine" aria-hidden="true"></span>
-        <strong>you were<br>here.</strong>
-        <span class="object-caption">sign the guestbook.<br>or draw a terrible cat. →</span>
+        <span class="spine-name">GUESTBOOK</span><strong>leave a little evidence.</strong>
+        <span class="object-caption">a note, a drawing, a terrible cat.</span><span class="spine-arrow" aria-hidden="true">↗</span>
       </a>
-      <div class="desk-object desk-business" role="group" aria-label="The family businesses">
-        <div class="business-heading"><strong>Runs in<br>the family.</strong></div>
+      <button class="desk-cat" type="button" aria-label="Ask HARU to move">
+        <span class="cat-message hand" aria-live="polite">management is watching.</span>
+      </button>
+    </nav>
+    <div class="desk-business" role="group" aria-label="The family businesses">
+      <button class="relatives-toggle" type="button" aria-expanded="true" aria-controls="relatives-slip" hidden><span>a word from my relatives</span><span class="relatives-action" aria-hidden="true">pull ↓</span></button>
+      <div class="relatives-slip" id="relatives-slip">
+        <div class="business-heading"><strong>Runs in the family.</strong></div>
         <a class="business-main" href="https://www.everestsuperchemical.com.np/" target="_blank" rel="noopener">
           <span><strong>Everest Super Chemical ↗</strong><small>everestsuperchemical.com.np</small></span>
         </a>
@@ -116,10 +125,7 @@
         </a>
         <p class="business-disclosure">I built the websites. The recommendation is hereditary.</p>
       </div>
-      <button class="desk-cat" type="button" aria-label="Ask HARU to move">
-        <span class="cat-message hand" aria-live="polite">management is watching.</span>
-      </button>
-    </nav>
+    </div>
     <div class="desk-bottom">
       <a href="#about">the person behind the tabs →</a>
       <span class="hand">three secrets. still hiding.</span>
@@ -938,6 +944,7 @@
   <script src="src/clearance.js?v=2"></script>
   <script src="src/desk-cat.js?v=2"></script>
   <script src="src/desk-personality.js?v=2"></script>
+  <script src="src/interrupted-desk.js?v=1"></script>
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" async></script>
   <script src="src/main.js?v=54" defer></script>
   <script src="src/about-pocket.js?v=1" defer></script>
